@@ -1,0 +1,25 @@
+﻿name: "🐛 Bugfix"
+description: "버그 수정 작업"
+title: "[Bugfix] "
+labels:
+  - bug
+
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 문제 내용
+      description: 발생한 문제를 간단히 작성
+    validations:
+      required: true
+
+  - type: textarea
+    id: done
+    attributes:
+      label: 완료 조건
+      description: 수정 완료 기준을 작성
+      placeholder: |
+        - [ ] 문제 재현 안 됨
+        - [ ] 기존 기능 정상 동작
+    validations:
+      required: true

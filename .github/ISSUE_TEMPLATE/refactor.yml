@@ -1,0 +1,25 @@
+﻿name: "♻️ Refactor"
+description: "코드 또는 구조 개선"
+title: "[Refactor] "
+labels:
+  - refactor
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: 리팩토링 내용
+      description: 개선할 코드나 구조를 간단히 작성
+    validations:
+      required: true
+
+  - type: textarea
+    id: done
+    attributes:
+      label: 완료 조건
+      description: 리팩토링 완료 기준을 작성
+      placeholder: |
+        - [ ] 기존 기능 유지
+        - [ ] 구조 개선 완료
+    validations:
+      required: true
