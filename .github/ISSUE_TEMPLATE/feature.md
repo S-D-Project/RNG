@@ -2,8 +2,9 @@
 name: Feature
 about: 새로운 기능 또는 작업
 title: "[Feature] "
-labels: "feature"
-assignees: ""
+labels: ''
+assignees: ''
+
 ---
 
 ## 작업 내용

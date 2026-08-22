@@ -2,8 +2,9 @@
 name: Refactor
 about: 코드 또는 구조 개선
 title: "[Refactor] "
-labels: "refactor"
-assignees: ""
+labels: ''
+assignees: ''
+
 ---
 
 ## 대상
