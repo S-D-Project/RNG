@@ -2,8 +2,9 @@
 name: 🐛Bugfix
 about: 버그 수정
 title: "[Bugfix] "
-labels: "bugfix"
-assignees: ""
+labels: ''
+assignees: ''
+
 ---
 
 ## 문제 내용
