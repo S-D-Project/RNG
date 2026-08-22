@@ -1,4 +1,4 @@
-﻿---
+---
 name: Bugfix
 about: 버그 수정
 title: "[Bugfix] "
