@@ -5,14 +5,28 @@ using UnityEngine;
 
 public class StageInitializer : MonoBehaviour
 {
-    [Title("Required Settings")]
+    [Title("Spawner")]
     [SerializeField]
     [Required]
     private PlayerSpawner _playerSpawner;
 
+    [Title("Player Prefab")]
+    [SerializeField]
+    [Required]
+    [InfoBox("지금은 인스펙터 창에서 넣는데 나중에 캐릭터 선택 만들면 대체할 예정")]
+    private string _selectedCharacterId;
+
     private void Start()
     {
         Initialize();
+    }
+
+    /**
+     * TODO 지금은 인스펙터 창에서 캐릭터를 넣어두는데, 나중에 캐릭터 선택 상호작용과 연결 
+     */
+    public void SetCharacter(string id)
+    {
+        _selectedCharacterId = id;
     }
 
     private void Initialize()
@@ -31,7 +45,8 @@ public class StageInitializer : MonoBehaviour
 
     private void InitializePlayer()
     {
-        _playerSpawner.SpawnPlayer();
+
+        PlayerRuntime player = _playerSpawner.SpawnPlayer(Vector2.zero,_selectedCharacterId);
     }
 
     private void InitializeUI()
@@ -41,6 +56,6 @@ public class StageInitializer : MonoBehaviour
 
     private void StartGame()
     {
-        // TODO Game 시작 
+        // TODO Game시작 로직 
     }
 }

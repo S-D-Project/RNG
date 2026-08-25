@@ -5,9 +5,28 @@ using UnityEngine;
 
 public class GameDataLoader : MonoBehaviour
 {
-    [SerializeField] [Required] private IDataSource _dataSource;
+    private IDataSource _dataSource;
+    
+    [TitleGroup("Data Source","Google Sheet")]
+    [SerializeField]
+    [Required]
+    private string _apiKey;
+    
+    [TitleGroup("Data Source","Google Sheet")]
+    [SerializeField]
+    [Required]
+    private string _spreadSheetId;
 
-    [SerializeField] [Required] private PlayerResourceRegistry _playerRegistry;
+    [TitleGroup("Data Registry","Player Data")]
+    [SerializeField]
+    [Required]
+    private PlayerResourceRegistry _playerRegistry;
+    
+
+    public void Initialize()
+    {
+        _dataSource = new GoogleSheetClient(_spreadSheetId, _apiKey);
+    }
 
     public async Awaitable LoadDataAsync()
     {
@@ -33,6 +52,13 @@ public class GameDataLoader : MonoBehaviour
         PlayerBuilder builder = new PlayerBuilder(_playerRegistry);
         List<PlayerData> playerDataList = builder.Build(playerDtos);
         
-        // TODO 0825 -> GameDataStore생성 후, playerDataList 저장
+        Dictionary<string, PlayerData> playerDataDic = new Dictionary<string, PlayerData>();
+
+        foreach (PlayerData playerData in playerDataList)
+        {
+            playerDataDic.Add(playerData.Id, playerData);
+        }
+        
+        GameDataStore.Instance.SetPlayerData(playerDataDic);
     }
 }

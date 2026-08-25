@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
 
 public class MovementSystem : MonoBehaviour
 {
     private Vector2 _moveDirection;
+    
     public float MoveSpeed { get; private set; }
 
 
