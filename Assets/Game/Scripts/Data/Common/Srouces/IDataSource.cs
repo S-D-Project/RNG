@@ -2,5 +2,5 @@
 
 public interface IDataSource
 {
-    Awaitable<DataResponse> LoadAsync(string key);
+    Awaitable<DataResponse> LoadAsync();
 }
