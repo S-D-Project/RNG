@@ -5,8 +5,6 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     public static T Instance { get; private set; }
     
-    protected virtual bool IsPersistent => false;
-
     protected void Awake()
     {
         if(Instance != null && Instance != this)
@@ -16,18 +14,12 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         }
 
         Instance = this as T;
-
-        if (IsPersistent)
-        {
-            DontDestroyOnLoad(gameObject);
-        }
-        
-        OnInitialize();
+        DontDestroyOnLoad(gameObject);
     }
 
-    protected virtual void OnInitialize()
+    public virtual void OnInitialize()
     {
-        
+
     }
 
     protected void OnDestroy()
