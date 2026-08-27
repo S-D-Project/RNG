@@ -1,5 +1,6 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(menuName = "Game/Data/Weapon Resource")]
 public class WeaponResource : ScriptableObject
@@ -25,8 +26,8 @@ public class WeaponResource : ScriptableObject
     [Title("Weapon Behaviour")]
     [SerializeReference]
     private FirePatternResourceData _firePattern;
-    [SerializeReference]
-    private TargetingResourceData _targetingResource;
+    [FormerlySerializedAs("_targetingResource")] [SerializeReference]
+    private TargetingResourceData _targeting;
 
 
 
@@ -38,7 +39,7 @@ public class WeaponResource : ScriptableObject
     public WeaponTypeResourceData TypeResource => _typeResource;
     public FirePatternResourceData FirePattern => _firePattern;
     
-    public TargetingResourceData TargetingResource => _targetingResource;
+    public TargetingResourceData Targeting => _targeting;
 
     /**
      * Editor/생성용 초기화 메서드
@@ -57,7 +58,7 @@ public class WeaponResource : ScriptableObject
         _icon = icon;
         _weaponType = weaponType;
         _firePattern = firePattern;
-        _targetingResource = targeting;
+        _targeting = targeting;
         _typeResource = typeResource;
     }
 }

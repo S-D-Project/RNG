@@ -45,8 +45,14 @@ public class StageInitializer : MonoBehaviour
 
     private void InitializePlayer()
     {
-
         PlayerRuntime player = _playerSpawner.SpawnPlayer(Vector2.zero,_selectedCharacterId);
+
+        WeaponData weaponData = GameDataStore.Instance.GetWeaponData("bullet");
+        WeaponRuntime weaponRuntime = new WeaponRuntime(weaponData);
+        
+        player.AddWeapon(weaponRuntime);
+        Debug.Log($"Weapon Count : {player.Weapons.Count}");
+        Debug.Log($"Weapon Id : {player.Weapons[0].BaseData.Id}");
     }
 
     private void InitializeUI()

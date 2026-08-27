@@ -20,7 +20,7 @@ public class PlayerBuilder
 
             if (resource == null)
             {
-                Debug.LogError($"PlayerResource not found : {dto.Id}");
+                Debug.LogWarning($"PlayerResource not found : {dto.Id}");
                 continue;
             }
             result.Add(new PlayerData(dto,resource));

@@ -21,6 +21,11 @@ public class GameDataLoader : MonoBehaviour
     [SerializeField]
     [Required]
     private PlayerResourceRegistry _playerRegistry;
+
+    [TitleGroup("Data Registry", "Weapon Data")] 
+    [SerializeField] 
+    [Required]
+    private WeaponResourceRegistry _weaponRegistry;
     
 
     public void Initialize()
@@ -34,6 +39,8 @@ public class GameDataLoader : MonoBehaviour
         {
             DataResponse response = await _dataSource.LoadAsync();
             ParsePlayerData(response.Content);
+            ParseWeaponData(response.Content);
+            
         }
         catch (Exception e)
         {
@@ -60,5 +67,22 @@ public class GameDataLoader : MonoBehaviour
         }
         
         GameDataStore.Instance.SetPlayerData(playerDataDic);
+    }
+
+    private void ParseWeaponData(string json)
+    {
+        List<WeaponDto> weaponDtos = SheetParser.Parse<WeaponDto>(json, "WeaponData");
+
+        WeaponBuilder builder = new WeaponBuilder(_weaponRegistry);
+        List<WeaponData> weaponDataList = builder.Build(weaponDtos);
+
+        Dictionary<string, WeaponData> weaponDataDic = new Dictionary<string, WeaponData>();
+
+        foreach (WeaponData weaponData in weaponDataList)
+        {
+            weaponDataDic.Add(weaponData.Id,weaponData);
+        }
+
+        GameDataStore.Instance.SetWeaponData(weaponDataDic);
     }
 }
