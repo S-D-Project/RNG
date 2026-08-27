@@ -1,7 +1,10 @@
 ﻿using System;
 
 [Serializable]
-public class PierceBehaviourResourceData : ProjectileBehaviourResourceData
+public class PierceBehaviourResourceData : BehaviourResourceData
 {
-    
+    public override IWeaponBehaviour Create()
+    {
+        return new PierceWeaponBehaviour();
+    }
 }

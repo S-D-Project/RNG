@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: WeaponRegistry
   m_EditorClassIdentifier: Assembly-CSharp::WeaponResourceRegistry
   _weaponRegistry:
+  - {fileID: 11400000, guid: bad6786b9b7f3ef4e852c880671572f7, type: 2}
   - {fileID: 11400000, guid: 148acbeaee26b064ea4649ccc91f2888, type: 2}

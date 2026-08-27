@@ -5,6 +5,7 @@ using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class WeaponMaker : OdinEditorWindow
 {
@@ -20,6 +21,12 @@ public class WeaponMaker : OdinEditorWindow
     [SerializeField]
     [Required]
     private string _weaponName;
+    
+    [TitleGroup("Common")]
+    [PreviewField(70)]
+    [LabelText("Weapon Object Prefab")]
+    [SerializeField]
+    private GameObject _weaponObjectPrefab;
 
     [TitleGroup("Common")]
     [PreviewField(70)]
@@ -45,24 +52,10 @@ public class WeaponMaker : OdinEditorWindow
     private TargetingType _targetingType;
 
     //Type Settings
-
     [TitleGroup("Type Settings")]
-    [ShowIf("@_weaponType == WeaponType.Projectile")]
     [HideLabel]
     [SerializeField]
-    private ProjectileWeaponMakerData _projectile = new();
-
-    [TitleGroup("Type Settings")]
-    [ShowIf("@_weaponType == WeaponType.Melee")]
-    [HideLabel]
-    [SerializeField]
-    private MeleeWeaponMakerData _melee = new();
-
-    [TitleGroup("Type Settings")]
-    [ShowIf("@_weaponType == WeaponType.Area")]
-    [HideLabel]
-    [SerializeField]
-    private AreaWeaponMakerData _area = new();
+    private WeaponMakerData _weapon = new();
 
     [MenuItem("Tools/Weapon Maker")]
     public static void Open()
@@ -84,11 +77,12 @@ public class WeaponMaker : OdinEditorWindow
         weaponResource.Initialize(
             _weaponId,
             _weaponName,
+            _weaponObjectPrefab,
             _icon,
             _weaponType,
             CreateFirePattern(),
             CreateTargeting(),
-            CreateTypeResource());
+            CreateWeaponResource());
 
         var path = $"Assets/Game/SO/Weapon/{_weaponId}.asset";
 
@@ -108,7 +102,7 @@ public class WeaponMaker : OdinEditorWindow
             return false;
         }
 
-        if (_weaponType == WeaponType.Projectile && _projectile.ProjectilePrefab == null)
+        if (_weaponType == WeaponType.Projectile && _weapon.AttackPrefab == null)
         {
             return false;
         }
@@ -139,52 +133,41 @@ public class WeaponMaker : OdinEditorWindow
         };
     }
 
-    private ProjectileMovementResourceData CreateProjectileMovement()
+    private MovementResourceData CreateWeaponMovement()
     {
-        return _projectile.MovementType switch
+        return _weapon.MovementType switch
         {
-            ProjectileMovementType.Straight => new StraightMovementResourceData(),
-            ProjectileMovementType.Homing => new HomingMovementResourceData(),
+            MovementType.Straight => new StraightMovementResourceData(),
+            MovementType.Homing => new HomingMovementResourceData(),
             _ => throw new ArgumentOutOfRangeException()
         };
     }
 
-    private ProjectileWeaponResourceData CreateProjectileResource()
+    private WeaponResourceData CreateWeaponResource()
     {
-        var resource = new ProjectileWeaponResourceData();
+        var resource = new WeaponResourceData();
 
         resource.Initialize(
-            _projectile.ProjectilePrefab,
-            CreateProjectileMovement(),
-            CreateProjectileBehaviours());
+            _weapon.AttackPrefab,
+            CreateWeaponMovement(),
+            CreateWeaponBehaviours());
 
         return resource;
     }
-
-    private WeaponTypeResourceData CreateTypeResource()
-    {
-        return _weaponType switch
-        {
-            WeaponType.Projectile => CreateProjectileResource(),
-            WeaponType.Melee => throw new NotImplementedException(),
-            WeaponType.Area => throw new NotImplementedException(),
-            _ => throw new ArgumentOutOfRangeException()
-        };
-    }
-
-    private ProjectileBehaviourResourceData CreateProjectileBehaviour(ProjectileBehaviourType behaviourType)
+    
+    private BehaviourResourceData CreateWeaponBehaviour(BehaviourType behaviourType)
     {
         return behaviourType switch
         {
-            ProjectileBehaviourType.Pierce => new PierceBehaviourResourceData(),
-            ProjectileBehaviourType.ExplodeOnHit => new ExplodeOnHitBehaviourResourceData(),
-            ProjectileBehaviourType.DestroyOnHit => new DestroyOnHitBehaviourResourceData(),
+            BehaviourType.Pierce => new PierceBehaviourResourceData(),
+            BehaviourType.ExplodeOnHit => new ExplodeOnHitBehaviourResourceData(),
+            BehaviourType.DestroyOnHit => new DestroyOnHitBehaviourResourceData(),
             _ => throw new ArgumentOutOfRangeException(nameof(behaviourType), behaviourType, null)
         };
     }
 
-    private List<ProjectileBehaviourResourceData> CreateProjectileBehaviours()
+    private List<BehaviourResourceData> CreateWeaponBehaviours()
     {
-        return _projectile.Behaviours.Select(CreateProjectileBehaviour).ToList();
+        return _weapon.Behaviours.Select(CreateWeaponBehaviour).ToList();
     }
 }

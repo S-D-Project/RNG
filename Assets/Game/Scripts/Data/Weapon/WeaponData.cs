@@ -20,12 +20,14 @@ public class WeaponData
     public float Lifetime { get; }
 
     public string WeaponName { get; }
+
+    public GameObject WeaponObjectPrefab { get; }
     public Sprite Icon { get; }
     public WeaponType WeaponType { get; }
 
     public FirePatternResourceData FirePattern { get; }
     public TargetingResourceData Targeting { get; }
-    public WeaponTypeResourceData TypeResource { get; }
+    public WeaponResourceData WeaponResourceData { get; }
 
     public WeaponData(
         WeaponDto weaponDto,
@@ -49,11 +51,12 @@ public class WeaponData
         Lifetime = weaponDto.Lifetime;
 
         WeaponName = weaponResource.WeaponName;
+        WeaponObjectPrefab = weaponResource.WeaponObjectPrefab;
         Icon = weaponResource.Icon;
         WeaponType = weaponResource.WeaponType;
 
         FirePattern = weaponResource.FirePattern;
         Targeting = weaponResource.Targeting;
-        TypeResource = weaponResource.TypeResource;
+        WeaponResourceData = weaponResource.WeaponResourceData;
     }
 }

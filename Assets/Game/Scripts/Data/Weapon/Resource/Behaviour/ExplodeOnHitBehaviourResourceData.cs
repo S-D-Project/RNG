@@ -1,6 +1,10 @@
 ﻿using System;
 
 [Serializable]
-public class ExplodeOnHitBehaviourResourceData : ProjectileBehaviourResourceData
+public class ExplodeOnHitBehaviourResourceData : BehaviourResourceData
 {
+    public override IWeaponBehaviour Create()
+    {
+        return new ExplodeOnHitWeaponBehaviour();
+    }
 }

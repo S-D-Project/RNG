@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74f658ab46de40b4b625cde1abdc8dea, type: 3}
+  m_Name: plasma_bullet
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponResource
+  _id: plasma_bullet
+  _weaponName: Plasma Bullet
+  _weaponObjectPrefab: {fileID: 8524059722733250942, guid: fbe91b43dfaf6ad43ac9eed85bed4d47, type: 3}
+  _icon: {fileID: 21300000, guid: d890453caa4b6034db2d35df42c94fb5, type: 3}
+  _weaponType: 0
+  _weaponResourceData:
+    rid: 157831110161858644
+  _firePattern:
+    rid: 157831110161858645
+  _targeting:
+    rid: 157831110161858646
+  references:
+    version: 2
+    RefIds:
+    - rid: 157831110161858644
+      type: {class: WeaponResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        _attackPrefab: {fileID: 5641985160623356082, guid: 65e4f1ebc3e2f234bb556d2ab5e35844, type: 3}
+        _movement:
+          rid: 157831110161858647
+        _behaviours:
+        - rid: 157831110161858648
+    - rid: 157831110161858645
+      type: {class: SingleFirePatternResourceData, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 157831110161858646
+      type: {class: NearestTargetingResourceData, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 157831110161858647
+      type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 157831110161858648
+      type: {class: PierceBehaviourResourceData, ns: , asm: Assembly-CSharp}
+      data: 

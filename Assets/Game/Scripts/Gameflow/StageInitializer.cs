@@ -9,6 +9,11 @@ public class StageInitializer : MonoBehaviour
     [SerializeField]
     [Required]
     private PlayerSpawner _playerSpawner;
+    
+    [Title("AttackRuntimeManager")]
+    [SerializeField] 
+    [Required] 
+    private AttackRuntimeManager _attackRuntimeManager;
 
     [Title("Player Prefab")]
     [SerializeField]
@@ -47,12 +52,18 @@ public class StageInitializer : MonoBehaviour
     {
         PlayerRuntime player = _playerSpawner.SpawnPlayer(Vector2.zero,_selectedCharacterId);
 
+        // TODO 임시로 Weapon 추가. 나중에 분리해야 함.
         WeaponData weaponData = GameDataStore.Instance.GetWeaponData("bullet");
         WeaponRuntime weaponRuntime = new WeaponRuntime(weaponData);
-        
         player.AddWeapon(weaponRuntime);
-        Debug.Log($"Weapon Count : {player.Weapons.Count}");
-        Debug.Log($"Weapon Id : {player.Weapons[0].BaseData.Id}");
+        
+        // TODO 실제 무기 생성 
+        GameObject weaponObjectPrefab = weaponData.WeaponObjectPrefab;
+        GameObject weapon = Instantiate(weaponObjectPrefab, player.transform);
+        WeaponController weaponController = weapon.GetComponent<WeaponController>();
+        weaponController.Initialize(weaponRuntime,_attackRuntimeManager);
+
+
     }
 
     private void InitializeUI()

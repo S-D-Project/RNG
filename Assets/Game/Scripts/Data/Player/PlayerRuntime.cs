@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 /**
@@ -9,6 +10,7 @@ public class PlayerRuntime : MonoBehaviour
     private MovementSystem _movementSystem;
     public PlayerData BaseData { get; private set; }
 
+    [ShowInInspector]
     private readonly List<WeaponRuntime> _weapons = new();
     public IReadOnlyList<WeaponRuntime> Weapons => _weapons;
 

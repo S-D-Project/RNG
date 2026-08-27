@@ -1,6 +1,10 @@
 ﻿using System;
 
 [Serializable]
-public class DestroyOnHitBehaviourResourceData : ProjectileBehaviourResourceData
+public class DestroyOnHitBehaviourResourceData : BehaviourResourceData
 {
+    public override IWeaponBehaviour Create()
+    {
+        return new DestroyOnHitWeaponBehaviour();
+    }
 }

@@ -54,6 +54,10 @@ public class GameDataLoader : MonoBehaviour
         // SheetParser 
         List<PlayerDto> playerDtos = SheetParser.Parse<PlayerDto>(json, "PlayerData");
 
+        if (_playerRegistry == null)
+        {
+            Debug.LogError("PlayerRegistry를 DataLoader에 넣으세요.");
+        }
 
         // dto + resource => PlayerData (Runtime 생성 전 원본 데이터)
         PlayerBuilder builder = new PlayerBuilder(_playerRegistry);
@@ -73,6 +77,11 @@ public class GameDataLoader : MonoBehaviour
     {
         List<WeaponDto> weaponDtos = SheetParser.Parse<WeaponDto>(json, "WeaponData");
 
+        if (_weaponRegistry == null)
+        {
+            Debug.LogError("WeaponRegistry를 DataLoader에 넣으세요.");
+        }
+        
         WeaponBuilder builder = new WeaponBuilder(_weaponRegistry);
         List<WeaponData> weaponDataList = builder.Build(weaponDtos);
 
