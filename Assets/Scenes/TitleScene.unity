@@ -1085,7 +1085,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 613d036cf14544d2926790aa4af56270, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameDataLoader
-  _apiKey: AIzaSyC8_UpbYOvEKolsfBktKeGHEAc04ybjjAw
+  _apiKey: AIzaSyB6GEjxohSzAj6n2LGVb31hnmI6i3UuQKU
   _spreadSheetId: 1bwBrkjXtTnLAf131f9p6TrfsQ5rUeQWRFEiUsJsIuho
   _playerRegistry: {fileID: 11400000, guid: 98f45dbe04b39a840abda2ad763a2ed4, type: 2}
 --- !u!114 &1044975241
