@@ -131,6 +131,10 @@ public class AttackRuntimeManager : MonoBehaviour
                 continue;
             }
 
+            if (attack.HasHit(enemy))
+            {
+                continue;
+            }
             Vector2 enemyPosition = enemy.transform.position;
 
             float collisionRadius = attack.HitRadius + enemy.HitRaidus;
@@ -141,8 +145,18 @@ public class AttackRuntimeManager : MonoBehaviour
             { 
                 continue;
             }
+
+            if (!attack.TryHit(enemy))
+            {
+                continue;
+            }
             
             HandleHit(attack, enemy);
+
+            if (attack.IsDead)
+            {
+                break;
+            }
         }
     }
 

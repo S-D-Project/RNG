@@ -3,8 +3,11 @@
 [Serializable]
 public class PierceBehaviourResourceData : BehaviourResourceData
 {
+    public int PierceCount;
     public override IWeaponBehaviour Create()
     {
-        return new PierceWeaponBehaviour();
+        return new PierceWeaponBehaviour(PierceCount);
     }
+    
+    
 }

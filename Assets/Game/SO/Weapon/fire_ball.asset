@@ -20,7 +20,7 @@ MonoBehaviour:
   _weaponResourceData:
     rid: 117774832446996559
   _firePattern:
-    rid: 117774832446996560
+    rid: 117774902767124561
   _targeting:
     rid: 117774832446996561
   references:
@@ -32,13 +32,20 @@ MonoBehaviour:
         _attackPrefab: {fileID: 1911281179004884283, guid: 0eb769d08c0220247bd7959dfdb89cf4, type: 3}
         _movement:
           rid: 117774832446996562
-        _behaviours: []
-    - rid: 117774832446996560
-      type: {class: SingleFirePatternResourceData, ns: , asm: Assembly-CSharp}
-      data: 
+        _behaviours:
+        - rid: 117774902767124560
     - rid: 117774832446996561
       type: {class: NearestTargetingResourceData, ns: , asm: Assembly-CSharp}
       data: 
     - rid: 117774832446996562
       type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 117774902767124560
+      type: {class: PierceBehaviourResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        PierceCount: 2
+    - rid: 117774902767124561
+      type: {class: SpreadFirePatternResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        AttackCount: 3
+        SpreadAngle: 45

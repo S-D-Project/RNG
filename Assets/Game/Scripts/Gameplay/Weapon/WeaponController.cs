@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
     private WeaponRuntime _weaponRuntime;
     private ITargeting _targeting;
     private IFirePattern _firePattern;
+    private IReadOnlyList<IWeaponBehaviour> _behaviours;
 
     private float _remainingCooldown;
     private bool _isInitialized;
@@ -26,6 +28,19 @@ public class WeaponController : MonoBehaviour
 
         _remainingCooldown = 0f;
         _isInitialized = true;
+        _behaviours = CreateBehaviours(runtime.BaseData.WeaponResourceData);
+    }
+
+    private IReadOnlyList<IWeaponBehaviour> CreateBehaviours(WeaponResourceData resource)
+    {
+        List<IWeaponBehaviour> behaviours = new List<IWeaponBehaviour>();
+
+        foreach (BehaviourResourceData behaviourResourceData in resource.Behaviours)
+        {
+            behaviours.Add(behaviourResourceData.Create());
+        }
+
+        return behaviours;
     }
 
     private void Update()
@@ -68,5 +83,29 @@ public class WeaponController : MonoBehaviour
         _firePattern.Fire(this,_weaponRuntime,target);
 
         _remainingCooldown = _weaponRuntime.CurrentFireInterval;
+    }
+
+    public void FireAttack(Vector2 direction)
+    {
+        WeaponResourceData resource = _weaponRuntime.BaseData.WeaponResourceData;
+
+        if (resource.AttackPrefab == null)
+        {
+            Debug.LogError("AttackPrefab is null");
+            return;
+        }
+
+        IMovement movement = resource.Movement.Create();
+        
+        _attackRuntimeManager.Spawn(
+            resource.AttackPrefab,
+            transform.position,
+            direction,
+            _weaponRuntime.CurrentSpeed,
+            _weaponRuntime.CurrentDamage,
+            _weaponRuntime.BaseData.HitRadius,
+            _weaponRuntime.BaseData.Lifetime,
+            movement,
+            _behaviours);
     }
 }

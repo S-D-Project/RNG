@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class AttackRuntime
 {
+    private readonly HashSet<EnemyRuntime> _hitTargets;
+    
     public GameObject Prefab { get; }
     public GameObject Instance { get; }
 
@@ -15,6 +17,8 @@ public class AttackRuntime
     public float HitRadius { get; }
 
     public float RemainingLifetime { get; set; }
+    
+    public int HitCount { get; private set; }
 
     public IMovement Movement { get; }
     public IReadOnlyList<IWeaponBehaviour> Behaviours { get; }
@@ -45,11 +49,31 @@ public class AttackRuntime
         Movement = movement;
         Behaviours = behaviours;
 
+        HitCount = 0;
+        _hitTargets = new HashSet<EnemyRuntime>();
         IsDead = false;
     }
 
     public void MarkDead()
     {
         IsDead = true;
+    }
+
+    public bool TryHit(EnemyRuntime target)
+    {
+        if (target == null)
+            return false;
+
+        if (!_hitTargets.Add(target))
+        {
+            return false;
+        }
+        HitCount++;
+        return true;
+    }
+
+    public bool HasHit(EnemyRuntime target)
+    {
+        return _hitTargets.Contains(target);
     }
 }
