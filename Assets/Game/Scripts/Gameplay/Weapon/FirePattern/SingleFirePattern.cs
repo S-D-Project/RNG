@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SingleFirePattern : IFirePattern
@@ -24,6 +25,12 @@ public class SingleFirePattern : IFirePattern
         Vector2 direction = (targetPosition - origin).normalized;
 
         IMovement movement = resource.Movement.Create();
+        List<IWeaponBehaviour> behaviours = new List<IWeaponBehaviour>();
+
+        foreach (BehaviourResourceData behaviourResourceData in resource.Behaviours)
+        {
+            behaviours.Add(behaviourResourceData.Create());
+        }
 
         controller.AttackRuntimeManager.Spawn(
             resource.AttackPrefab,
@@ -33,7 +40,8 @@ public class SingleFirePattern : IFirePattern
             runtime.CurrentDamage,
             runtime.BaseData.HitRadius,
             runtime.BaseData.Lifetime,
-            movement);
+            movement,
+            behaviours);
         
         Debug.Log("Fire");
     }

@@ -25,7 +25,8 @@ public class AttackRuntimeManager : MonoBehaviour
         float damage,
         float hitRadius,
         float lifetime,
-        IMovement movement)
+        IMovement movement,
+        IReadOnlyList<IWeaponBehaviour> behaviours)
     {
         if (prefab == null)
         {
@@ -48,7 +49,8 @@ public class AttackRuntimeManager : MonoBehaviour
             damage,
             hitRadius,
             lifetime,
-            movement);
+            movement,
+            behaviours);
 
         _attacks.Add(attack);
 
@@ -66,6 +68,13 @@ public class AttackRuntimeManager : MonoBehaviour
 
             UpdateMovement(attack, deltaTime);
             UpdateLifetime(attack, deltaTime);
+
+            if (attack.IsDead)
+            {
+                continue;
+            }
+            
+            UpdateCollision(attack);
         }
     }
 
@@ -106,6 +115,42 @@ public class AttackRuntimeManager : MonoBehaviour
             Release(attack);
 
             _attacks.RemoveAt(i);
+        }
+    }
+
+    private void UpdateCollision(AttackRuntime attack)
+    {
+        IReadOnlyList<EnemyRuntime> enemies = EnemyManager.Instance.EnemyList;
+
+        Vector2 attackPosition = attack.Transform.position;
+
+        foreach (EnemyRuntime enemy in enemies)
+        {
+            if(enemy == null)
+            {
+                continue;
+            }
+
+            Vector2 enemyPosition = enemy.transform.position;
+
+            float collisionRadius = attack.HitRadius + enemy.HitRaidus;
+
+            float sqrDistance = (enemyPosition - attackPosition).sqrMagnitude;
+
+            if (sqrDistance > collisionRadius * collisionRadius)
+            { 
+                continue;
+            }
+            
+            HandleHit(attack, enemy);
+        }
+    }
+
+    private void HandleHit(AttackRuntime attack, EnemyRuntime enemy)
+    {
+        foreach (IWeaponBehaviour behaviour in attack.Behaviours)
+        {
+            behaviour.OnHit(attack,enemy);
         }
     }
 

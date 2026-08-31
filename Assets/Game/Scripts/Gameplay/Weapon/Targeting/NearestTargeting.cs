@@ -26,7 +26,6 @@ public class NearestTargeting : ITargeting
             {
                 continue;
             }
-
             nearestSqrDistance = sqrDistance;
             nearest = enemy;
         }

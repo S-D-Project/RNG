@@ -15,3 +15,4 @@ MonoBehaviour:
   _weaponRegistry:
   - {fileID: 11400000, guid: bad6786b9b7f3ef4e852c880671572f7, type: 2}
   - {fileID: 11400000, guid: 148acbeaee26b064ea4649ccc91f2888, type: 2}
+  - {fileID: 11400000, guid: 1daab78c7b472054d9ce977b19f257b7, type: 2}

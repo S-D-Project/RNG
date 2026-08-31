@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class AttackRuntime
 {
@@ -16,6 +17,7 @@ public class AttackRuntime
     public float RemainingLifetime { get; set; }
 
     public IMovement Movement { get; }
+    public IReadOnlyList<IWeaponBehaviour> Behaviours { get; }
 
     public bool IsDead { get; private set; }
 
@@ -27,7 +29,8 @@ public class AttackRuntime
         float damage,
         float hitRadius,
         float lifetime,
-        IMovement movement)
+        IMovement movement,
+        IReadOnlyList<IWeaponBehaviour> behaviours)
     {
         Prefab = prefab;
         Instance = instance;
@@ -40,6 +43,7 @@ public class AttackRuntime
 
         RemainingLifetime = lifetime;
         Movement = movement;
+        Behaviours = behaviours;
 
         IsDead = false;
     }
