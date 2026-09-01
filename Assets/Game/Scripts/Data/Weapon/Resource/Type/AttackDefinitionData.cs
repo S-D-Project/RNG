@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [Serializable]
-public class WeaponResourceData
+public class AttackDefinitionData
 {
     [SerializeField]
     private GameObject _attackPrefab;

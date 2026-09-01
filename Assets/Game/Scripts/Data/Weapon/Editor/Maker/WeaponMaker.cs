@@ -41,18 +41,23 @@ public class WeaponMaker : OdinEditorWindow
     private WeaponType _weaponType;
 
     // WeaponBehaviour
-    [TitleGroup("Weapon Behaviour")]
+    [TitleGroup("Weapon Firing")]
+    [LabelText("Fire Mode")]
+    [SerializeField]
+    private FireModeType _fireModeType;
+
+    [TitleGroup("Weapon Firing")]
     [LabelText("Fire Pattern")]
     [SerializeField]
     private FirePatternType _firePatternType;
+    
 
-    [TitleGroup("Weapon Behaviour")]
+    [TitleGroup("Weapon Firing")]
     [LabelText("Targeting")]
     [SerializeField]
     private TargetingType _targetingType;
-
-    //Type Settings
-    [TitleGroup("Type Settings")]
+    
+    [TitleGroup("Attack Settings")]
     [HideLabel]
     [SerializeField]
     private WeaponMakerData _weapon = new();
@@ -80,9 +85,10 @@ public class WeaponMaker : OdinEditorWindow
             _weaponObjectPrefab,
             _icon,
             _weaponType,
+            CreateFireMode(),
             CreateFirePattern(),
             CreateTargeting(),
-            CreateWeaponResource());
+            CreateAttackDefinitionData());
 
         var path = $"Assets/Game/SO/Weapon/{_weaponId}.asset";
 
@@ -110,13 +116,20 @@ public class WeaponMaker : OdinEditorWindow
         return true;
     }
 
+    private FireModeResourceData CreateFireMode()
+    {
+        return _fireModeType switch
+        {
+            FireModeType.Instant => new InstantFireModeResourceData(),
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+
     private FirePatternResourceData CreateFirePattern()
     {
         return _firePatternType switch
         {
-            FirePatternType.Single => new SingleFirePatternResourceData(),
-            FirePatternType.Burst => new BurstFirePatternResourceData(),
-            FirePatternType.Spread => new SpreadFirePatternResourceData(),
+            FirePatternType.Fan => new FanFirePatternResourceData(),
             _ => throw new ArgumentOutOfRangeException()
         };
     }
@@ -133,7 +146,7 @@ public class WeaponMaker : OdinEditorWindow
         };
     }
 
-    private MovementResourceData CreateWeaponMovement()
+    private MovementResourceData CreateAttackMovement()
     {
         return _weapon.MovementType switch
         {
@@ -143,19 +156,19 @@ public class WeaponMaker : OdinEditorWindow
         };
     }
 
-    private WeaponResourceData CreateWeaponResource()
+    private AttackDefinitionData CreateAttackDefinitionData()
     {
-        var resource = new WeaponResourceData();
+        var resource = new AttackDefinitionData();
 
         resource.Initialize(
             _weapon.AttackPrefab,
-            CreateWeaponMovement(),
-            CreateWeaponBehaviours());
+            CreateAttackMovement(),
+            CreateAttackBehaviours());
 
         return resource;
     }
     
-    private BehaviourResourceData CreateWeaponBehaviour(BehaviourType behaviourType)
+    private BehaviourResourceData CreateAttackBehaviour(BehaviourType behaviourType)
     {
         return behaviourType switch
         {
@@ -166,8 +179,8 @@ public class WeaponMaker : OdinEditorWindow
         };
     }
 
-    private List<BehaviourResourceData> CreateWeaponBehaviours()
+    private List<BehaviourResourceData> CreateAttackBehaviours()
     {
-        return _weapon.Behaviours.Select(CreateWeaponBehaviour).ToList();
+        return _weapon.Behaviours.Select(CreateAttackBehaviour).ToList();
     }
 }

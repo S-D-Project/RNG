@@ -20,15 +20,12 @@ MonoBehaviour:
   _weaponResourceData:
     rid: 157831110161858649
   _firePattern:
-    rid: 157831110161858640
+    rid: 4889859197243490383
   _targeting:
     rid: 157831110161858641
   references:
     version: 2
     RefIds:
-    - rid: 157831110161858640
-      type: {class: SingleFirePatternResourceData, ns: , asm: Assembly-CSharp}
-      data: 
     - rid: 157831110161858641
       type: {class: NearestTargetingResourceData, ns: , asm: Assembly-CSharp}
       data: 
@@ -42,3 +39,8 @@ MonoBehaviour:
     - rid: 157831110161858650
       type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 4889859197243490383
+      type: {class: FanFirePatternResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        AttackCount: 1
+        SpreadAngle: 0

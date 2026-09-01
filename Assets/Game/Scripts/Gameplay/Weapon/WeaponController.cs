@@ -6,6 +6,7 @@ public class WeaponController : MonoBehaviour
     private WeaponRuntime _weaponRuntime;
     private ITargeting _targeting;
     private IFirePattern _firePattern;
+    private IFireMode _fireMode;
     private IReadOnlyList<IWeaponBehaviour> _behaviours;
 
     private float _remainingCooldown;
@@ -24,14 +25,15 @@ public class WeaponController : MonoBehaviour
         _weaponRuntime = runtime;
         _targeting = runtime.BaseData.Targeting.Create();
         _firePattern = runtime.BaseData.FirePattern.Create();
+        _fireMode = runtime.BaseData.FireMode.Create();
         _attackRuntimeManager = attackRuntimeManager;
 
         _remainingCooldown = 0f;
         _isInitialized = true;
-        _behaviours = CreateBehaviours(runtime.BaseData.WeaponResourceData);
+        _behaviours = CreateBehaviours(runtime.BaseData.AttackDefinitionData);
     }
 
-    private IReadOnlyList<IWeaponBehaviour> CreateBehaviours(WeaponResourceData resource)
+    private IReadOnlyList<IWeaponBehaviour> CreateBehaviours(AttackDefinitionData resource)
     {
         List<IWeaponBehaviour> behaviours = new List<IWeaponBehaviour>();
 
@@ -80,23 +82,35 @@ public class WeaponController : MonoBehaviour
             return;
         }
         
-        _firePattern.Fire(this,_weaponRuntime,target);
+        _fireMode.Fire(this,_weaponRuntime,target);
+        
+        //_firePattern.Fire(this,_weaponRuntime,target);
 
         _remainingCooldown = _weaponRuntime.CurrentFireInterval;
     }
 
+    public void Fire(EnemyRuntime target)
+    {
+        Vector2 origin = transform.position;
+        Vector2 targetPosition = target.transform.position;
+
+        Vector2 baseDirection = (targetPosition - origin).normalized;
+
+        IReadOnlyList<Vector2> directions = _firePattern.GetDirections(baseDirection);
+
+        foreach (Vector2 direction in directions)
+        {
+            FireAttack(direction);
+        }
+    }
+
     public void FireAttack(Vector2 direction)
     {
-        WeaponResourceData resource = _weaponRuntime.BaseData.WeaponResourceData;
-
-        if (resource.AttackPrefab == null)
-        {
-            Debug.LogError("AttackPrefab is null");
-            return;
-        }
-
-        IMovement movement = resource.Movement.Create();
+        AttackDefinitionData resource =
+            _weaponRuntime.BaseData.AttackDefinitionData;
         
+        IMovement movement = resource.Movement.Create();
+
         _attackRuntimeManager.Spawn(
             resource.AttackPrefab,
             transform.position,

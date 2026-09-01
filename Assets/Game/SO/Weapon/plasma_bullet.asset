@@ -20,7 +20,7 @@ MonoBehaviour:
   _weaponResourceData:
     rid: 157831110161858644
   _firePattern:
-    rid: 157831110161858645
+    rid: 4889859197243490385
   _targeting:
     rid: 157831110161858646
   references:
@@ -34,9 +34,6 @@ MonoBehaviour:
           rid: 157831110161858647
         _behaviours:
         - rid: 157831110161858648
-    - rid: 157831110161858645
-      type: {class: SingleFirePatternResourceData, ns: , asm: Assembly-CSharp}
-      data: 
     - rid: 157831110161858646
       type: {class: NearestTargetingResourceData, ns: , asm: Assembly-CSharp}
       data: 
@@ -45,4 +42,10 @@ MonoBehaviour:
       data: 
     - rid: 157831110161858648
       type: {class: PierceBehaviourResourceData, ns: , asm: Assembly-CSharp}
-      data: 
+      data:
+        PierceCount: 10
+    - rid: 4889859197243490385
+      type: {class: FanFirePatternResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        AttackCount: 1
+        SpreadAngle: 0

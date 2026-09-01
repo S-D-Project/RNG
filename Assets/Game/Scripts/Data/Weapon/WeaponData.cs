@@ -26,8 +26,9 @@ public class WeaponData
     public WeaponType WeaponType { get; }
 
     public FirePatternResourceData FirePattern { get; }
+    public FireModeResourceData FireMode { get; }
     public TargetingResourceData Targeting { get; }
-    public WeaponResourceData WeaponResourceData { get; }
+    public AttackDefinitionData AttackDefinitionData { get; }
 
     public WeaponData(
         WeaponDto weaponDto,
@@ -55,8 +56,9 @@ public class WeaponData
         Icon = weaponResource.Icon;
         WeaponType = weaponResource.WeaponType;
 
+        FireMode = weaponResource.FireMode;
         FirePattern = weaponResource.FirePattern;
         Targeting = weaponResource.Targeting;
-        WeaponResourceData = weaponResource.WeaponResourceData;
+        AttackDefinitionData = weaponResource.AttackDefinitionData;
     }
 }

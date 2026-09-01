@@ -23,10 +23,12 @@ public class WeaponResource : ScriptableObject
     
     [Title("Type Resource")]
     [SerializeReference]
-    private WeaponResourceData _weaponResourceData;
-    
+    private AttackDefinitionData _attackDefinitionData;
+
 
     [Title("Weapon Behaviour")]
+    [SerializeReference]
+    private FireModeResourceData _fireMode;
     [SerializeReference]
     private FirePatternResourceData _firePattern;
     [SerializeReference]
@@ -41,7 +43,8 @@ public class WeaponResource : ScriptableObject
     
     public WeaponType WeaponType => _weaponType;
     
-    public WeaponResourceData WeaponResourceData => _weaponResourceData;
+    public AttackDefinitionData AttackDefinitionData => _attackDefinitionData;
+    public FireModeResourceData FireMode => _fireMode;
     public FirePatternResourceData FirePattern => _firePattern;
     
     public TargetingResourceData Targeting => _targeting;
@@ -55,17 +58,19 @@ public class WeaponResource : ScriptableObject
         GameObject weaponObjectPrefab,
         Sprite icon,
         WeaponType weaponType,
+        FireModeResourceData fireMode,
         FirePatternResourceData firePattern,
         TargetingResourceData targeting,
-        WeaponResourceData weaponResourceData)
+        AttackDefinitionData attackDefinitionData)
     {
         _id = id;
         _weaponName = weaponName;
         _weaponObjectPrefab = weaponObjectPrefab;
         _icon = icon;
         _weaponType = weaponType;
+        _fireMode = fireMode;
         _firePattern = firePattern;
         _targeting = targeting;
-        _weaponResourceData = weaponResourceData;
+        _attackDefinitionData = attackDefinitionData;
     }
 }

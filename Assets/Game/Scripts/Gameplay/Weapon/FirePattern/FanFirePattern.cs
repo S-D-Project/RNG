@@ -1,48 +1,40 @@
 ﻿
+using System.Collections.Generic;
 using UnityEngine;
 
-public class SpreadFirePattern : IFirePattern
+public class FanFirePattern : IFirePattern
 {
     private readonly int _attackCount;
     private readonly float _spreadAngle;
     
-    public SpreadFirePattern(int attackCount, float spreadAngle)
+    public FanFirePattern(int attackCount, float spreadAngle)
     {
         _attackCount = attackCount;
         _spreadAngle = spreadAngle;
     }
-    
-    public void Fire(WeaponController controller, WeaponRuntime runtime, EnemyRuntime target)
-    {
-        if (target == null)
-        {
-            return;
-        }
 
-        Vector2 origin = controller.transform.position;
-        Vector2 targetPosition = target.transform.position;
-        
-        Vector2 baseDirection = (targetPosition - origin).normalized;
+    public IReadOnlyList<Vector2> GetDirections(Vector2 baseDirection)
+    {
+        List<Vector2> directions = new();
 
         if (_attackCount <= 1)
         {
-            controller.FireAttack(baseDirection);
-            return;
+            directions.Add(baseDirection);
+            return directions;
         }
-
+        
         float startAngle = -_spreadAngle * 0.5f;
         float angleStep = _spreadAngle / (_attackCount - 1);
-
 
         for (int i = 0; i < _attackCount; i++)
         {
             float angle = startAngle + angleStep * i;
 
-            Vector2 direction = Rotate(baseDirection, angle);
-            controller.FireAttack(direction);
+            directions.Add(Rotate(baseDirection, angle));
+            
         }
-        
 
+        return directions;
     }
     
     private Vector2 Rotate(Vector2 direction,float angle)

@@ -1,7 +1,8 @@
-﻿public interface IFirePattern
+﻿using System.Collections.Generic;
+using UnityEngine;
+
+public interface IFirePattern
 {
-    void Fire(WeaponController controller,
-        WeaponRuntime runtime,
-        EnemyRuntime target);
+    IReadOnlyList<Vector2> GetDirections(Vector2 baseDirection);
     
 }

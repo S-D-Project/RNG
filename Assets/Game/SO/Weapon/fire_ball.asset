@@ -20,7 +20,7 @@ MonoBehaviour:
   _weaponResourceData:
     rid: 117774832446996559
   _firePattern:
-    rid: 117774902767124561
+    rid: 4889859197243490384
   _targeting:
     rid: 117774832446996561
   references:
@@ -44,8 +44,8 @@ MonoBehaviour:
       type: {class: PierceBehaviourResourceData, ns: , asm: Assembly-CSharp}
       data:
         PierceCount: 2
-    - rid: 117774902767124561
-      type: {class: SpreadFirePatternResourceData, ns: , asm: Assembly-CSharp}
+    - rid: 4889859197243490384
+      type: {class: FanFirePatternResourceData, ns: , asm: Assembly-CSharp}
       data:
         AttackCount: 3
-        SpreadAngle: 45
+        SpreadAngle: 30
