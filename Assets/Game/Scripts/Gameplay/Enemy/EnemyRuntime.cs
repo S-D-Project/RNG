@@ -11,4 +11,9 @@ public class EnemyRuntime : MonoBehaviour
 
     public string EnemyName => _enemyName;
     public float HitRaidus => _hitRaiuds;
+
+    public void TakeDamage(float damage)
+    {
+        Debug.Log($"{_enemyName} TakeDamage : {damage}");
+    }
 }

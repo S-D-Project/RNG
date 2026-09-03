@@ -44,6 +44,8 @@ MonoBehaviour:
           rid: 4889859197243490395
         _behaviours:
         - rid: 4889859197243490396
+        - rid: 4889859240591097950
+        - rid: 4889859240591097951
     - rid: 4889859197243490395
       type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
       data: 
@@ -54,3 +56,11 @@ MonoBehaviour:
     - rid: 4889859240591097935
       type: {class: CastingFireModeResourceData, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 4889859240591097950
+      type: {class: DamageBehaviourResourceData, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4889859240591097951
+      type: {class: ExplodeBehaviourResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        ExplosionRadius: 1
+        DamageMultiplier: 1

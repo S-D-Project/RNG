@@ -174,8 +174,9 @@ public class WeaponMaker : OdinEditorWindow
         return behaviourType switch
         {
             BehaviourType.Pierce => new PierceBehaviourResourceData(),
-            BehaviourType.ExplodeOnHit => new ExplodeBehaviourResourceData(),
-            BehaviourType.DestroyOnHit => new DestroyBehaviourResourceData(),
+            BehaviourType.Explode => new ExplodeBehaviourResourceData(),
+            BehaviourType.Destroy => new DestroyBehaviourResourceData(),
+            BehaviourType.Damage => new DamageBehaviourResourceData(),
             _ => throw new ArgumentOutOfRangeException(nameof(behaviourType), behaviourType, null)
         };
     }

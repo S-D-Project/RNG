@@ -67,8 +67,8 @@ public class StageInitializer : MonoBehaviour
         
         // TODO 실제 무기 생성 
         AddWeaponToPlayer(weaponData,weaponRuntime,player.gameObject);
-        AddWeaponToPlayer(weaponData2,weaponRuntime2,player.gameObject);
-        AddWeaponToPlayer(weapondata3,weaponRuntime3,player.gameObject);
+        // AddWeaponToPlayer(weaponData2,weaponRuntime2,player.gameObject);
+        // AddWeaponToPlayer(weapondata3,weaponRuntime3,player.gameObject);
 
     }
     

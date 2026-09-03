@@ -43,13 +43,17 @@ MonoBehaviour:
         _movement:
           rid: 4889859240591097937
         _behaviours:
-        - rid: 4889859240591097938
+        - rid: 4889859240591097948
+        - rid: 4889859240591097949
     - rid: 4889859240591097937
       type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 4889859240591097938
-      type: {class: DestroyOnHitBehaviourResourceData, ns: , asm: Assembly-CSharp}
-      data: 
     - rid: 4889859240591097939
       type: {class: InstantFireModeResourceData, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4889859240591097948
+      type: {class: DamageBehaviourResourceData, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4889859240591097949
+      type: {class: DestroyBehaviourResourceData, ns: , asm: Assembly-CSharp}
       data: 

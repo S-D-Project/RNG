@@ -1,6 +1,7 @@
 ﻿public enum BehaviourType
 {
     Pierce,
-    ExplodeOnHit,
-    DestroyOnHit,
+    Explode,
+    Destroy,
+    Damage
 }
