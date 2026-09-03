@@ -1,7 +1,12 @@
 ﻿public class InstantFireMode : IFireMode
 {
-    public void Fire(WeaponController controller, WeaponRuntime runtime, EnemyRuntime target)
+    public void Update(WeaponController controller, WeaponRuntime runtime, float deltaTime)
     {
-        controller.Fire(target);
+        if (!controller.IsCooldownReady)
+        {
+            return;
+        }
+
+        controller.TryFireNow();
     }
 }

@@ -13,6 +13,8 @@ public class WeaponController : MonoBehaviour
     private bool _isInitialized;
     private AttackRuntimeManager _attackRuntimeManager;
 
+    public bool IsCooldownReady => _remainingCooldown <= 0f;
+
     public AttackRuntimeManager AttackRuntimeManager => _attackRuntimeManager;
 
     public void Initialize(WeaponRuntime runtime,AttackRuntimeManager attackRuntimeManager)
@@ -51,44 +53,41 @@ public class WeaponController : MonoBehaviour
         {
             return;
         }
-        UpdateCooldown();
+
+        float deltaTime = Time.deltaTime;
         
+        UpdateCooldown(deltaTime);
         
-        if (_remainingCooldown > 0f)
-        {
-            return;
-        }
-        
-        TryFire();
+        _fireMode.Update(this,_weaponRuntime,deltaTime);
         
     }
 
-    private void UpdateCooldown()
+    private void UpdateCooldown(float deltaTime)
     {
         if (_remainingCooldown <= 0f)
         {
             return;
         }
-        _remainingCooldown -= Time.deltaTime;
+        _remainingCooldown -= deltaTime;
     }
-
-    private void TryFire()
+    
+        
+    public bool TryFireNow()
     {
-        Vector2 position = new Vector2(transform.position.x, transform.position.y);
-        EnemyRuntime target = _targeting.FindTarget(position, EnemyManager.Instance.EnemyList);
+        EnemyRuntime target = FindTarget();
 
         if (target == null)
         {
-            return;
+            return false;
         }
         
-        _fireMode.Fire(this,_weaponRuntime,target);
-        
-        //_firePattern.Fire(this,_weaponRuntime,target);
+        Fire(target);
 
         _remainingCooldown = _weaponRuntime.CurrentFireInterval;
+        
+        return true;
     }
-
+    
     public void Fire(EnemyRuntime target)
     {
         Vector2 origin = transform.position;
@@ -122,4 +121,12 @@ public class WeaponController : MonoBehaviour
             movement,
             _behaviours);
     }
+    
+    public EnemyRuntime FindTarget()
+    {
+        Vector2 position = transform.position;
+
+        return _targeting.FindTarget(position, EnemyManager.Instance.EnemyList);
+    }
+
 }

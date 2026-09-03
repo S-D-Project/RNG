@@ -17,8 +17,10 @@ MonoBehaviour:
   _weaponObjectPrefab: {fileID: 8524059722733250942, guid: fbe91b43dfaf6ad43ac9eed85bed4d47, type: 3}
   _icon: {fileID: 21300000, guid: c6b94df2f7daa39418f418ba89171162, type: 3}
   _weaponType: 0
-  _weaponResourceData:
-    rid: 117774832446996559
+  _attackDefinitionData:
+    rid: 4889859197243490394
+  _fireMode:
+    rid: 4889859197243490392
   _firePattern:
     rid: 4889859197243490384
   _targeting:
@@ -26,26 +28,29 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 117774832446996559
-      type: {class: WeaponResourceData, ns: , asm: Assembly-CSharp}
-      data:
-        _attackPrefab: {fileID: 1911281179004884283, guid: 0eb769d08c0220247bd7959dfdb89cf4, type: 3}
-        _movement:
-          rid: 117774832446996562
-        _behaviours:
-        - rid: 117774902767124560
     - rid: 117774832446996561
       type: {class: NearestTargetingResourceData, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 117774832446996562
-      type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 117774902767124560
-      type: {class: PierceBehaviourResourceData, ns: , asm: Assembly-CSharp}
-      data:
-        PierceCount: 2
     - rid: 4889859197243490384
       type: {class: FanFirePatternResourceData, ns: , asm: Assembly-CSharp}
       data:
         AttackCount: 3
         SpreadAngle: 30
+    - rid: 4889859197243490392
+      type: {class: InstantFireModeResourceData, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4889859197243490394
+      type: {class: AttackDefinitionData, ns: , asm: Assembly-CSharp}
+      data:
+        _attackPrefab: {fileID: 1911281179004884283, guid: 0eb769d08c0220247bd7959dfdb89cf4, type: 3}
+        _movement:
+          rid: 4889859197243490395
+        _behaviours:
+        - rid: 4889859197243490396
+    - rid: 4889859197243490395
+      type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4889859197243490396
+      type: {class: PierceBehaviourResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        PierceCount: 2
