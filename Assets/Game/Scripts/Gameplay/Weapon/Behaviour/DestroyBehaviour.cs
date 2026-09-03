@@ -1,4 +1,4 @@
-﻿public class DestroyOnHitWeaponBehaviour : IWeaponBehaviour
+﻿public class DestroyBehaviour : IWeaponBehaviour
 {
     public void OnHit(AttackRuntime attack, EnemyRuntime target)
     {

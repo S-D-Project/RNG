@@ -1,10 +1,10 @@
 ﻿
 using UnityEngine;
 
-public class PierceWeaponBehaviour : IWeaponBehaviour
+public class PierceBehaviour : IWeaponBehaviour
 {
     private readonly int _pierceCount;
-    public PierceWeaponBehaviour(int count)
+    public PierceBehaviour(int count)
     {
         _pierceCount = count;
     }
