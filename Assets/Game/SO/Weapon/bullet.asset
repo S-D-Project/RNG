@@ -41,13 +41,10 @@ MonoBehaviour:
       data:
         _attackPrefab: {fileID: 5641985160623356082, guid: 65e4f1ebc3e2f234bb556d2ab5e35844, type: 3}
         _movement:
-          rid: 4889859240591097937
+          rid: 4889859240591097952
         _behaviours:
         - rid: 4889859240591097948
         - rid: 4889859240591097949
-    - rid: 4889859240591097937
-      type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
-      data: 
     - rid: 4889859240591097939
       type: {class: InstantFireModeResourceData, ns: , asm: Assembly-CSharp}
       data: 
@@ -57,3 +54,8 @@ MonoBehaviour:
     - rid: 4889859240591097949
       type: {class: DestroyBehaviourResourceData, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 4889859240591097952
+      type: {class: HomingMovementResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        TurnSpeed: 180
+        SearchInterval: 0.2

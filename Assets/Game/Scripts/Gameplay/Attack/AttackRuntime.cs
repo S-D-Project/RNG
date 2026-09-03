@@ -10,7 +10,7 @@ public class AttackRuntime
 
     public Transform Transform => Instance.transform;
 
-    public Vector2 Direction { get; }
+    public Vector2 Direction { get; private set;}
     public float Speed { get; }
 
     public float Damage { get; }
@@ -75,5 +75,10 @@ public class AttackRuntime
     public bool HasHit(EnemyRuntime target)
     {
         return _hitTargets.Contains(target);
+    }
+
+    public void SetDirection(Vector2 direction)
+    {
+        Direction = direction.normalized;
     }
 }
