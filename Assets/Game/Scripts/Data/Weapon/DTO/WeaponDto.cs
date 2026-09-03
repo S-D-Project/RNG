@@ -14,4 +14,5 @@ public class WeaponDto
     public float SpeedPerLevel;
     public float HitRadius;
     public float Lifetime;
+    public float CastTime;
 }

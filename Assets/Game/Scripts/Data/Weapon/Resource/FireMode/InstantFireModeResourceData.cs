@@ -1,4 +1,7 @@
-﻿public class InstantFireModeResourceData : FireModeResourceData
+﻿using System;
+
+[Serializable]
+public class InstantFireModeResourceData : FireModeResourceData
 {
     public override IFireMode Create()
     {

@@ -53,16 +53,33 @@ public class StageInitializer : MonoBehaviour
         PlayerRuntime player = _playerSpawner.SpawnPlayer(Vector2.zero,_selectedCharacterId);
 
         // TODO 임시로 Weapon 추가. 나중에 분리해야 함.
-        WeaponData weaponData = GameDataStore.Instance.GetWeaponData("fire_ball");
+        WeaponData weaponData = GameDataStore.Instance.GetWeaponData("bullet");
         WeaponRuntime weaponRuntime = new WeaponRuntime(weaponData);
         player.AddWeapon(weaponRuntime);
+
+        WeaponData weaponData2 = GameDataStore.Instance.GetWeaponData("fire_ball");
+        WeaponRuntime weaponRuntime2 = new WeaponRuntime(weaponData2);
+        player.AddWeapon(weaponRuntime2);
+
+        WeaponData weapondata3 = GameDataStore.Instance.GetWeaponData("plasma_bullet");
+        WeaponRuntime weaponRuntime3 = new WeaponRuntime(weapondata3);
+        player.AddWeapon(weaponRuntime3);
         
         // TODO 실제 무기 생성 
+        AddWeaponToPlayer(weaponData,weaponRuntime,player.gameObject);
+        AddWeaponToPlayer(weaponData2,weaponRuntime2,player.gameObject);
+        AddWeaponToPlayer(weapondata3,weaponRuntime3,player.gameObject);
+
+    }
+    
+    private void AddWeaponToPlayer(WeaponData weaponData,WeaponRuntime runtime ,GameObject player)
+    {
         GameObject weaponObjectPrefab = weaponData.WeaponObjectPrefab;
         GameObject weapon = Instantiate(weaponObjectPrefab, player.transform);
         WeaponController weaponController = weapon.GetComponent<WeaponController>();
-        weaponController.Initialize(weaponRuntime,_attackRuntimeManager);
-
+        weaponController.Initialize(runtime, _attackRuntimeManager);
+        PlayerWeaponControllerManager weaponControllerManager = player.GetComponent<PlayerWeaponControllerManager>();
+        weaponControllerManager.AddWeapon(runtime,weaponController);
 
     }
 

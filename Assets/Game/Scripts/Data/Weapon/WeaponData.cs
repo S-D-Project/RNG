@@ -18,6 +18,8 @@ public class WeaponData
 
     public float HitRadius { get; }
     public float Lifetime { get; }
+    
+    public float CastTime { get; }
 
     public string WeaponName { get; }
 
@@ -50,6 +52,7 @@ public class WeaponData
 
         HitRadius = weaponDto.HitRadius;
         Lifetime = weaponDto.Lifetime;
+        CastTime = weaponDto.CastTime;
 
         WeaponName = weaponResource.WeaponName;
         WeaponObjectPrefab = weaponResource.WeaponObjectPrefab;

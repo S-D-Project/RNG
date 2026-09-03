@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 4967794626748094770}
   - component: {fileID: 9063542542091741375}
   - component: {fileID: 8211787100174706051}
+  - component: {fileID: 8914862159453960359}
   m_Layer: 0
   m_Name: PlayerPrefab
   m_TagString: Untagged
@@ -142,6 +143,7 @@ MonoBehaviour:
   _moveAction: {fileID: -5783586221621433457, guid: 952cbb3e3b14b1d42a94e1648366fef7, type: 3}
   _playerMovement: {fileID: 9063542542091741375}
   _moveDirection: {x: 0, y: 0}
+  _weaponControllerManager: {fileID: 8914862159453960359}
 --- !u!114 &9063542542091741375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,3 +168,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 994a4b94b2c54cef9f30b56e3aa4eace, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerRuntime
+--- !u!114 &8914862159453960359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4640803066629944540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc8d5d0ef6dd494bb1999f69d8af1160, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponControllerManager

@@ -17,8 +17,10 @@ MonoBehaviour:
   _weaponObjectPrefab: {fileID: 8524059722733250942, guid: fbe91b43dfaf6ad43ac9eed85bed4d47, type: 3}
   _icon: {fileID: 21300000, guid: c9b393627c981774ba98c06fb7029ec8, type: 3}
   _weaponType: 0
-  _weaponResourceData:
-    rid: 157831110161858649
+  _attackDefinitionData:
+    rid: 4889859240591097936
+  _fireMode:
+    rid: 4889859240591097939
   _firePattern:
     rid: 4889859197243490383
   _targeting:
@@ -29,18 +31,25 @@ MonoBehaviour:
     - rid: 157831110161858641
       type: {class: NearestTargetingResourceData, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 157831110161858649
-      type: {class: WeaponResourceData, ns: , asm: Assembly-CSharp}
-      data:
-        _attackPrefab: {fileID: 5641985160623356082, guid: 65e4f1ebc3e2f234bb556d2ab5e35844, type: 3}
-        _movement:
-          rid: 157831110161858650
-        _behaviours: []
-    - rid: 157831110161858650
-      type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
-      data: 
     - rid: 4889859197243490383
       type: {class: FanFirePatternResourceData, ns: , asm: Assembly-CSharp}
       data:
         AttackCount: 1
         SpreadAngle: 0
+    - rid: 4889859240591097936
+      type: {class: AttackDefinitionData, ns: , asm: Assembly-CSharp}
+      data:
+        _attackPrefab: {fileID: 5641985160623356082, guid: 65e4f1ebc3e2f234bb556d2ab5e35844, type: 3}
+        _movement:
+          rid: 4889859240591097937
+        _behaviours:
+        - rid: 4889859240591097938
+    - rid: 4889859240591097937
+      type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4889859240591097938
+      type: {class: DestroyOnHitBehaviourResourceData, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4889859240591097939
+      type: {class: InstantFireModeResourceData, ns: , asm: Assembly-CSharp}
+      data: 

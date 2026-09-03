@@ -121,6 +121,7 @@ public class WeaponMaker : OdinEditorWindow
         return _fireModeType switch
         {
             FireModeType.Instant => new InstantFireModeResourceData(),
+            FireModeType.Casting => new CastingFireModeResourceData(),
             _ => throw new ArgumentOutOfRangeException()
         };
     }

@@ -20,7 +20,7 @@ MonoBehaviour:
   _attackDefinitionData:
     rid: 4889859197243490394
   _fireMode:
-    rid: 4889859197243490392
+    rid: 4889859240591097935
   _firePattern:
     rid: 4889859197243490384
   _targeting:
@@ -36,9 +36,6 @@ MonoBehaviour:
       data:
         AttackCount: 3
         SpreadAngle: 30
-    - rid: 4889859197243490392
-      type: {class: InstantFireModeResourceData, ns: , asm: Assembly-CSharp}
-      data: 
     - rid: 4889859197243490394
       type: {class: AttackDefinitionData, ns: , asm: Assembly-CSharp}
       data:
@@ -54,3 +51,6 @@ MonoBehaviour:
       type: {class: PierceBehaviourResourceData, ns: , asm: Assembly-CSharp}
       data:
         PierceCount: 2
+    - rid: 4889859240591097935
+      type: {class: CastingFireModeResourceData, ns: , asm: Assembly-CSharp}
+      data: 

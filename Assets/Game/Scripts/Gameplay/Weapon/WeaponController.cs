@@ -8,14 +8,24 @@ public class WeaponController : MonoBehaviour
     private IFirePattern _firePattern;
     private IFireMode _fireMode;
     private IReadOnlyList<IWeaponBehaviour> _behaviours;
-
-    private float _remainingCooldown;
+    
     private bool _isInitialized;
     private AttackRuntimeManager _attackRuntimeManager;
 
-    public bool IsCooldownReady => _remainingCooldown <= 0f;
+    public bool IsCooldownReady => _weaponRuntime.Cooldown <= 0f;
+    public bool IsOwnerMoving { get; private set; }
 
     public AttackRuntimeManager AttackRuntimeManager => _attackRuntimeManager;
+
+    public void SetOwnerMoving(bool isMoving)
+    {
+        IsOwnerMoving = isMoving;
+    }
+
+    public bool HasTarget()
+    {
+        return FindTarget() != null;
+    }
 
     public void Initialize(WeaponRuntime runtime,AttackRuntimeManager attackRuntimeManager)
     {
@@ -29,8 +39,7 @@ public class WeaponController : MonoBehaviour
         _firePattern = runtime.BaseData.FirePattern.Create();
         _fireMode = runtime.BaseData.FireMode.Create();
         _attackRuntimeManager = attackRuntimeManager;
-
-        _remainingCooldown = 0f;
+        
         _isInitialized = true;
         _behaviours = CreateBehaviours(runtime.BaseData.AttackDefinitionData);
     }
@@ -56,24 +65,17 @@ public class WeaponController : MonoBehaviour
 
         float deltaTime = Time.deltaTime;
         
-        UpdateCooldown(deltaTime);
+        _weaponRuntime.UpdateCooldown(deltaTime);
         
         _fireMode.Update(this,_weaponRuntime,deltaTime);
-        
     }
-
-    private void UpdateCooldown(float deltaTime)
-    {
-        if (_remainingCooldown <= 0f)
-        {
-            return;
-        }
-        _remainingCooldown -= deltaTime;
-    }
-    
-        
     public bool TryFireNow()
     {
+        if (!IsCooldownReady)
+        {
+            return false;
+        }
+        
         EnemyRuntime target = FindTarget();
 
         if (target == null)
@@ -83,7 +85,7 @@ public class WeaponController : MonoBehaviour
         
         Fire(target);
 
-        _remainingCooldown = _weaponRuntime.CurrentFireInterval;
+        _weaponRuntime.ResetCooldown();
         
         return true;
     }

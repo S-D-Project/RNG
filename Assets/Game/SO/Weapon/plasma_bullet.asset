@@ -17,35 +17,35 @@ MonoBehaviour:
   _weaponObjectPrefab: {fileID: 8524059722733250942, guid: fbe91b43dfaf6ad43ac9eed85bed4d47, type: 3}
   _icon: {fileID: 21300000, guid: d890453caa4b6034db2d35df42c94fb5, type: 3}
   _weaponType: 0
-  _weaponResourceData:
-    rid: 157831110161858644
+  _attackDefinitionData:
+    rid: 4889859240591097940
+  _fireMode:
+    rid: 4889859240591097943
   _firePattern:
-    rid: 4889859197243490385
+    rid: 4889859240591097944
   _targeting:
     rid: 157831110161858646
   references:
     version: 2
     RefIds:
-    - rid: 157831110161858644
-      type: {class: WeaponResourceData, ns: , asm: Assembly-CSharp}
-      data:
-        _attackPrefab: {fileID: 5641985160623356082, guid: 65e4f1ebc3e2f234bb556d2ab5e35844, type: 3}
-        _movement:
-          rid: 157831110161858647
-        _behaviours:
-        - rid: 157831110161858648
     - rid: 157831110161858646
       type: {class: NearestTargetingResourceData, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 157831110161858647
+    - rid: 4889859240591097940
+      type: {class: AttackDefinitionData, ns: , asm: Assembly-CSharp}
+      data:
+        _attackPrefab: {fileID: 5397166591946226788, guid: 46c1dbf61bbd7bb44be65b1319841478, type: 3}
+        _movement:
+          rid: 4889859240591097941
+        _behaviours: []
+    - rid: 4889859240591097941
       type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 157831110161858648
-      type: {class: PierceBehaviourResourceData, ns: , asm: Assembly-CSharp}
-      data:
-        PierceCount: 10
-    - rid: 4889859197243490385
+    - rid: 4889859240591097943
+      type: {class: CastingFireModeResourceData, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4889859240591097944
       type: {class: FanFirePatternResourceData, ns: , asm: Assembly-CSharp}
       data:
-        AttackCount: 1
-        SpreadAngle: 0
+        AttackCount: 6
+        SpreadAngle: 30
