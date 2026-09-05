@@ -9,4 +9,9 @@ public class StraightMovement : IMovement
         
         attack.Transform.position += (Vector3)moveAmount;
     }
+
+    public void Initialize(AttackRuntime attack)
+    {
+        
+    }
 }

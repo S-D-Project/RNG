@@ -8,7 +8,6 @@ public class HomingMovement : IMovement
     private readonly float _searchInterval;
 
     private float _remainingSearchInterval;
-    private EnemyRuntime _currentTarget;
 
     public HomingMovement(float turnSpeed,float  searchInterval)
     {
@@ -21,12 +20,17 @@ public class HomingMovement : IMovement
     {
         UpdateTarget(attack, deltaTime);
 
-        if (_currentTarget != null)
+        if (attack.Target != null)
         {
-            UpdateDirection(attack, _currentTarget, deltaTime);
+            UpdateDirection(attack, attack.Target, deltaTime);
         }
         
         attack.Transform.position += (Vector3)attack.Direction * (attack.Speed * deltaTime);
+    }
+
+    public void Initialize(AttackRuntime attack)
+    {
+        
     }
 
     private void UpdateTarget(AttackRuntime attack, float deltaTime)
@@ -39,7 +43,7 @@ public class HomingMovement : IMovement
         }
 
         _remainingSearchInterval = _searchInterval;
-        _currentTarget = FindNearestTarget(attack);
+        attack.SetTarget(FindNearestTarget(attack));
         
     }
 

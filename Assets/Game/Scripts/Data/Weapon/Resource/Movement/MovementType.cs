@@ -1,5 +1,6 @@
 ﻿public enum MovementType
 {
     Straight,
-    Homing
+    Homing,
+    Orbit
 }

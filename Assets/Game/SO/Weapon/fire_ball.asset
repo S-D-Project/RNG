@@ -40,15 +40,14 @@ MonoBehaviour:
       type: {class: AttackDefinitionData, ns: , asm: Assembly-CSharp}
       data:
         _attackPrefab: {fileID: 1911281179004884283, guid: 0eb769d08c0220247bd7959dfdb89cf4, type: 3}
+        _spawnPosition:
+          rid: 4889859285106819160
         _movement:
-          rid: 4889859197243490395
+          rid: 4889859285106819164
         _behaviours:
         - rid: 4889859197243490396
         - rid: 4889859240591097950
         - rid: 4889859240591097951
-    - rid: 4889859197243490395
-      type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
-      data: 
     - rid: 4889859197243490396
       type: {class: PierceBehaviourResourceData, ns: , asm: Assembly-CSharp}
       data:
@@ -62,5 +61,14 @@ MonoBehaviour:
     - rid: 4889859240591097951
       type: {class: ExplodeBehaviourResourceData, ns: , asm: Assembly-CSharp}
       data:
-        ExplosionRadius: 1
+        ExplosionRadiusMultiplier: 0
         DamageMultiplier: 1
+    - rid: 4889859285106819160
+      type: {class: OwnerSpawnPositionResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        Offset: {x: 0, y: 0}
+    - rid: 4889859285106819164
+      type: {class: HomingMovementResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        TurnSpeed: 0
+        SearchInterval: 0

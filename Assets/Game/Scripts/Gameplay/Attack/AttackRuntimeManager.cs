@@ -19,7 +19,9 @@ public class AttackRuntimeManager : MonoBehaviour
 
     public AttackRuntime Spawn(
         GameObject prefab,
-        Vector2 position,
+        Vector2 spawnPosition,
+        Transform owner,
+        EnemyRuntime target,
         Vector2 direction,
         float speed,
         float damage,
@@ -28,22 +30,19 @@ public class AttackRuntimeManager : MonoBehaviour
         IMovement movement,
         IReadOnlyList<IWeaponBehaviour> behaviours)
     {
-        if (prefab == null)
-        {
-            Debug.LogError("Attack prefab is null.");
-            return null;
-        }
-
+        
         ObjectPool<GameObject> pool = GetOrCreatePool(prefab);
 
         GameObject instance = pool.Get();
 
-        instance.transform.position = position;
+        instance.transform.position = spawnPosition;
         instance.transform.rotation = Quaternion.identity;
 
         AttackRuntime attack = new AttackRuntime(
             prefab,
             instance,
+            owner,
+            target,
             direction,
             speed,
             damage,

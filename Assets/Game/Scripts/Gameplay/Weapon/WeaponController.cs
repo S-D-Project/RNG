@@ -4,6 +4,7 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour
 {
     private WeaponRuntime _weaponRuntime;
+    private ISpawnPosition _spawnPosition;
     private ITargeting _targeting;
     private IFirePattern _firePattern;
     private IFireMode _fireMode;
@@ -35,6 +36,7 @@ public class WeaponController : MonoBehaviour
         }
         
         _weaponRuntime = runtime;
+        _spawnPosition = runtime.BaseData.AttackDefinitionData.SpawnPosition.Create();
         _targeting = runtime.BaseData.Targeting.Create();
         _firePattern = runtime.BaseData.FirePattern.Create();
         _fireMode = runtime.BaseData.FireMode.Create();
@@ -92,29 +94,38 @@ public class WeaponController : MonoBehaviour
     
     public void Fire(EnemyRuntime target)
     {
-        Vector2 origin = transform.position;
+        Vector2 ownerPosition = transform.position;
         Vector2 targetPosition = target.transform.position;
 
-        Vector2 baseDirection = (targetPosition - origin).normalized;
+        Vector2 aimDirection = (targetPosition - ownerPosition).normalized;
+
+        Vector2 spawnPosition = _spawnPosition.GetPosition(ownerPosition, targetPosition, aimDirection);
+
+        Vector2 toTarget = targetPosition - spawnPosition;
+
+        Vector2 baseDirection = toTarget.sqrMagnitude > Mathf.Epsilon ? toTarget.normalized : aimDirection;
 
         IReadOnlyList<Vector2> directions = _firePattern.GetDirections(baseDirection);
 
         foreach (Vector2 direction in directions)
         {
-            FireAttack(direction);
+            FireAttack(spawnPosition,direction,target);
         }
     }
 
-    public void FireAttack(Vector2 direction)
+    public void FireAttack(Vector2 spawnPosition,Vector2 direction,EnemyRuntime target)
     {
         AttackDefinitionData resource =
             _weaponRuntime.BaseData.AttackDefinitionData;
+
         
         IMovement movement = resource.Movement.Create();
 
         _attackRuntimeManager.Spawn(
             resource.AttackPrefab,
-            transform.position,
+            spawnPosition,
+            transform,
+            target,
             direction,
             _weaponRuntime.CurrentSpeed,
             _weaponRuntime.CurrentDamage,

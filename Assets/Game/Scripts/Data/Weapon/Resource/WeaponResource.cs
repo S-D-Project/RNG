@@ -21,21 +21,19 @@ public class WeaponResource : ScriptableObject
     [SerializeField]
     private WeaponType _weaponType;
     
-    [Title("Type Resource")]
+    [Title("Weapon Data Settings")]
     [SerializeReference]
     private AttackDefinitionData _attackDefinitionData;
-
-
-    [Title("Weapon Behaviour")]
+    
     [SerializeReference]
     private FireModeResourceData _fireMode;
+
     [SerializeReference]
     private FirePatternResourceData _firePattern;
+
     [SerializeReference]
     private TargetingResourceData _targeting;
-
-
-
+    
     public string Id => _id;
     public string WeaponName => _weaponName;
     public GameObject WeaponObjectPrefab => _weaponObjectPrefab;

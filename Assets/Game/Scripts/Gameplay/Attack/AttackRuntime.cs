@@ -9,6 +9,8 @@ public class AttackRuntime
     public GameObject Instance { get; }
 
     public Transform Transform => Instance.transform;
+    public Transform Owner { get; }
+    public EnemyRuntime Target { get; private set; }
 
     public Vector2 Direction { get; private set;}
     public float Speed { get; }
@@ -28,6 +30,8 @@ public class AttackRuntime
     public AttackRuntime(
         GameObject prefab,
         GameObject instance,
+        Transform owner,
+        EnemyRuntime target,
         Vector2 direction,
         float speed,
         float damage,
@@ -38,6 +42,8 @@ public class AttackRuntime
     {
         Prefab = prefab;
         Instance = instance;
+        Owner = owner;
+        Target = target;
 
         Direction = direction.normalized;
         Speed = speed;
@@ -52,11 +58,18 @@ public class AttackRuntime
         HitCount = 0;
         _hitTargets = new HashSet<EnemyRuntime>();
         IsDead = false;
+        
+        Movement.Initialize(this);
     }
 
     public void MarkDead()
     {
         IsDead = true;
+    }
+
+    public void SetTarget(EnemyRuntime target)
+    {
+        Target = target;
     }
 
     public bool TryHit(EnemyRuntime target)

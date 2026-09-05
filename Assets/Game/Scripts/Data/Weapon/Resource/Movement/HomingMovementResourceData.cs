@@ -5,6 +5,7 @@ public class HomingMovementResourceData : MovementResourceData
 {
     public float TurnSpeed;
     public float SearchInterval;
+
     
     public override IMovement Create()
     {

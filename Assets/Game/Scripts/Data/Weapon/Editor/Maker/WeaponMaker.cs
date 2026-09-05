@@ -152,7 +152,17 @@ public class WeaponMaker : OdinEditorWindow
         return _weapon.MovementType switch
         {
             MovementType.Straight => new StraightMovementResourceData(),
-            MovementType.Homing => new HomingMovementResourceData(),
+            MovementType.Homing => new HomingMovementResourceData
+            {
+                TurnSpeed = _weapon.HomingTurnSpeed,
+                SearchInterval = _weapon.HomingSearchInterval
+            },
+            MovementType.Orbit => new OrbitMovementResourceData
+            {
+                CenterType = _weapon.OrbitCenterType,
+                CenterOffset = _weapon.OrbitCenterOffset,
+                Radius = _weapon.OrbitRadius
+            },
             _ => throw new ArgumentOutOfRangeException()
         };
     }
@@ -163,26 +173,49 @@ public class WeaponMaker : OdinEditorWindow
 
         resource.Initialize(
             _weapon.AttackPrefab,
+            CreateSpawnPosition(),
             CreateAttackMovement(),
             CreateAttackBehaviours());
 
         return resource;
     }
     
-    private BehaviourResourceData CreateAttackBehaviour(BehaviourType behaviourType)
+    private BehaviourResourceData CreateAttackBehaviour(BehaviourMakerData behaviour)
     {
-        return behaviourType switch
+        return behaviour.Type switch
         {
-            BehaviourType.Pierce => new PierceBehaviourResourceData(),
-            BehaviourType.Explode => new ExplodeBehaviourResourceData(),
+            BehaviourType.Pierce => new PierceBehaviourResourceData
+            {
+                PierceCount = behaviour.PierceCount
+            },
+            BehaviourType.Explode => new ExplodeBehaviourResourceData
+            {
+                ExplosionRadiusMultiplier = behaviour.ExplosionRadiusMultiplier,
+                DamageMultiplier = behaviour.ExplosionDamageMultiplier
+            },
             BehaviourType.Destroy => new DestroyBehaviourResourceData(),
             BehaviourType.Damage => new DamageBehaviourResourceData(),
-            _ => throw new ArgumentOutOfRangeException(nameof(behaviourType), behaviourType, null)
+            _ => throw new ArgumentOutOfRangeException(nameof(behaviour.Type),behaviour.Type,null)
         };
     }
 
     private List<BehaviourResourceData> CreateAttackBehaviours()
     {
         return _weapon.Behaviours.Select(CreateAttackBehaviour).ToList();
+    }
+
+    private SpawnPositionResourceData CreateSpawnPosition()
+    {
+        SpawnPositionResourceData resource = _weapon.SpawnPositionType switch
+        {
+            SpawnPositionType.Owner => new OwnerSpawnPositionResourceData(),
+            SpawnPositionType.Target => new TargetSpawnPositionResourceData(),
+            SpawnPositionType.Between => new BetweenSpawnPositionResourceData(),
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        resource.Offset = _weapon.SpawnOffset;
+
+        return resource;
     }
 }
