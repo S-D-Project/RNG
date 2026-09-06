@@ -33,9 +33,9 @@ MonoBehaviour:
       data:
         _attackPrefab: {fileID: 5641985160623356082, guid: 65e4f1ebc3e2f234bb556d2ab5e35844, type: 3}
         _spawnPosition:
-          rid: 4889859285106819161
+          rid: 4889859285106819170
         _movement:
-          rid: 4889859285106819167
+          rid: 4889859285106819169
         _behaviours:
         - rid: 4889859285106819156
         - rid: 4889859285106819157
@@ -45,7 +45,7 @@ MonoBehaviour:
     - rid: 4889859285106819153
       type: {class: FanFirePatternResourceData, ns: , asm: Assembly-CSharp}
       data:
-        AttackCount: 0
+        AttackCount: 3
         SpreadAngle: 30
     - rid: 4889859285106819154
       type: {class: NearestTargetingResourceData, ns: , asm: Assembly-CSharp}
@@ -56,11 +56,13 @@ MonoBehaviour:
     - rid: 4889859285106819157
       type: {class: DestroyBehaviourResourceData, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 4889859285106819161
-      type: {class: BetweenSpawnPositionResourceData, ns: , asm: Assembly-CSharp}
+    - rid: 4889859285106819169
+      type: {class: OrbitMovementResourceData, ns: , asm: Assembly-CSharp}
       data:
-        Offset: {x: 5, y: 0}
-        Ratio: 0.139
-    - rid: 4889859285106819167
-      type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
-      data: 
+        CenterType: 1
+        CenterOffset: {x: 0, y: 0}
+        Radius: 1
+    - rid: 4889859285106819170
+      type: {class: OwnerSpawnPositionResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        Offset: {x: 0, y: 0}

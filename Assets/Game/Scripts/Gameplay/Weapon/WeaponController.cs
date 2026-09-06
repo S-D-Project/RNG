@@ -119,7 +119,7 @@ public class WeaponController : MonoBehaviour
             _weaponRuntime.BaseData.AttackDefinitionData;
 
         
-        IMovement movement = resource.Movement.Create();
+        IAttackMovement attackMovement = resource.Movement.Create();
 
         _attackRuntimeManager.Spawn(
             resource.AttackPrefab,
@@ -131,7 +131,7 @@ public class WeaponController : MonoBehaviour
             _weaponRuntime.CurrentDamage,
             _weaponRuntime.BaseData.HitRadius,
             _weaponRuntime.BaseData.Lifetime,
-            movement,
+            attackMovement,
             _behaviours);
     }
     

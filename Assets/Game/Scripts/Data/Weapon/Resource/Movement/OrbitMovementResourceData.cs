@@ -8,9 +8,9 @@ public class OrbitMovementResourceData : MovementResourceData
     public Vector2 CenterOffset;
     public float Radius = 1f;
     
-    public override IMovement Create()
+    public override IAttackMovement Create()
     {
-        return new OrbitMovement(CenterType,CenterOffset,Radius);
+        return new OrbitAttackMovement(CenterType,CenterOffset,Radius);
     }
 }
 

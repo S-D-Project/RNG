@@ -27,7 +27,7 @@ public class AttackRuntimeManager : MonoBehaviour
         float damage,
         float hitRadius,
         float lifetime,
-        IMovement movement,
+        IAttackMovement attackMovement,
         IReadOnlyList<IWeaponBehaviour> behaviours)
     {
         
@@ -48,7 +48,7 @@ public class AttackRuntimeManager : MonoBehaviour
             damage,
             hitRadius,
             lifetime,
-            movement,
+            attackMovement,
             behaviours);
 
         _attacks.Add(attack);
@@ -81,7 +81,7 @@ public class AttackRuntimeManager : MonoBehaviour
         AttackRuntime attack,
         float deltaTime)
     {
-        attack.Movement.Move(
+        attack.AttackMovement.Move(
             attack,
             deltaTime);
     }

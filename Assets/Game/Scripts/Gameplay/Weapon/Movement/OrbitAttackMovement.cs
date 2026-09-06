@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class OrbitMovement : IMovement
+public class OrbitAttackMovement : IAttackMovement
 {
     private readonly OrbitCenterType _centerType;
     private readonly Vector2 _centerOffset;
@@ -11,7 +11,7 @@ public class OrbitMovement : IMovement
     
     private float _angle;
 
-    public OrbitMovement(OrbitCenterType orbitCenterType, Vector2 offset, float radius)
+    public OrbitAttackMovement(OrbitCenterType orbitCenterType, Vector2 offset, float radius)
     {
         _centerType = orbitCenterType;
         _centerOffset = offset;

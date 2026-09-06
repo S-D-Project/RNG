@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HomingMovement : IMovement
+public class HomingAttackMovement : IAttackMovement
 {
     private readonly float _turnSpeed;
     private readonly float _searchInterval;
 
     private float _remainingSearchInterval;
 
-    public HomingMovement(float turnSpeed,float  searchInterval)
+    public HomingAttackMovement(float turnSpeed,float  searchInterval)
     {
         _turnSpeed = turnSpeed;
         _searchInterval = searchInterval;

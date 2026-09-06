@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-public class StraightMovement : IMovement
+public class StraightAttackMovement : IAttackMovement
 {
     public void Move(AttackRuntime attack, float deltaTime)
     {

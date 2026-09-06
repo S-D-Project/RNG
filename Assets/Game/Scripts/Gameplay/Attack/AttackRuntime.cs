@@ -22,7 +22,7 @@ public class AttackRuntime
     
     public int HitCount { get; private set; }
 
-    public IMovement Movement { get; }
+    public IAttackMovement AttackMovement { get; }
     public IReadOnlyList<IWeaponBehaviour> Behaviours { get; }
 
     public bool IsDead { get; private set; }
@@ -37,7 +37,7 @@ public class AttackRuntime
         float damage,
         float hitRadius,
         float lifetime,
-        IMovement movement,
+        IAttackMovement attackMovement,
         IReadOnlyList<IWeaponBehaviour> behaviours)
     {
         Prefab = prefab;
@@ -52,14 +52,14 @@ public class AttackRuntime
         HitRadius = hitRadius;
 
         RemainingLifetime = lifetime;
-        Movement = movement;
+        AttackMovement = attackMovement;
         Behaviours = behaviours;
 
         HitCount = 0;
         _hitTargets = new HashSet<EnemyRuntime>();
         IsDead = false;
         
-        Movement.Initialize(this);
+        AttackMovement.Initialize(this);
     }
 
     public void MarkDead()

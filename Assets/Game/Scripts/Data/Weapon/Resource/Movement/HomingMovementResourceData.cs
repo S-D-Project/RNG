@@ -7,8 +7,8 @@ public class HomingMovementResourceData : MovementResourceData
     public float SearchInterval;
 
     
-    public override IMovement Create()
+    public override IAttackMovement Create()
     {
-        return new HomingMovement(TurnSpeed, SearchInterval);
+        return new HomingAttackMovement(TurnSpeed, SearchInterval);
     }
 }
