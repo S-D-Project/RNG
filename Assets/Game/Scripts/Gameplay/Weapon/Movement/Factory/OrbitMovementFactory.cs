@@ -3,14 +3,14 @@
 public class OrbitMovementFactory
     : IAttackMovementFactory
 {
-    private readonly OrbitCenterType _centerType;
+    private readonly AngularCenterType _centerType;
     private readonly Vector2 _centerOffset;
     private readonly float _radius;
 
     private readonly IAngularDistribution _distribution;
 
     public OrbitMovementFactory(
-        OrbitCenterType centerType,
+        AngularCenterType centerType,
         Vector2 centerOffset,
         float radius,
         IAngularDistribution distribution)

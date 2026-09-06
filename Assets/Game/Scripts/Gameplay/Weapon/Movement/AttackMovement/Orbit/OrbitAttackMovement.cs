@@ -3,7 +3,7 @@
 public class OrbitAttackMovement
     : IAttackMovement
 {
-    private readonly OrbitCenterType _centerType;
+    private readonly AngularCenterType _centerType;
     private readonly Vector2 _centerOffset;
     private readonly float _radius;
     private readonly IAngularPhase _phase;
@@ -14,7 +14,7 @@ public class OrbitAttackMovement
     private Vector2 _lastTargetPosition;
 
     public OrbitAttackMovement(
-        OrbitCenterType centerType,
+        AngularCenterType centerType,
         Vector2 centerOffset,
         float radius,
         IAngularPhase phase)
@@ -34,7 +34,7 @@ public class OrbitAttackMovement
         _spawnCenter =
             attack.Transform.position;
 
-        if (_centerType == OrbitCenterType.Target)
+        if (_centerType == AngularCenterType.Target)
         {
             _lastTargetPosition =
                 attack.Target.transform.position;
@@ -96,13 +96,13 @@ public class OrbitAttackMovement
         Vector2 baseCenter =
             _centerType switch
             {
-                OrbitCenterType.SpawnPosition =>
+                AngularCenterType.SpawnPosition =>
                     _spawnCenter,
 
-                OrbitCenterType.Owner =>
+                AngularCenterType.Owner =>
                     attack.Owner.position,
 
-                OrbitCenterType.Target =>
+                AngularCenterType.Target =>
                     GetTargetCenter(attack),
 
                 _ => _spawnCenter

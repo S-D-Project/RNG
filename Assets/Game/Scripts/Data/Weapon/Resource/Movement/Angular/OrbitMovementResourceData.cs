@@ -4,11 +4,11 @@ using UnityEngine;
 [Serializable]
 public class OrbitMovementResourceData : MovementResourceData
 {
-    public OrbitCenterType CenterType;
+    public AngularCenterType CenterType;
     public Vector2 CenterOffset;
     public float Radius = 1f;
 
-    public OrbitDistributionData Distribution = new();
+    public AngularDistributionData Distribution = new();
     
     public override IAttackMovementFactory CreateFactory()
     {
@@ -16,7 +16,7 @@ public class OrbitMovementResourceData : MovementResourceData
     }
 }
 
-public enum OrbitCenterType
+public enum AngularCenterType
 {
     SpawnPosition,
     Owner,

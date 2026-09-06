@@ -2,7 +2,7 @@
 using Sirenix.OdinInspector;
 
 [Serializable]
-public class OrbitDistributionData
+public class AngularDistributionData
 {
     public AngularDistributionType Type;
 

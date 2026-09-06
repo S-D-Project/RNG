@@ -2,5 +2,8 @@
 {
     Straight,
     Homing,
-    Orbit
+    Orbit,
+    ExpandingOrbit,
+    Spiral,
+    Wave
 }

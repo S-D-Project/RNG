@@ -126,7 +126,7 @@ public class WeaponMaker : OdinEditorWindow
                 return false;
             }
 
-            if (_weapon.AngularDistributionType ==
+            if (_weapon.OrbitDistributionType ==
                 AngularDistributionType.Sequential &&
                 _weapon.OrbitMaxCount <= 0)
             {
@@ -188,11 +188,28 @@ public class WeaponMaker : OdinEditorWindow
                 CenterOffset = _weapon.OrbitCenterOffset,
                 Radius = _weapon.OrbitRadius,
 
-                Distribution = new OrbitDistributionData
+                Distribution = new AngularDistributionData
                 {
-                    Type = _weapon.AngularDistributionType,
+                    Type = _weapon.OrbitDistributionType,
                     MaxCount = _weapon.OrbitMaxCount
                 }
+            },
+            MovementType.ExpandingOrbit => new ExpandingOrbitMovementResourceData
+            {
+                CenterType =  _weapon.ExpandingOrbitCenterType,
+                CenterOffset = _weapon.ExpandingOrbitCenterOffset,
+                InitialRadius = _weapon.ExpandingOrbitInitialRadius,
+                RadialSpeed = _weapon.ExpandingOrbitRadialSpeed
+            },
+            MovementType.Spiral => new SpiralMovementResourceData
+            {
+                Radius = _weapon.SpiralRadius,
+                RotationSpeed = _weapon.SpiralRotationSpeed
+            },
+            MovementType.Wave => new WaveMovementResourceData
+            {
+                Amplitude = _weapon.WaveAmplitude,
+                Frequency = _weapon.WaveFrequency
             },
             _ => throw new ArgumentOutOfRangeException()
         };
