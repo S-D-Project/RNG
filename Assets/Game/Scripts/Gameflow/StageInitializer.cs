@@ -57,13 +57,13 @@ public class StageInitializer : MonoBehaviour
         WeaponRuntime weaponRuntime = new WeaponRuntime(weaponData);
         player.AddWeapon(weaponRuntime);
 
-        WeaponData weaponData2 = GameDataStore.Instance.GetWeaponData("fire_ball");
-        WeaponRuntime weaponRuntime2 = new WeaponRuntime(weaponData2);
-        player.AddWeapon(weaponRuntime2);
-
-        WeaponData weapondata3 = GameDataStore.Instance.GetWeaponData("plasma_bullet");
-        WeaponRuntime weaponRuntime3 = new WeaponRuntime(weapondata3);
-        player.AddWeapon(weaponRuntime3);
+        // WeaponData weaponData2 = GameDataStore.Instance.GetWeaponData("fire_ball");
+        // WeaponRuntime weaponRuntime2 = new WeaponRuntime(weaponData2);
+        // player.AddWeapon(weaponRuntime2);
+        //
+        // WeaponData weapondata3 = GameDataStore.Instance.GetWeaponData("plasma_bullet");
+        // WeaponRuntime weaponRuntime3 = new WeaponRuntime(weapondata3);
+        // player.AddWeapon(weaponRuntime3);
         
         // TODO 실제 무기 생성 
         AddWeaponToPlayer(weaponData,weaponRuntime,player.gameObject);

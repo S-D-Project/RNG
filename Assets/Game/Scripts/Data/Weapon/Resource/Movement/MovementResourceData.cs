@@ -3,5 +3,5 @@
 [Serializable]
 public abstract class MovementResourceData
 {
-    public abstract IAttackMovement Create();
+    public abstract IAttackMovementFactory CreateFactory();
 }

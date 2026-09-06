@@ -10,54 +10,59 @@ using UnityEngine.Serialization;
 public class WeaponMaker : OdinEditorWindow
 {
     // Common
-    [TitleGroup("Common")]
+    [Title("Common")]
     [LabelText("Id")]
     [SerializeField]
     [Required]
     private string _weaponId;
-
-    [TitleGroup("Common")]
+    
     [LabelText("Name")]
     [SerializeField]
     [Required]
     private string _weaponName;
     
-    [TitleGroup("Common")]
     [PreviewField(70)]
     [LabelText("Weapon Object Prefab")]
     [SerializeField]
     private GameObject _weaponObjectPrefab;
-
-    [TitleGroup("Common")]
+    
     [PreviewField(70)]
     [LabelText("Icon")]
     [SerializeField]
     private Sprite _icon;
-
-    [TitleGroup("Common")]
+    
     [LabelText("Weapon Type")]
     [EnumToggleButtons]
     [SerializeField]
     private WeaponType _weaponType;
 
     // WeaponBehaviour
-    [TitleGroup("Weapon Firing")]
+    [Title("Weapon Firing")]
     [LabelText("Fire Mode")]
     [SerializeField]
     private FireModeType _fireModeType;
-
-    [TitleGroup("Weapon Firing")]
-    [LabelText("Fire Pattern")]
+    
+    [BoxGroup("Fire Pattern")]
     [SerializeField]
     private FirePatternType _firePatternType;
     
-
-    [TitleGroup("Weapon Firing")]
+    [BoxGroup("Fire Pattern")]
+    [ShowIf("_firePatternType",FirePatternType.Fan)]
+    [LabelText("Attack Count")]
+    [SerializeField]
+    private int _attackCount;
+    
+    [BoxGroup("Fire Pattern")]
+    [ShowIf("_firePatternType",FirePatternType.Fan)]
+    [LabelText("Spread Angle")]
+    [SerializeField]
+    private float _spreadAngle;
+    
     [LabelText("Targeting")]
     [SerializeField]
     private TargetingType _targetingType;
-    
-    [TitleGroup("Attack Settings")]
+
+    [Title("Attack Settings")]
     [HideLabel]
     [SerializeField]
     private WeaponMakerData _weapon = new();
@@ -77,6 +82,7 @@ public class WeaponMaker : OdinEditorWindow
             Debug.LogError("WeaponMaker validation failed");
             return;
         }
+
         var weaponResource = CreateInstance<WeaponResource>();
 
         weaponResource.Initialize(
@@ -102,7 +108,7 @@ public class WeaponMaker : OdinEditorWindow
 
     private bool Validate()
     {
-        if (string.IsNullOrWhiteSpace(_weaponId) || 
+        if (string.IsNullOrWhiteSpace(_weaponId) ||
             string.IsNullOrWhiteSpace(_weaponName))
         {
             return false;
@@ -111,6 +117,21 @@ public class WeaponMaker : OdinEditorWindow
         if (_weaponType == WeaponType.Projectile && _weapon.AttackPrefab == null)
         {
             return false;
+        }
+        
+        if (_weapon.MovementType == MovementType.Orbit)
+        {
+            if (_weapon.OrbitRadius <= 0f)
+            {
+                return false;
+            }
+
+            if (_weapon.AngularDistributionType ==
+                AngularDistributionType.Sequential &&
+                _weapon.OrbitMaxCount <= 0)
+            {
+                return false;
+            }
         }
 
         return true;
@@ -130,7 +151,11 @@ public class WeaponMaker : OdinEditorWindow
     {
         return _firePatternType switch
         {
-            FirePatternType.Fan => new FanFirePatternResourceData(),
+            FirePatternType.Fan => new FanFirePatternResourceData
+            {
+                AttackCount =  _attackCount,
+                SpreadAngle =  _spreadAngle
+            },
             _ => throw new ArgumentOutOfRangeException()
         };
     }
@@ -161,7 +186,13 @@ public class WeaponMaker : OdinEditorWindow
             {
                 CenterType = _weapon.OrbitCenterType,
                 CenterOffset = _weapon.OrbitCenterOffset,
-                Radius = _weapon.OrbitRadius
+                Radius = _weapon.OrbitRadius,
+
+                Distribution = new OrbitDistributionData
+                {
+                    Type = _weapon.AngularDistributionType,
+                    MaxCount = _weapon.OrbitMaxCount
+                }
             },
             _ => throw new ArgumentOutOfRangeException()
         };
@@ -179,7 +210,7 @@ public class WeaponMaker : OdinEditorWindow
 
         return resource;
     }
-    
+
     private BehaviourResourceData CreateAttackBehaviour(BehaviourMakerData behaviour)
     {
         return behaviour.Type switch
@@ -195,7 +226,7 @@ public class WeaponMaker : OdinEditorWindow
             },
             BehaviourType.Destroy => new DestroyBehaviourResourceData(),
             BehaviourType.Damage => new DamageBehaviourResourceData(),
-            _ => throw new ArgumentOutOfRangeException(nameof(behaviour.Type),behaviour.Type,null)
+            _ => throw new ArgumentOutOfRangeException(nameof(behaviour.Type), behaviour.Type, null)
         };
     }
 

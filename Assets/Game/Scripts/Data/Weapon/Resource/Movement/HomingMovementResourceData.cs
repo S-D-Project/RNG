@@ -5,10 +5,10 @@ public class HomingMovementResourceData : MovementResourceData
 {
     public float TurnSpeed;
     public float SearchInterval;
-
     
-    public override IAttackMovement Create()
+
+    public override IAttackMovementFactory CreateFactory()
     {
-        return new HomingAttackMovement(TurnSpeed, SearchInterval);
+        return new HomingMovementFactory(TurnSpeed, SearchInterval);
     }
 }

@@ -7,9 +7,6 @@ using UnityEngine.Serialization;
 [System.Serializable]
 public class WeaponMakerData
 {
-    private bool IsHomingMovement => MovementType == MovementType.Homing;
-    private bool IsOrbitMovement => MovementType == MovementType.Orbit;
-    
     [LabelText("Weapon Attack Prefab")]
     public GameObject AttackPrefab;
     
@@ -28,26 +25,36 @@ public class WeaponMakerData
     public MovementType MovementType;
     
     // Homing
-    [ShowIf(nameof(IsHomingMovement))]
+    [ShowIf("MovementType",global::MovementType.Homing)]
     [LabelText("Turn Speed")]
     public float HomingTurnSpeed;
     
-    [ShowIf(nameof(IsHomingMovement))]
+    [ShowIf("MovementType",global::MovementType.Homing)]
     [LabelText("Search Interval")]
     public float HomingSearchInterval;
     
     // Orbit
-    [ShowIf(nameof(IsOrbitMovement))]
+    [ShowIf("MovementType",global::MovementType.Orbit)]
     [LabelText("Orbit Center")]
     public OrbitCenterType OrbitCenterType;
 
-    [ShowIf(nameof(IsOrbitMovement))]
+    [ShowIf("MovementType",global::MovementType.Orbit)]
     [LabelText("Orbit Offset")]
     public Vector2 OrbitCenterOffset;
 
-    [ShowIf(nameof(IsOrbitMovement))]
+    [ShowIf("MovementType",global::MovementType.Orbit)]
     [LabelText("Radius")]
     public float OrbitRadius;
+
+    [ShowIf("MovementType",global::MovementType.Orbit)]
+    [LabelText("Distribution")]
+    public AngularDistributionType AngularDistributionType;
+
+    [ShowIf("AngularDistributionType", global::AngularDistributionType.Sequential)]
+    [LabelText("Max Count")]
+    [InfoBox("360도를 MaxCount로 나누어서 배치")]
+    [MinValue(1)]
+    public int OrbitMaxCount = 8;
     
     [LabelText("Behaviours")]
     [InfoBox(

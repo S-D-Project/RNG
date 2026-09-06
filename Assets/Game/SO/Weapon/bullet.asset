@@ -62,6 +62,9 @@ MonoBehaviour:
         CenterType: 1
         CenterOffset: {x: 0, y: 0}
         Radius: 1
+        Distribution:
+          Type: 2
+          MaxCount: 8
     - rid: 4889859285106819170
       type: {class: OwnerSpawnPositionResourceData, ns: , asm: Assembly-CSharp}
       data:

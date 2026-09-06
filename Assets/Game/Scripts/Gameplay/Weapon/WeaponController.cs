@@ -9,6 +9,7 @@ public class WeaponController : MonoBehaviour
     private IFirePattern _firePattern;
     private IFireMode _fireMode;
     private IReadOnlyList<IWeaponBehaviour> _behaviours;
+    private IAttackMovementFactory _movementFactory;
     
     private bool _isInitialized;
     private AttackRuntimeManager _attackRuntimeManager;
@@ -41,7 +42,7 @@ public class WeaponController : MonoBehaviour
         _firePattern = runtime.BaseData.FirePattern.Create();
         _fireMode = runtime.BaseData.FireMode.Create();
         _attackRuntimeManager = attackRuntimeManager;
-        
+        _movementFactory = runtime.BaseData.AttackDefinitionData.Movement.CreateFactory();
         _isInitialized = true;
         _behaviours = CreateBehaviours(runtime.BaseData.AttackDefinitionData);
     }
@@ -118,8 +119,11 @@ public class WeaponController : MonoBehaviour
         AttackDefinitionData resource =
             _weaponRuntime.BaseData.AttackDefinitionData;
 
-        
-        IAttackMovement attackMovement = resource.Movement.Create();
+
+        if (!_movementFactory.TryCreateMovement(direction, out IAttackMovement attackMovement))
+        {
+            return;
+        }
 
         _attackRuntimeManager.Spawn(
             resource.AttackPrefab,

@@ -14,4 +14,9 @@ public class StraightAttackMovement : IAttackMovement
     {
         
     }
+
+    public void OnRelease(AttackRuntime attack)
+    {
+        
+    }
 }

@@ -169,6 +169,8 @@ public class AttackRuntimeManager : MonoBehaviour
 
     private void Release(AttackRuntime attack)
     {
+        attack.AttackMovement.OnRelease(attack);
+        
         if (!_pools.TryGetValue(
                 attack.Prefab,
                 out ObjectPool<GameObject> pool))

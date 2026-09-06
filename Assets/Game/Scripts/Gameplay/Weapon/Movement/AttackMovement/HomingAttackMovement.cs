@@ -33,6 +33,11 @@ public class HomingAttackMovement : IAttackMovement
         
     }
 
+    public void OnRelease(AttackRuntime attack)
+    {
+        
+    }
+
     private void UpdateTarget(AttackRuntime attack, float deltaTime)
     {
         _remainingSearchInterval -= deltaTime;

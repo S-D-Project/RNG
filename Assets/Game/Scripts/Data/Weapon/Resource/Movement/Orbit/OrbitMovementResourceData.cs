@@ -7,10 +7,12 @@ public class OrbitMovementResourceData : MovementResourceData
     public OrbitCenterType CenterType;
     public Vector2 CenterOffset;
     public float Radius = 1f;
+
+    public OrbitDistributionData Distribution = new();
     
-    public override IAttackMovement Create()
+    public override IAttackMovementFactory CreateFactory()
     {
-        return new OrbitAttackMovement(CenterType,CenterOffset,Radius);
+        return new OrbitMovementFactory(CenterType, CenterOffset, Radius,Distribution.Create());
     }
 }
 
