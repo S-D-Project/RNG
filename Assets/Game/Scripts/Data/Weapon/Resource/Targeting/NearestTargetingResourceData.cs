@@ -3,8 +3,9 @@
 [Serializable]
 public class NearestTargetingResourceData : TargetingResourceData
 {
+    
     public override ITargeting Create()
     {
-        return new NearestTargeting();
+        return new NearestTargeting(SearchRange);
     }
 }

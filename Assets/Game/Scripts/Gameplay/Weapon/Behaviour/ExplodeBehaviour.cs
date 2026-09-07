@@ -6,6 +6,8 @@ public class ExplodeBehaviour : IWeaponBehaviour
 {
     private readonly float _explosionRadiusMultiplier;
     private readonly float _damageMultiplier;
+
+    private readonly List<EnemyRuntime> _candidates = new();
     
     public ExplodeBehaviour(float explosionRadiusMultiplier, float damageMultiplier)
     {
@@ -16,32 +18,18 @@ public class ExplodeBehaviour : IWeaponBehaviour
     public void OnHit(AttackRuntime attack, EnemyRuntime target)
     {
         float explosionRadius = attack.HitRadius * _explosionRadiusMultiplier;
-        
-        // TODO 적 서치 리팩토링 대상
-        IReadOnlyList<EnemyRuntime> enemies = EnemyManager.Instance.EnemyList;
 
         Vector2 center = target.transform.position;
+
+        attack.EnemySpatialQuery.QueryOverlapCircle(center, explosionRadius, _candidates);
+        
         
         float explosionDamage = attack.Damage * _damageMultiplier;
 
-        foreach (EnemyRuntime enemy in enemies)
+        foreach (EnemyRuntime enemy in _candidates)
         {
-            if (enemy == null)
-            {
-                continue;
-            }
-
-            Vector2 enemyPosition = enemy.transform.position;
-
-            float collisionRadius = explosionRadius + enemy.HitRaidus;
-
-            float sqrDistance = (enemyPosition - center).sqrMagnitude;
-            if (sqrDistance > collisionRadius * collisionRadius)
-            {
-                continue;
-            }
-
             enemy.TakeDamage(explosionDamage);
         }
+        
     }
 }

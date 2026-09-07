@@ -24,14 +24,20 @@ public class WeaponMakerData
     [LabelText("Movement")]
     public MovementType MovementType;
 
+
+
     // Homing
     [ShowIf("MovementType", global::MovementType.Homing)]
     [LabelText("Turn Speed")]
-    public float HomingTurnSpeed;
+    public float HomingTurnSpeed = 360f;
 
     [ShowIf("MovementType", global::MovementType.Homing)]
     [LabelText("Search Interval")]
-    public float HomingSearchInterval;
+    public float HomingSearchInterval = 2f;
+
+    [ShowIf("MovementType", global::MovementType.Homing)]
+    [LabelText("Homing Search Radius")]
+    public float HomingSearchRadius = 5f;
 
     // Orbit
     [ShowIf("MovementType", global::MovementType.Orbit)]

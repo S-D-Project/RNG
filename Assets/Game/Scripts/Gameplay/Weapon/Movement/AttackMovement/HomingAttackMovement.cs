@@ -6,14 +6,18 @@ public class HomingAttackMovement : IAttackMovement
 {
     private readonly float _turnSpeed;
     private readonly float _searchInterval;
+    private float _searchRange;
 
     private float _remainingSearchInterval;
 
-    public HomingAttackMovement(float turnSpeed,float  searchInterval)
+    private readonly List<EnemyRuntime> _candidates = new();
+
+    public HomingAttackMovement(float turnSpeed,float  searchInterval,float searchRange)
     {
         _turnSpeed = turnSpeed;
         _searchInterval = searchInterval;
         _remainingSearchInterval = 0f;
+        _searchRange = searchRange;
     }
     
     public void Move(AttackRuntime attack, float deltaTime)
@@ -49,7 +53,6 @@ public class HomingAttackMovement : IAttackMovement
 
         _remainingSearchInterval = _searchInterval;
         attack.SetTarget(FindNearestTarget(attack));
-        
     }
 
     private void UpdateDirection(AttackRuntime attack, EnemyRuntime target, float deltaTime)
@@ -65,14 +68,14 @@ public class HomingAttackMovement : IAttackMovement
 
     private EnemyRuntime FindNearestTarget(AttackRuntime attack)
     {
-        IReadOnlyList<EnemyRuntime> enemies = EnemyManager.Instance.EnemyList;
-
+        Vector2 position = attack.Transform.position;
+        
+        attack.EnemySpatialQuery.Query(position,_searchRange,_candidates);
+        
         EnemyRuntime nearest = null;
         float nearestSqrDistance = float.MaxValue;
 
-        Vector2 position = attack.Transform.position;
-
-        foreach (EnemyRuntime enemy in enemies)
+        foreach (EnemyRuntime enemy in _candidates)
         {
             Vector2 delta = (Vector2)enemy.transform.position - position;
 

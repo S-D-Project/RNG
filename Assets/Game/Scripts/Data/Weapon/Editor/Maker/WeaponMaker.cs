@@ -15,49 +15,54 @@ public class WeaponMaker : OdinEditorWindow
     [SerializeField]
     [Required]
     private string _weaponId;
-    
+
     [LabelText("Name")]
     [SerializeField]
     [Required]
     private string _weaponName;
-    
+
     [PreviewField(70)]
     [LabelText("Weapon Object Prefab")]
     [SerializeField]
     private GameObject _weaponObjectPrefab;
-    
+
     [PreviewField(70)]
     [LabelText("Icon")]
     [SerializeField]
     private Sprite _icon;
-    
+
     [LabelText("Weapon Type")]
     [EnumToggleButtons]
     [SerializeField]
     private WeaponType _weaponType;
+
+    [LabelText("Weapon Range")]
+    [MinValue(1f)]
+    [SerializeField]
+    private float _searchRagne = 10f;
 
     // WeaponBehaviour
     [Title("Weapon Firing")]
     [LabelText("Fire Mode")]
     [SerializeField]
     private FireModeType _fireModeType;
-    
+
     [BoxGroup("Fire Pattern")]
     [SerializeField]
     private FirePatternType _firePatternType;
-    
+
     [BoxGroup("Fire Pattern")]
-    [ShowIf("_firePatternType",FirePatternType.Fan)]
+    [ShowIf("_firePatternType", FirePatternType.Fan)]
     [LabelText("Attack Count")]
     [SerializeField]
     private int _attackCount;
-    
+
     [BoxGroup("Fire Pattern")]
-    [ShowIf("_firePatternType",FirePatternType.Fan)]
+    [ShowIf("_firePatternType", FirePatternType.Fan)]
     [LabelText("Spread Angle")]
     [SerializeField]
     private float _spreadAngle;
-    
+
     [LabelText("Targeting")]
     [SerializeField]
     private TargetingType _targetingType;
@@ -118,7 +123,7 @@ public class WeaponMaker : OdinEditorWindow
         {
             return false;
         }
-        
+
         if (_weapon.MovementType == MovementType.Orbit)
         {
             if (_weapon.OrbitRadius <= 0f)
@@ -153,8 +158,8 @@ public class WeaponMaker : OdinEditorWindow
         {
             FirePatternType.Fan => new FanFirePatternResourceData
             {
-                AttackCount =  _attackCount,
-                SpreadAngle =  _spreadAngle
+                AttackCount = _attackCount,
+                SpreadAngle = _spreadAngle
             },
             _ => throw new ArgumentOutOfRangeException()
         };
@@ -164,10 +169,19 @@ public class WeaponMaker : OdinEditorWindow
     {
         return _targetingType switch
         {
-            TargetingType.Forward => new ForwardTargetingResourceData(),
-            TargetingType.Nearest => new NearestTargetingResourceData(),
-            TargetingType.Random => new RandomTargetingResourceData(),
-            TargetingType.PlayerCenter => new PlayerCenterTargetingResourceData(),
+            TargetingType.Forward => new ForwardTargetingResourceData
+            {
+                SearchRange =  _searchRagne
+            },
+            TargetingType.Nearest => new NearestTargetingResourceData{
+                SearchRange =  _searchRagne
+            },
+            TargetingType.Random => new RandomTargetingResourceData{
+                SearchRange =  _searchRagne
+            },
+            TargetingType.PlayerCenter => new PlayerCenterTargetingResourceData{
+                SearchRange =  _searchRagne
+            },
             _ => throw new ArgumentOutOfRangeException()
         };
     }
@@ -196,7 +210,7 @@ public class WeaponMaker : OdinEditorWindow
             },
             MovementType.ExpandingOrbit => new ExpandingOrbitMovementResourceData
             {
-                CenterType =  _weapon.ExpandingOrbitCenterType,
+                CenterType = _weapon.ExpandingOrbitCenterType,
                 CenterOffset = _weapon.ExpandingOrbitCenterOffset,
                 InitialRadius = _weapon.ExpandingOrbitInitialRadius,
                 RadialSpeed = _weapon.ExpandingOrbitRadialSpeed

@@ -21,6 +21,10 @@ public class StageInitializer : MonoBehaviour
     [InfoBox("지금은 인스펙터 창에서 넣는데 나중에 캐릭터 선택 만들면 대체할 예정")]
     private string _selectedCharacterId;
 
+    private Transform _playerTransform;
+
+    public EnemyTestSpawner TestSpawner;
+
     private void Start()
     {
         Initialize();
@@ -39,19 +43,24 @@ public class StageInitializer : MonoBehaviour
         InitializeStage();
         InitializePlayer();
         InitializeUI();
+        InitializeSequence();
+        TestSettings();
         
         StartGame();
     }
 
+
     private void InitializeStage()
     {
         // TODO stage 초기화
+        
+        
     }
 
     private void InitializePlayer()
     {
         PlayerRuntime player = _playerSpawner.SpawnPlayer(Vector2.zero,_selectedCharacterId);
-
+        _playerTransform = player.transform;
         // TODO 임시로 Weapon 추가. 나중에 분리해야 함.
         WeaponData weaponData = GameDataStore.Instance.GetWeaponData("bullet");
         WeaponRuntime weaponRuntime = new WeaponRuntime(weaponData);
@@ -72,6 +81,7 @@ public class StageInitializer : MonoBehaviour
 
     }
     
+    
     private void AddWeaponToPlayer(WeaponData weaponData,WeaponRuntime runtime ,GameObject player)
     {
         GameObject weaponObjectPrefab = weaponData.WeaponObjectPrefab;
@@ -87,9 +97,22 @@ public class StageInitializer : MonoBehaviour
     {
         // TODO UI 초기화
     }
+    
+    private void InitializeSequence()
+    {
+        EnemyManager.Instance.Initialize(_playerTransform);
+        _attackRuntimeManager.Initialize(EnemyManager.Instance.SpatialQuery);
+    }
+
 
     private void StartGame()
     {
         // TODO Game시작 로직 
+    }
+
+    private void TestSettings()
+    {
+        StartCoroutine(TestSpawner.Initialize(_playerTransform));
+        
     }
 }

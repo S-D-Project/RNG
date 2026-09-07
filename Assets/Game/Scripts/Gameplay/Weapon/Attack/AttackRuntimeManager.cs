@@ -9,6 +9,15 @@ public class AttackRuntimeManager : MonoBehaviour
     private readonly Dictionary<GameObject, ObjectPool<GameObject>>
         _pools = new();
 
+    private readonly List<EnemyRuntime> _collisionCandidates = new();
+
+    private IEnemySpatialQuery _enemySpatialQuery;
+
+    public void Initialize(IEnemySpatialQuery enemySpatialQuery)
+    {
+        _enemySpatialQuery = enemySpatialQuery;
+    }
+
     private void Update()
     {
         float deltaTime = Time.deltaTime;
@@ -49,7 +58,8 @@ public class AttackRuntimeManager : MonoBehaviour
             hitRadius,
             lifetime,
             attackMovement,
-            behaviours);
+            behaviours,
+            _enemySpatialQuery);
 
         _attacks.Add(attack);
 
@@ -119,24 +129,21 @@ public class AttackRuntimeManager : MonoBehaviour
 
     private void UpdateCollision(AttackRuntime attack)
     {
-        IReadOnlyList<EnemyRuntime> enemies = EnemyManager.Instance.EnemyList;
-
         Vector2 attackPosition = attack.Transform.position;
 
-        foreach (EnemyRuntime enemy in enemies)
-        {
-            if(enemy == null)
-            {
-                continue;
-            }
+        float queryRadius = attack.HitRadius + EnemyManager.Instance.MaxHitRadius;
 
+        EnemyManager.Instance.SpatialQuery.Query(attackPosition, queryRadius, _collisionCandidates);
+        
+        foreach (EnemyRuntime enemy in _collisionCandidates)
+        {
             if (attack.HasHit(enemy))
             {
                 continue;
             }
             Vector2 enemyPosition = enemy.transform.position;
 
-            float collisionRadius = attack.HitRadius + enemy.HitRaidus;
+            float collisionRadius = attack.HitRadius + enemy.HitRadius;
 
             float sqrDistance = (enemyPosition - attackPosition).sqrMagnitude;
 

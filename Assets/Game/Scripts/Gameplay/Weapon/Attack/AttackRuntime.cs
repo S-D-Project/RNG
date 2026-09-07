@@ -26,6 +26,8 @@ public class AttackRuntime
     public IReadOnlyList<IWeaponBehaviour> Behaviours { get; }
 
     public bool IsDead { get; private set; }
+    
+    public IEnemySpatialQuery EnemySpatialQuery { get; }
 
     public AttackRuntime(
         GameObject prefab,
@@ -38,7 +40,8 @@ public class AttackRuntime
         float hitRadius,
         float lifetime,
         IAttackMovement attackMovement,
-        IReadOnlyList<IWeaponBehaviour> behaviours)
+        IReadOnlyList<IWeaponBehaviour> behaviours,
+        IEnemySpatialQuery enemySpatialQuery)
     {
         Prefab = prefab;
         Instance = instance;
@@ -55,11 +58,14 @@ public class AttackRuntime
         AttackMovement = attackMovement;
         Behaviours = behaviours;
 
+        EnemySpatialQuery = enemySpatialQuery;
+
         HitCount = 0;
         _hitTargets = new HashSet<EnemyRuntime>();
         IsDead = false;
         
         AttackMovement.Initialize(this);
+        
     }
 
     public void MarkDead()

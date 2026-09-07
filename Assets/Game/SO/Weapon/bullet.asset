@@ -35,37 +35,36 @@ MonoBehaviour:
         _spawnPosition:
           rid: 4889859285106819170
         _movement:
-          rid: 4889859285106819169
+          rid: 4889859332956487761
         _behaviours:
         - rid: 4889859285106819156
-        - rid: 4889859285106819157
+        - rid: 4889859332956487760
     - rid: 4889859285106819152
       type: {class: InstantFireModeResourceData, ns: , asm: Assembly-CSharp}
       data: 
     - rid: 4889859285106819153
       type: {class: FanFirePatternResourceData, ns: , asm: Assembly-CSharp}
       data:
-        AttackCount: 3
+        AttackCount: 1
         SpreadAngle: 30
     - rid: 4889859285106819154
       type: {class: NearestTargetingResourceData, ns: , asm: Assembly-CSharp}
-      data: 
+      data:
+        SearchRange: 10
     - rid: 4889859285106819156
       type: {class: DamageBehaviourResourceData, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 4889859285106819157
-      type: {class: DestroyBehaviourResourceData, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 4889859285106819169
-      type: {class: OrbitMovementResourceData, ns: , asm: Assembly-CSharp}
-      data:
-        CenterType: 1
-        CenterOffset: {x: 0, y: 0}
-        Radius: 1
-        Distribution:
-          Type: 2
-          MaxCount: 8
     - rid: 4889859285106819170
       type: {class: OwnerSpawnPositionResourceData, ns: , asm: Assembly-CSharp}
       data:
         Offset: {x: 0, y: 0}
+    - rid: 4889859332956487760
+      type: {class: PierceBehaviourResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        PierceCount: 5
+    - rid: 4889859332956487761
+      type: {class: HomingMovementResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        TurnSpeed: 8
+        SearchInterval: 1
+        SearchRadius: 10

@@ -3,30 +3,37 @@ using UnityEngine;
 
 public class NearestTargeting : ITargeting
 {
+
+    private readonly  float _searchRange;
+    private readonly  List<EnemyRuntime> _candidates = new ();
+
+    public NearestTargeting(float searchRange)
+    {
+        _searchRange = searchRange;
+    }
+    
     public EnemyRuntime FindTarget(
         Vector2 origin,
-        IReadOnlyList<EnemyRuntime> enemies)
+        IEnemySpatialQuery spatialQuery)
     {
+        spatialQuery.Query(origin, _searchRange, _candidates);
+
         EnemyRuntime nearest = null;
         float nearestSqrDistance = float.MaxValue;
 
-        foreach (EnemyRuntime enemy in enemies)
+        foreach (EnemyRuntime enemy in _candidates)
         {
-            if (enemy == null)
-            {
-                continue;
-            }
-
             Vector2 enemyPosition = enemy.transform.position;
 
-            float sqrDistance =
-                (enemyPosition - origin).sqrMagnitude;
+            float sqrDistacne = (enemyPosition - origin).sqrMagnitude;
 
-            if (sqrDistance >= nearestSqrDistance)
+            if (sqrDistacne >= nearestSqrDistance)
             {
                 continue;
             }
-            nearestSqrDistance = sqrDistance;
+
+            nearestSqrDistance = sqrDistacne;
+
             nearest = enemy;
         }
 
