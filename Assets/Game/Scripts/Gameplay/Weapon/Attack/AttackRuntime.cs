@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class AttackRuntime
 {
-    private readonly HashSet<EnemyRuntime> _hitTargets;
-    
     public GameObject Prefab { get; }
     public GameObject Instance { get; }
 
@@ -28,7 +26,9 @@ public class AttackRuntime
     public bool IsDead { get; private set; }
     
     public IEnemySpatialQuery EnemySpatialQuery { get; }
-
+    
+    public IHitPolicy HitPolicy { get; }
+    
     public AttackRuntime(
         GameObject prefab,
         GameObject instance,
@@ -41,6 +41,7 @@ public class AttackRuntime
         float lifetime,
         IAttackMovement attackMovement,
         IReadOnlyList<IWeaponBehaviour> behaviours,
+        IHitPolicy hitPolicy,
         IEnemySpatialQuery enemySpatialQuery)
     {
         Prefab = prefab;
@@ -56,12 +57,12 @@ public class AttackRuntime
 
         RemainingLifetime = lifetime;
         AttackMovement = attackMovement;
+        HitPolicy = hitPolicy;
         Behaviours = behaviours;
 
         EnemySpatialQuery = enemySpatialQuery;
 
         HitCount = 0;
-        _hitTargets = new HashSet<EnemyRuntime>();
         IsDead = false;
         
         AttackMovement.Initialize(this);
@@ -78,24 +79,24 @@ public class AttackRuntime
         Target = target;
     }
 
+    public void BeginHitFrame(float currentTime)
+    {
+        HitPolicy.BeginFrame(currentTime);
+    }
+    
     public bool TryHit(EnemyRuntime target)
     {
         if (target == null)
             return false;
 
-        if (!_hitTargets.Add(target))
+        if (!HitPolicy.TryHit(target))
         {
             return false;
         }
         HitCount++;
         return true;
     }
-
-    public bool HasHit(EnemyRuntime target)
-    {
-        return _hitTargets.Contains(target);
-    }
-
+    
     public void SetDirection(Vector2 direction)
     {
         Direction = direction.normalized;

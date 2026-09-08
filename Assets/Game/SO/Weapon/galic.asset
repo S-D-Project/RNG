@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74f658ab46de40b4b625cde1abdc8dea, type: 3}
+  m_Name: galic
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponResource
+  _id: galic
+  _weaponName: Galic
+  _weaponObjectPrefab: {fileID: 8524059722733250942, guid: fbe91b43dfaf6ad43ac9eed85bed4d47, type: 3}
+  _icon: {fileID: 21300000, guid: 310fc426639d01d47ab74abdf321406a, type: 3}
+  _weaponType: 2
+  _attackDefinitionData:
+    rid: 4889859355452112977
+  _fireMode:
+    rid: 4889859355452112978
+  _firePattern:
+    rid: 4889859355452112979
+  _targeting:
+    rid: 4889859355452112987
+  references:
+    version: 2
+    RefIds:
+    - rid: 4889859355452112977
+      type: {class: AttackDefinitionData, ns: , asm: Assembly-CSharp}
+      data:
+        _attackPrefab: {fileID: 1812777890138677097, guid: f003ac2fe01f8bc429d09604fca3f152, type: 3}
+        _spawnPosition:
+          rid: 4889859355452112981
+        _movement:
+          rid: 4889859355452112986
+        _hitPolicy:
+          rid: 4889859355452112983
+        _behaviours:
+        - rid: 4889859355452112984
+    - rid: 4889859355452112978
+      type: {class: InstantFireModeResourceData, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4889859355452112979
+      type: {class: FanFirePatternResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        AttackCount: 1
+        SpreadAngle: 0
+    - rid: 4889859355452112981
+      type: {class: OwnerSpawnPositionResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        Offset: {x: 0, y: 0}
+    - rid: 4889859355452112983
+      type: {class: GlobalTickHitPolicyResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        TickInterval: 1
+    - rid: 4889859355452112984
+      type: {class: DamageBehaviourResourceData, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4889859355452112986
+      type: {class: FollowMovementResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        TargetType: 0
+        FollowMode: 1
+        FollowSpeed: 0.2
+        Offset: {x: 0, y: 0}
+    - rid: 4889859355452112987
+      type: {class: NoneTargetingResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        SearchRange: 10

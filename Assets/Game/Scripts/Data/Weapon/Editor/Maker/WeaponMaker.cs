@@ -5,7 +5,6 @@ using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class WeaponMaker : OdinEditorWindow
 {
@@ -39,7 +38,7 @@ public class WeaponMaker : OdinEditorWindow
     [LabelText("Weapon Range")]
     [MinValue(1f)]
     [SerializeField]
-    private float _searchRagne = 10f;
+    private float _searchRange = 10f;
 
     // WeaponBehaviour
     [Title("Weapon Firing")]
@@ -68,6 +67,17 @@ public class WeaponMaker : OdinEditorWindow
     private TargetingType _targetingType;
 
     [Title("Attack Settings")]
+    [LabelText("Hit Policy")]
+    [SerializeField]
+    private HitPolicyType _hitPolicyType;
+
+    [ShowIf("_hitPolicyType", HitPolicyType.TimeInterval)]
+    [ShowIf("_hitPolicyType", HitPolicyType.GlobalTick)]
+    [LabelText("Hit Interval")]
+    [MinValue(0.01f)]
+    [SerializeField]
+    private float _hitInterval;
+
     [HideLabel]
     [SerializeField]
     private WeaponMakerData _weapon = new();
@@ -100,6 +110,16 @@ public class WeaponMaker : OdinEditorWindow
             CreateFirePattern(),
             CreateTargeting(),
             CreateAttackDefinitionData());
+        
+        if (!weaponResource.Validate(out string error))
+        {
+            Debug.LogError(
+                $"WeaponResource validation failed: {error}");
+
+            DestroyImmediate(weaponResource);
+
+            return;
+        }
 
         var path = $"Assets/Game/SO/Weapon/{_weaponId}.asset";
 
@@ -139,6 +159,30 @@ public class WeaponMaker : OdinEditorWindow
             }
         }
 
+        if (_hitPolicyType == HitPolicyType.TimeInterval && _hitInterval <= 0f)
+        {
+            return false;
+        }
+
+        if (_hitPolicyType == HitPolicyType.GlobalTick && _hitInterval <= 0f)
+        {
+            return false;
+        }
+
+        if (_targetingType == TargetingType.None)
+        {
+            if (_weapon.SpawnPositionType == SpawnPositionType.Target ||
+                _weapon.SpawnPositionType == SpawnPositionType.Between)
+            {
+                return false;
+            }
+
+            if (_weapon.FollowTargetType == FollowTargetType.Target)
+            {
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -169,18 +213,18 @@ public class WeaponMaker : OdinEditorWindow
     {
         return _targetingType switch
         {
+            TargetingType.None => new NoneTargetingResourceData(),
             TargetingType.Forward => new ForwardTargetingResourceData
             {
-                SearchRange =  _searchRagne
+                SearchRange = _searchRange
             },
-            TargetingType.Nearest => new NearestTargetingResourceData{
-                SearchRange =  _searchRagne
+            TargetingType.Nearest => new NearestTargetingResourceData
+            {
+                SearchRange = _searchRange
             },
-            TargetingType.Random => new RandomTargetingResourceData{
-                SearchRange =  _searchRagne
-            },
-            TargetingType.PlayerCenter => new PlayerCenterTargetingResourceData{
-                SearchRange =  _searchRagne
+            TargetingType.Random => new RandomTargetingResourceData
+            {
+                SearchRange = _searchRange
             },
             _ => throw new ArgumentOutOfRangeException()
         };
@@ -194,7 +238,8 @@ public class WeaponMaker : OdinEditorWindow
             MovementType.Homing => new HomingMovementResourceData
             {
                 TurnSpeed = _weapon.HomingTurnSpeed,
-                SearchInterval = _weapon.HomingSearchInterval
+                SearchInterval = _weapon.HomingSearchInterval,
+                SearchRadius = _weapon.HomingSearchRadius
             },
             MovementType.Orbit => new OrbitMovementResourceData
             {
@@ -225,6 +270,30 @@ public class WeaponMaker : OdinEditorWindow
                 Amplitude = _weapon.WaveAmplitude,
                 Frequency = _weapon.WaveFrequency
             },
+            MovementType.Follow => new FollowMovementResourceData
+            {
+                TargetType = _weapon.FollowTargetType,
+                FollowMode = _weapon.FollowMode,
+                FollowSpeed = _weapon.FollowSpeed,
+                Offset = _weapon.FollowOffset
+            },
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+
+    private HitPolicyResourceData CreateHitPolicy()
+    {
+        return _hitPolicyType switch
+        {
+            HitPolicyType.OncePerTarget => new OncePerTargetHitPolicyResourceData(),
+            HitPolicyType.TimeInterval => new TimeIntervalHitPolicyResourceData
+            {
+                HitInterval = _hitInterval
+            },
+            HitPolicyType.GlobalTick => new GlobalTickHitPolicyResourceData
+            {
+                TickInterval = _hitInterval
+            },
             _ => throw new ArgumentOutOfRangeException()
         };
     }
@@ -237,6 +306,7 @@ public class WeaponMaker : OdinEditorWindow
             _weapon.AttackPrefab,
             CreateSpawnPosition(),
             CreateAttackMovement(),
+            CreateHitPolicy(),
             CreateAttackBehaviours());
 
         return resource;
@@ -272,7 +342,10 @@ public class WeaponMaker : OdinEditorWindow
         {
             SpawnPositionType.Owner => new OwnerSpawnPositionResourceData(),
             SpawnPositionType.Target => new TargetSpawnPositionResourceData(),
-            SpawnPositionType.Between => new BetweenSpawnPositionResourceData(),
+            SpawnPositionType.Between => new BetweenSpawnPositionResourceData
+            {
+                Ratio = _weapon.SpawnPositionRatio
+            },
             _ => throw new ArgumentOutOfRangeException()
         };
 

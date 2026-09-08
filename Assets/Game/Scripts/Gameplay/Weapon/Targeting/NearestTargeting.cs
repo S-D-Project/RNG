@@ -6,6 +6,8 @@ public class NearestTargeting : ITargeting
 
     private readonly  float _searchRange;
     private readonly  List<EnemyRuntime> _candidates = new ();
+    
+    public bool RequiresTarget => true;
 
     public NearestTargeting(float searchRange)
     {

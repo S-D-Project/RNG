@@ -62,7 +62,7 @@ public class StageInitializer : MonoBehaviour
         PlayerRuntime player = _playerSpawner.SpawnPlayer(Vector2.zero,_selectedCharacterId);
         _playerTransform = player.transform;
         // TODO 임시로 Weapon 추가. 나중에 분리해야 함.
-        WeaponData weaponData = GameDataStore.Instance.GetWeaponData("bullet");
+        WeaponData weaponData = GameDataStore.Instance.GetWeaponData("galic");
         WeaponRuntime weaponRuntime = new WeaponRuntime(weaponData);
         player.AddWeapon(weaponRuntime);
 

@@ -36,9 +36,10 @@ MonoBehaviour:
           rid: 4889859285106819170
         _movement:
           rid: 4889859332956487761
+        _hitPolicy:
+          rid: 4889859355452112976
         _behaviours:
         - rid: 4889859285106819156
-        - rid: 4889859332956487760
     - rid: 4889859285106819152
       type: {class: InstantFireModeResourceData, ns: , asm: Assembly-CSharp}
       data: 
@@ -58,13 +59,13 @@ MonoBehaviour:
       type: {class: OwnerSpawnPositionResourceData, ns: , asm: Assembly-CSharp}
       data:
         Offset: {x: 0, y: 0}
-    - rid: 4889859332956487760
-      type: {class: PierceBehaviourResourceData, ns: , asm: Assembly-CSharp}
-      data:
-        PierceCount: 5
     - rid: 4889859332956487761
       type: {class: HomingMovementResourceData, ns: , asm: Assembly-CSharp}
       data:
-        TurnSpeed: 8
-        SearchInterval: 1
-        SearchRadius: 10
+        TurnSpeed: 360
+        SearchInterval: 0.5
+        SearchRadius: 20
+    - rid: 4889859355452112976
+      type: {class: TimeIntervalHitPolicyResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        HitInterval: 0.5

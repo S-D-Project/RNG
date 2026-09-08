@@ -82,7 +82,9 @@ public class WeaponController : MonoBehaviour
             return false;
         }
 
-        if (!TryFindTarget(out EnemyRuntime target))
+        EnemyRuntime target = null;
+
+        if (_targeting.RequiresTarget && !TryFindTarget(out target))
         {
             return false;
         }
@@ -104,12 +106,23 @@ public class WeaponController : MonoBehaviour
         return true;
     }
     
-    public void Fire(EnemyRuntime target)
+    private void Fire(EnemyRuntime target)
     {
         Vector2 ownerPosition = transform.position;
-        Vector2 targetPosition = target.transform.position;
+        Vector2 targetPosition;
+        Vector2 aimDirection;
 
-        Vector2 aimDirection = (targetPosition - ownerPosition).normalized;
+        if (_targeting.RequiresTarget)
+        {
+            targetPosition = target.transform.position;
+            aimDirection = (targetPosition - ownerPosition).normalized;
+        }
+        else
+        {
+            targetPosition = ownerPosition;
+            aimDirection = Vector2.up;
+            ;
+        }
 
         Vector2 spawnPosition = _spawnPosition.GetPosition(ownerPosition, targetPosition, aimDirection);
 
@@ -125,11 +138,11 @@ public class WeaponController : MonoBehaviour
         }
     }
 
-    public void FireAttack(Vector2 spawnPosition,Vector2 direction,EnemyRuntime target)
+    private void FireAttack(Vector2 spawnPosition,Vector2 direction,EnemyRuntime target)
     {
         AttackDefinitionData resource =
             _weaponRuntime.BaseData.AttackDefinitionData;
-
+        IHitPolicy hitPolicy = resource.HitPolicy.Create();
 
         if (!_movementFactory.TryCreateMovement(direction, out IAttackMovement attackMovement))
         {
@@ -147,10 +160,11 @@ public class WeaponController : MonoBehaviour
             _weaponRuntime.BaseData.HitRadius,
             _weaponRuntime.BaseData.Lifetime,
             attackMovement,
+            hitPolicy,
             _behaviours);
     }
     
-    public EnemyRuntime FindTarget()
+    private EnemyRuntime FindTarget()
     {
         Vector2 position = transform.position;
 

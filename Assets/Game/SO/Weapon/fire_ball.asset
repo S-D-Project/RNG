@@ -30,7 +30,8 @@ MonoBehaviour:
     RefIds:
     - rid: 117774832446996561
       type: {class: NearestTargetingResourceData, ns: , asm: Assembly-CSharp}
-      data: 
+      data:
+        SearchRange: 10
     - rid: 4889859197243490384
       type: {class: FanFirePatternResourceData, ns: , asm: Assembly-CSharp}
       data:
@@ -44,6 +45,8 @@ MonoBehaviour:
           rid: 4889859285106819160
         _movement:
           rid: 4889859285106819168
+        _hitPolicy:
+          rid: 4889859355452112988
         _behaviours:
         - rid: 4889859197243490396
         - rid: 4889859240591097950
@@ -61,7 +64,7 @@ MonoBehaviour:
     - rid: 4889859240591097951
       type: {class: ExplodeBehaviourResourceData, ns: , asm: Assembly-CSharp}
       data:
-        ExplosionRadiusMultiplier: 0
+        ExplosionRadiusMultiplier: 1.2
         DamageMultiplier: 1
     - rid: 4889859285106819160
       type: {class: OwnerSpawnPositionResourceData, ns: , asm: Assembly-CSharp}
@@ -70,3 +73,7 @@ MonoBehaviour:
     - rid: 4889859285106819168
       type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 4889859355452112988
+      type: {class: TimeIntervalHitPolicyResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        HitInterval: 0.5

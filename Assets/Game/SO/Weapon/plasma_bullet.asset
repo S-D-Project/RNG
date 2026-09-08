@@ -30,7 +30,8 @@ MonoBehaviour:
     RefIds:
     - rid: 157831110161858646
       type: {class: NearestTargetingResourceData, ns: , asm: Assembly-CSharp}
-      data: 
+      data:
+        SearchRange: 10
     - rid: 4889859240591097940
       type: {class: AttackDefinitionData, ns: , asm: Assembly-CSharp}
       data:
@@ -39,6 +40,8 @@ MonoBehaviour:
           rid: 4889859285106819158
         _movement:
           rid: 4889859240591097941
+        _hitPolicy:
+          rid: 4889859355452112989
         _behaviours: []
     - rid: 4889859240591097941
       type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
@@ -55,3 +58,7 @@ MonoBehaviour:
       type: {class: OwnerSpawnPositionResourceData, ns: , asm: Assembly-CSharp}
       data:
         Offset: {x: 0, y: 0}
+    - rid: 4889859355452112989
+      type: {class: TimeIntervalHitPolicyResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        HitInterval: 0.2

@@ -71,4 +71,65 @@ public class WeaponResource : ScriptableObject
         _targeting = targeting;
         _attackDefinitionData = attackDefinitionData;
     }
+    
+    public bool Validate(out string error)
+    {
+        if (string.IsNullOrWhiteSpace(_id))
+        {
+            error = "Weapon Id is empty.";
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(_weaponName))
+        {
+            error = "Weapon Name is empty.";
+            return false;
+        }
+
+        if (_attackDefinitionData == null)
+        {
+            error = "AttackDefinitionData is null.";
+            return false;
+        }
+
+        if (_fireMode == null)
+        {
+            error = "FireMode is null.";
+            return false;
+        }
+
+        if (_firePattern == null)
+        {
+            error = "FirePattern is null.";
+            return false;
+        }
+
+        if (_targeting == null)
+        {
+            error = "Targeting is null.";
+            return false;
+        }
+        
+        if (!_attackDefinitionData.Validate(
+                _targeting,
+                out error))
+        {
+            return false;
+        }
+
+        error = null;
+        return true;
+    }
+    
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (!Validate(out string error))
+        {
+            Debug.LogWarning(
+                $"Invalid WeaponResource [{name}] : {error}",
+                this);
+        }
+    }
+#endif
 }
