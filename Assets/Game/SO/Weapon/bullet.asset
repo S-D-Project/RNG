@@ -13,43 +13,58 @@ MonoBehaviour:
   m_Name: bullet
   m_EditorClassIdentifier: Assembly-CSharp::WeaponResource
   _id: bullet
-  _weaponName: bullet
+  _weaponName: Bullet
   _weaponObjectPrefab: {fileID: 8524059722733250942, guid: fbe91b43dfaf6ad43ac9eed85bed4d47, type: 3}
-  _icon: {fileID: 21300000, guid: c9b393627c981774ba98c06fb7029ec8, type: 3}
+  _icon: {fileID: 21300000, guid: 93be1e981c10d4e408d8d96baac0716f, type: 3}
   _weaponType: 0
   _attackDefinitionData:
-    rid: 4889859240591097936
+    rid: 4889859285106819151
   _fireMode:
-    rid: 4889859240591097939
+    rid: 4889859285106819152
   _firePattern:
-    rid: 4889859197243490383
+    rid: 4889859285106819153
   _targeting:
-    rid: 157831110161858641
+    rid: 4889859285106819154
   references:
     version: 2
     RefIds:
-    - rid: 157831110161858641
-      type: {class: NearestTargetingResourceData, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 4889859197243490383
-      type: {class: FanFirePatternResourceData, ns: , asm: Assembly-CSharp}
-      data:
-        AttackCount: 1
-        SpreadAngle: 0
-    - rid: 4889859240591097936
+    - rid: 4889859285106819151
       type: {class: AttackDefinitionData, ns: , asm: Assembly-CSharp}
       data:
         _attackPrefab: {fileID: 5641985160623356082, guid: 65e4f1ebc3e2f234bb556d2ab5e35844, type: 3}
+        _spawnPosition:
+          rid: 4889859285106819170
         _movement:
-          rid: 4889859240591097937
+          rid: 4889859332956487761
         _behaviours:
-        - rid: 4889859240591097938
-    - rid: 4889859240591097937
-      type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 4889859240591097938
-      type: {class: DestroyOnHitBehaviourResourceData, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 4889859240591097939
+        - rid: 4889859285106819156
+        - rid: 4889859332956487760
+    - rid: 4889859285106819152
       type: {class: InstantFireModeResourceData, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 4889859285106819153
+      type: {class: FanFirePatternResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        AttackCount: 1
+        SpreadAngle: 30
+    - rid: 4889859285106819154
+      type: {class: NearestTargetingResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        SearchRange: 10
+    - rid: 4889859285106819156
+      type: {class: DamageBehaviourResourceData, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4889859285106819170
+      type: {class: OwnerSpawnPositionResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        Offset: {x: 0, y: 0}
+    - rid: 4889859332956487760
+      type: {class: PierceBehaviourResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        PierceCount: 5
+    - rid: 4889859332956487761
+      type: {class: HomingMovementResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        TurnSpeed: 8
+        SearchInterval: 1
+        SearchRadius: 10

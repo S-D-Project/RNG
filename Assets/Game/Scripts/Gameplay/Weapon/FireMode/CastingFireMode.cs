@@ -3,7 +3,13 @@
     private float _castingTime = 0f;
     public void Update(WeaponController controller, WeaponRuntime runtime, float deltaTime)
     {
-        if (controller.IsOwnerMoving || !controller.HasTarget() || !controller.IsCooldownReady)
+        if (controller.IsOwnerMoving  || !controller.IsCooldownReady)
+        {
+            ResetCasting();
+            return;
+        }
+
+        if (!controller.TryFindTarget(out EnemyRuntime target))
         {
             ResetCasting();
             return;
@@ -15,10 +21,8 @@
             return;
         }
 
-        controller.TryFireNow();
+        controller.TryFireNow(target);
         ResetCasting();
-        
-
     }
 
     private void ResetCasting()

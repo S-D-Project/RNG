@@ -4,10 +4,12 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour
 {
     private WeaponRuntime _weaponRuntime;
+    private ISpawnPosition _spawnPosition;
     private ITargeting _targeting;
     private IFirePattern _firePattern;
     private IFireMode _fireMode;
     private IReadOnlyList<IWeaponBehaviour> _behaviours;
+    private IAttackMovementFactory _movementFactory;
     
     private bool _isInitialized;
     private AttackRuntimeManager _attackRuntimeManager;
@@ -21,12 +23,6 @@ public class WeaponController : MonoBehaviour
     {
         IsOwnerMoving = isMoving;
     }
-
-    public bool HasTarget()
-    {
-        return FindTarget() != null;
-    }
-
     public void Initialize(WeaponRuntime runtime,AttackRuntimeManager attackRuntimeManager)
     {
         if (_isInitialized)
@@ -35,13 +31,16 @@ public class WeaponController : MonoBehaviour
         }
         
         _weaponRuntime = runtime;
+        _spawnPosition = runtime.BaseData.AttackDefinitionData.SpawnPosition.Create();
         _targeting = runtime.BaseData.Targeting.Create();
         _firePattern = runtime.BaseData.FirePattern.Create();
         _fireMode = runtime.BaseData.FireMode.Create();
         _attackRuntimeManager = attackRuntimeManager;
-        
+        _movementFactory = runtime.BaseData.AttackDefinitionData.Movement.CreateFactory();
         _isInitialized = true;
         _behaviours = CreateBehaviours(runtime.BaseData.AttackDefinitionData);
+        
+        
     }
 
     private IReadOnlyList<IWeaponBehaviour> CreateBehaviours(AttackDefinitionData resource)
@@ -69,58 +68,85 @@ public class WeaponController : MonoBehaviour
         
         _fireMode.Update(this,_weaponRuntime,deltaTime);
     }
+
+    public bool TryFindTarget(out EnemyRuntime target)
+    {
+        target = FindTarget();
+
+        return target != null;
+    }
     public bool TryFireNow()
     {
         if (!IsCooldownReady)
         {
             return false;
         }
-        
-        EnemyRuntime target = FindTarget();
 
-        if (target == null)
+        if (!TryFindTarget(out EnemyRuntime target))
         {
             return false;
         }
         
-        Fire(target);
+        return TryFireNow(target);
+    }
 
-        _weaponRuntime.ResetCooldown();
+    public bool TryFireNow(EnemyRuntime target)
+    {
+        if (!IsCooldownReady)
+        {
+            return false;
+        }
+
+        Fire(target);
         
+        _weaponRuntime.ResetCooldown();
+
         return true;
     }
     
     public void Fire(EnemyRuntime target)
     {
-        Vector2 origin = transform.position;
+        Vector2 ownerPosition = transform.position;
         Vector2 targetPosition = target.transform.position;
 
-        Vector2 baseDirection = (targetPosition - origin).normalized;
+        Vector2 aimDirection = (targetPosition - ownerPosition).normalized;
+
+        Vector2 spawnPosition = _spawnPosition.GetPosition(ownerPosition, targetPosition, aimDirection);
+
+        Vector2 toTarget = targetPosition - spawnPosition;
+
+        Vector2 baseDirection = toTarget.sqrMagnitude > Mathf.Epsilon ? toTarget.normalized : aimDirection;
 
         IReadOnlyList<Vector2> directions = _firePattern.GetDirections(baseDirection);
 
         foreach (Vector2 direction in directions)
         {
-            FireAttack(direction);
+            FireAttack(spawnPosition,direction,target);
         }
     }
 
-    public void FireAttack(Vector2 direction)
+    public void FireAttack(Vector2 spawnPosition,Vector2 direction,EnemyRuntime target)
     {
         AttackDefinitionData resource =
             _weaponRuntime.BaseData.AttackDefinitionData;
-        
-        IMovement movement = resource.Movement.Create();
+
+
+        if (!_movementFactory.TryCreateMovement(direction, out IAttackMovement attackMovement))
+        {
+            return;
+        }
 
         _attackRuntimeManager.Spawn(
             resource.AttackPrefab,
-            transform.position,
+            spawnPosition,
+            transform,
+            target,
             direction,
             _weaponRuntime.CurrentSpeed,
             _weaponRuntime.CurrentDamage,
             _weaponRuntime.BaseData.HitRadius,
             _weaponRuntime.BaseData.Lifetime,
-            movement,
+            attackMovement,
             _behaviours);
     }
     
@@ -128,7 +154,7 @@ public class WeaponController : MonoBehaviour
     {
         Vector2 position = transform.position;
 
-        return _targeting.FindTarget(position, EnemyManager.Instance.EnemyList);
+        return _targeting.FindTarget(position, EnemyManager.Instance.SpatialQuery);
     }
 
 }

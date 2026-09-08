@@ -3,8 +3,8 @@
 [Serializable]
 public class StraightMovementResourceData : MovementResourceData
 {
-    public override IMovement Create()
+    public override IAttackMovementFactory CreateFactory()
     {
-        return new StraightMovement();
+        return new StraightMovementFactory();
     }
 }

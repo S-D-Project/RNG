@@ -35,6 +35,8 @@ MonoBehaviour:
       type: {class: AttackDefinitionData, ns: , asm: Assembly-CSharp}
       data:
         _attackPrefab: {fileID: 5397166591946226788, guid: 46c1dbf61bbd7bb44be65b1319841478, type: 3}
+        _spawnPosition:
+          rid: 4889859285106819158
         _movement:
           rid: 4889859240591097941
         _behaviours: []
@@ -49,3 +51,7 @@ MonoBehaviour:
       data:
         AttackCount: 6
         SpreadAngle: 30
+    - rid: 4889859285106819158
+      type: {class: OwnerSpawnPositionResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        Offset: {x: 0, y: 0}

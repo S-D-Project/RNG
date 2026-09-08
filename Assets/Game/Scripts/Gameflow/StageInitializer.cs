@@ -21,6 +21,10 @@ public class StageInitializer : MonoBehaviour
     [InfoBox("지금은 인스펙터 창에서 넣는데 나중에 캐릭터 선택 만들면 대체할 예정")]
     private string _selectedCharacterId;
 
+    private Transform _playerTransform;
+
+    public EnemyTestSpawner TestSpawner;
+
     private void Start()
     {
         Initialize();
@@ -39,38 +43,44 @@ public class StageInitializer : MonoBehaviour
         InitializeStage();
         InitializePlayer();
         InitializeUI();
+        InitializeSequence();
+        TestSettings();
         
         StartGame();
     }
 
+
     private void InitializeStage()
     {
         // TODO stage 초기화
+        
+        
     }
 
     private void InitializePlayer()
     {
         PlayerRuntime player = _playerSpawner.SpawnPlayer(Vector2.zero,_selectedCharacterId);
-
+        _playerTransform = player.transform;
         // TODO 임시로 Weapon 추가. 나중에 분리해야 함.
         WeaponData weaponData = GameDataStore.Instance.GetWeaponData("bullet");
         WeaponRuntime weaponRuntime = new WeaponRuntime(weaponData);
         player.AddWeapon(weaponRuntime);
 
-        WeaponData weaponData2 = GameDataStore.Instance.GetWeaponData("fire_ball");
-        WeaponRuntime weaponRuntime2 = new WeaponRuntime(weaponData2);
-        player.AddWeapon(weaponRuntime2);
-
-        WeaponData weapondata3 = GameDataStore.Instance.GetWeaponData("plasma_bullet");
-        WeaponRuntime weaponRuntime3 = new WeaponRuntime(weapondata3);
-        player.AddWeapon(weaponRuntime3);
+        // WeaponData weaponData2 = GameDataStore.Instance.GetWeaponData("fire_ball");
+        // WeaponRuntime weaponRuntime2 = new WeaponRuntime(weaponData2);
+        // player.AddWeapon(weaponRuntime2);
+        //
+        // WeaponData weapondata3 = GameDataStore.Instance.GetWeaponData("plasma_bullet");
+        // WeaponRuntime weaponRuntime3 = new WeaponRuntime(weapondata3);
+        // player.AddWeapon(weaponRuntime3);
         
         // TODO 실제 무기 생성 
         AddWeaponToPlayer(weaponData,weaponRuntime,player.gameObject);
-        AddWeaponToPlayer(weaponData2,weaponRuntime2,player.gameObject);
-        AddWeaponToPlayer(weapondata3,weaponRuntime3,player.gameObject);
+        // AddWeaponToPlayer(weaponData2,weaponRuntime2,player.gameObject);
+        // AddWeaponToPlayer(weapondata3,weaponRuntime3,player.gameObject);
 
     }
+    
     
     private void AddWeaponToPlayer(WeaponData weaponData,WeaponRuntime runtime ,GameObject player)
     {
@@ -87,9 +97,22 @@ public class StageInitializer : MonoBehaviour
     {
         // TODO UI 초기화
     }
+    
+    private void InitializeSequence()
+    {
+        EnemyManager.Instance.Initialize(_playerTransform);
+        _attackRuntimeManager.Initialize(EnemyManager.Instance.SpatialQuery);
+    }
+
 
     private void StartGame()
     {
         // TODO Game시작 로직 
+    }
+
+    private void TestSettings()
+    {
+        StartCoroutine(TestSpawner.Initialize(_playerTransform));
+        
     }
 }

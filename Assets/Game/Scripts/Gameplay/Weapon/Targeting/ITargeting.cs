@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface ITargeting
 {
-    EnemyRuntime FindTarget(Vector2 origin, IReadOnlyList<EnemyRuntime> enemies);
+    EnemyRuntime FindTarget(Vector2 origin, IEnemySpatialQuery spatialQuery);
 }

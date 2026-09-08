@@ -1,4 +1,5 @@
 ﻿public enum FirePatternType
 {
-    Fan
+    Fan,
+    Bubble
 }

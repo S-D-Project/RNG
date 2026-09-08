@@ -19,8 +19,8 @@
         BaseData = baseData;
         Level = 1;
         ReCalculateStats();
-        
-        Cooldown = CurrentFireInterval;
+
+        Cooldown = 0f;
     }
 
     public int LevelUp()
