@@ -3,22 +3,18 @@ using UnityEngine;
 
 public class NearestTargeting : ITargeting
 {
-
-    private readonly  float _searchRange;
+    
     private readonly  List<EnemyRuntime> _candidates = new ();
     
     public bool RequiresTarget => true;
-
-    public NearestTargeting(float searchRange)
-    {
-        _searchRange = searchRange;
-    }
     
     public EnemyRuntime FindTarget(
         Vector2 origin,
+        Vector2 forward,
+        float searchRange,
         IEnemySpatialQuery spatialQuery)
     {
-        spatialQuery.Query(origin, _searchRange, _candidates);
+        spatialQuery.Query(origin, searchRange, _candidates);
 
         EnemyRuntime nearest = null;
         float nearestSqrDistance = float.MaxValue;

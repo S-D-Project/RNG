@@ -137,7 +137,7 @@ public class AttackRuntimeManager : MonoBehaviour
 
         float queryRadius = attack.HitRadius + EnemyManager.Instance.MaxHitRadius;
 
-        EnemyManager.Instance.SpatialQuery.Query(attackPosition, queryRadius, _collisionCandidates);
+        _enemySpatialQuery.Query(attackPosition, queryRadius, _collisionCandidates);
         
         foreach (EnemyRuntime enemy in _collisionCandidates)
         {

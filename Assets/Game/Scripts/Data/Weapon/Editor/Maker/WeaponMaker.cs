@@ -34,12 +34,7 @@ public class WeaponMaker : OdinEditorWindow
     [EnumToggleButtons]
     [SerializeField]
     private WeaponType _weaponType;
-
-    [LabelText("Weapon Range")]
-    [MinValue(1f)]
-    [SerializeField]
-    private float _searchRange = 10f;
-
+    
     // WeaponBehaviour
     [Title("Weapon Firing")]
     [LabelText("Fire Mode")]
@@ -49,6 +44,8 @@ public class WeaponMaker : OdinEditorWindow
     [BoxGroup("Fire Pattern")]
     [SerializeField]
     private FirePatternType _firePatternType;
+    
+
 
     [BoxGroup("Fire Pattern")]
     [ShowIf("_firePatternType", FirePatternType.Fan)]
@@ -65,6 +62,12 @@ public class WeaponMaker : OdinEditorWindow
     [LabelText("Targeting")]
     [SerializeField]
     private TargetingType _targetingType;
+
+    [ShowIf("_targetingType", TargetingType.Forward)]
+    [LabelText("Forward Search Angle")]
+    [Range(1f,360f)]
+    [SerializeField]
+    private float _searchAngle = 10f;
 
     [Title("Attack Settings")]
     [LabelText("Hit Policy")]
@@ -216,16 +219,10 @@ public class WeaponMaker : OdinEditorWindow
             TargetingType.None => new NoneTargetingResourceData(),
             TargetingType.Forward => new ForwardTargetingResourceData
             {
-                SearchRange = _searchRange
+                SearchAngle = _searchAngle
             },
-            TargetingType.Nearest => new NearestTargetingResourceData
-            {
-                SearchRange = _searchRange
-            },
-            TargetingType.Random => new RandomTargetingResourceData
-            {
-                SearchRange = _searchRange
-            },
+            TargetingType.Nearest => new NearestTargetingResourceData(),
+            TargetingType.Random => new RandomTargetingResourceData(),
             _ => throw new ArgumentOutOfRangeException()
         };
     }

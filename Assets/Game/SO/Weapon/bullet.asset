@@ -24,7 +24,7 @@ MonoBehaviour:
   _firePattern:
     rid: 4889859285106819153
   _targeting:
-    rid: 4889859285106819154
+    rid: 4889859400814821455
   references:
     version: 2
     RefIds:
@@ -46,12 +46,8 @@ MonoBehaviour:
     - rid: 4889859285106819153
       type: {class: FanFirePatternResourceData, ns: , asm: Assembly-CSharp}
       data:
-        AttackCount: 1
+        AttackCount: 3
         SpreadAngle: 30
-    - rid: 4889859285106819154
-      type: {class: NearestTargetingResourceData, ns: , asm: Assembly-CSharp}
-      data:
-        SearchRange: 10
     - rid: 4889859285106819156
       type: {class: DamageBehaviourResourceData, ns: , asm: Assembly-CSharp}
       data: 
@@ -69,3 +65,7 @@ MonoBehaviour:
       type: {class: TimeIntervalHitPolicyResourceData, ns: , asm: Assembly-CSharp}
       data:
         HitInterval: 0.5
+    - rid: 4889859400814821455
+      type: {class: ForwardTargetingResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        SearchAngle: 60

@@ -4,5 +4,4 @@
     Forward,
     Nearest,
     Random,
-    PlayerCenter
 }

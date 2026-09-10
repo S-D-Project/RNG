@@ -14,11 +14,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
     private float _maxHitRadius;
     public float MaxHitRadius => _maxHitRadius;
-
-    public List<EnemyRuntime> EnemyList => _enemyList;
     
-    public EnemySpatialHash SpatialHash => _spatialHash;
-
     public void Register(EnemyRuntime enemy)
     {
         _enemyList.Add(enemy);
