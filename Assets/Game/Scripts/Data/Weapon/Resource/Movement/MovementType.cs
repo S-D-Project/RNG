@@ -5,5 +5,6 @@
     Orbit,
     ExpandingOrbit,
     Spiral,
-    Wave
+    Wave,
+    Follow
 }

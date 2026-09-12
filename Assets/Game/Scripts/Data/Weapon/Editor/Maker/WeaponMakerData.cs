@@ -24,6 +24,7 @@ public class WeaponMakerData
     [LabelText("Movement")]
     public MovementType MovementType;
 
+    
 
 
     // Homing
@@ -50,7 +51,7 @@ public class WeaponMakerData
 
     [ShowIf("MovementType", global::MovementType.Orbit)]
     [LabelText("Radius")]
-    public float OrbitRadius;
+    public float OrbitRadius = 3;
 
     [ShowIf("MovementType", global::MovementType.Orbit)]
     [LabelText("Distribution")]
@@ -79,7 +80,7 @@ public class WeaponMakerData
     [LabelText("Max Count")]
     [InfoBox("360도를 MaxCount로 나누어서 배치")]
     [MinValue(1)]
-    public int OrbitMaxCount = 8;
+    public int OrbitMaxCount = 4;
 
 
     // Spiral
@@ -102,6 +103,23 @@ public class WeaponMakerData
     [LabelText("Wave Frequency")]
     [MinValue(0f)]
     public float WaveFrequency = 1f;
+    
+    // Follow
+    [ShowIf("MovementType",global::MovementType.Follow)]
+    [LabelText("Follow Target Type")]
+    public FollowTargetType FollowTargetType;
+    [ShowIf("MovementType",global::MovementType.Follow)]
+    [LabelText("Follow Mode")]
+    public FollowMode FollowMode;
+
+    [ShowIf("MovementType", global::MovementType.Follow)]
+    [LabelText("Follow Speed")]
+    [MinValue(0.01f)]
+    public float FollowSpeed = 5;
+
+    [ShowIf("MovementType", global::MovementType.Follow)]
+    [LabelText("Follow Offset")]
+    public Vector2 FollowOffset;
 
 
     [LabelText("Behaviours")]

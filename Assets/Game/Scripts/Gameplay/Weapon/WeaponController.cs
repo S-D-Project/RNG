@@ -10,26 +10,34 @@ public class WeaponController : MonoBehaviour
     private IFireMode _fireMode;
     private IReadOnlyList<IWeaponBehaviour> _behaviours;
     private IAttackMovementFactory _movementFactory;
-    
+
+    private IEnemySpatialQuery _spatialQuery;
+
     private bool _isInitialized;
     private AttackRuntimeManager _attackRuntimeManager;
-
+    private Vector2 _facingDirection = Vector2.up;
+    
     public bool IsCooldownReady => _weaponRuntime.Cooldown <= 0f;
     public bool IsOwnerMoving { get; private set; }
-
-    public AttackRuntimeManager AttackRuntimeManager => _attackRuntimeManager;
-
-    public void SetOwnerMoving(bool isMoving)
+    
+    public void SetWeaponControllerValueFromPlayerInput(PlayerWeaponDto dto)
     {
-        IsOwnerMoving = isMoving;
+        IsOwnerMoving = dto.IsMoving;
+        _facingDirection = dto.MoveDirection;
     }
-    public void Initialize(WeaponRuntime runtime,AttackRuntimeManager attackRuntimeManager)
+
+    public void SetFacingDirection(Vector2 facingDirection)
+    {
+        _facingDirection = facingDirection;
+    }
+
+    public void Initialize(WeaponRuntime runtime, AttackRuntimeManager attackRuntimeManager)
     {
         if (_isInitialized)
         {
             return;
         }
-        
+
         _weaponRuntime = runtime;
         _spawnPosition = runtime.BaseData.AttackDefinitionData.SpawnPosition.Create();
         _targeting = runtime.BaseData.Targeting.Create();
@@ -39,7 +47,6 @@ public class WeaponController : MonoBehaviour
         _movementFactory = runtime.BaseData.AttackDefinitionData.Movement.CreateFactory();
         _isInitialized = true;
         _behaviours = CreateBehaviours(runtime.BaseData.AttackDefinitionData);
-        
         
     }
 
@@ -63,10 +70,10 @@ public class WeaponController : MonoBehaviour
         }
 
         float deltaTime = Time.deltaTime;
-        
+
         _weaponRuntime.UpdateCooldown(deltaTime);
-        
-        _fireMode.Update(this,_weaponRuntime,deltaTime);
+
+        _fireMode.Update(this, _weaponRuntime, deltaTime);
     }
 
     public bool TryFindTarget(out EnemyRuntime target)
@@ -75,6 +82,7 @@ public class WeaponController : MonoBehaviour
 
         return target != null;
     }
+
     public bool TryFireNow()
     {
         if (!IsCooldownReady)
@@ -82,11 +90,13 @@ public class WeaponController : MonoBehaviour
             return false;
         }
 
-        if (!TryFindTarget(out EnemyRuntime target))
+        EnemyRuntime target = null;
+
+        if (_targeting.RequiresTarget && !TryFindTarget(out target))
         {
             return false;
         }
-        
+
         return TryFireNow(target);
     }
 
@@ -98,18 +108,29 @@ public class WeaponController : MonoBehaviour
         }
 
         Fire(target);
-        
+
         _weaponRuntime.ResetCooldown();
 
         return true;
     }
-    
-    public void Fire(EnemyRuntime target)
+
+    private void Fire(EnemyRuntime target)
     {
         Vector2 ownerPosition = transform.position;
-        Vector2 targetPosition = target.transform.position;
+        Vector2 targetPosition;
+        Vector2 aimDirection;
 
-        Vector2 aimDirection = (targetPosition - ownerPosition).normalized;
+        if (_targeting.RequiresTarget)
+        {
+            targetPosition = target.transform.position;
+            aimDirection = (targetPosition - ownerPosition).normalized;
+        }
+        else
+        {
+            targetPosition = ownerPosition;
+            aimDirection = Vector2.up;
+            ;
+        }
 
         Vector2 spawnPosition = _spawnPosition.GetPosition(ownerPosition, targetPosition, aimDirection);
 
@@ -121,15 +142,15 @@ public class WeaponController : MonoBehaviour
 
         foreach (Vector2 direction in directions)
         {
-            FireAttack(spawnPosition,direction,target);
+            FireAttack(spawnPosition, direction, target);
         }
     }
 
-    public void FireAttack(Vector2 spawnPosition,Vector2 direction,EnemyRuntime target)
+    private void FireAttack(Vector2 spawnPosition, Vector2 direction, EnemyRuntime target)
     {
         AttackDefinitionData resource =
             _weaponRuntime.BaseData.AttackDefinitionData;
-
+        IHitPolicy hitPolicy = resource.HitPolicy.Create();
 
         if (!_movementFactory.TryCreateMovement(direction, out IAttackMovement attackMovement))
         {
@@ -147,14 +168,14 @@ public class WeaponController : MonoBehaviour
             _weaponRuntime.BaseData.HitRadius,
             _weaponRuntime.BaseData.Lifetime,
             attackMovement,
+            hitPolicy,
             _behaviours);
     }
-    
-    public EnemyRuntime FindTarget()
+
+    private EnemyRuntime FindTarget()
     {
         Vector2 position = transform.position;
 
-        return _targeting.FindTarget(position, EnemyManager.Instance.SpatialQuery);
+        return _targeting.FindTarget(position,_facingDirection, _weaponRuntime.CurrentRange, EnemyManager.Instance.SpatialQuery);
     }
-
 }

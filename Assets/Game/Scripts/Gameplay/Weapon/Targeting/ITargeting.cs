@@ -3,5 +3,6 @@ using UnityEngine;
 
 public interface ITargeting
 {
-    EnemyRuntime FindTarget(Vector2 origin, IEnemySpatialQuery spatialQuery);
+    bool RequiresTarget {get;}
+    EnemyRuntime FindTarget(Vector2 origin,Vector2 forward, float searchRange, IEnemySpatialQuery spatialQuery);
 }

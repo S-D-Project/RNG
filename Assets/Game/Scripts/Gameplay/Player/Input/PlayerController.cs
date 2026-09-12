@@ -13,15 +13,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private MovementSystem _playerMovement;
 
-    [SerializeField]
-    [ReadOnly]
+
     private Vector2 _moveDirection;
+    private Vector2 _lastDirection = Vector3.right;
 
     [SerializeField]
     private PlayerWeaponControllerManager _weaponControllerManager;
 
     private List<WeaponController> _weaponControllers;
-    
+
+
     private void OnEnable()
     {
         _moveAction.action.Enable();
@@ -46,13 +47,30 @@ public class PlayerController : MonoBehaviour
         _moveDirection = _moveAction.action.ReadValue<Vector2>();
         _playerMovement.SetMoveDirection(_moveDirection);
 
-        UpdateWeaponMovementState();
+        UpdateWeaponState();
     }
 
-    private void UpdateWeaponMovementState()
+    private void UpdateWeaponState()
     {
         bool isMoving = _moveDirection.sqrMagnitude > 0.001f;
+        if (isMoving)
+        {
+            _lastDirection = _moveDirection;
+        }
 
-        _weaponControllerManager.SetOwnerMoving(isMoving);
+        _weaponControllerManager.SetOwnerValue(new PlayerWeaponDto(isMoving, _lastDirection));
+    }
+}
+
+public struct PlayerWeaponDto
+{
+    public bool IsMoving;
+    public Vector2 MoveDirection;
+
+
+    public PlayerWeaponDto(bool isMoving, Vector2 moveDirection)
+    {
+        IsMoving = isMoving;
+        MoveDirection = moveDirection;
     }
 }

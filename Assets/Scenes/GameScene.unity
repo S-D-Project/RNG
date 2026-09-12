@@ -1451,7 +1451,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTestSpawner
   _enemyPrefab: {fileID: 7966223910426594723, guid: 2ea59d135a1698c47a5e6a86557436de, type: 3}
   _target: {fileID: 0}
-  _spawnCount: 5
+  _spawnCount: 1
   _spawnPerFrame: 20
   _minSpawnRadius: 10
   _maxSpawnRadius: 30

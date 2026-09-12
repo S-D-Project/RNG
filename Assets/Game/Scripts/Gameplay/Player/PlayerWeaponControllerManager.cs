@@ -17,11 +17,11 @@ public class PlayerWeaponControllerManager : MonoBehaviour
         _weaponControllers.Add(controller);
     }
 
-    public void SetOwnerMoving(bool isMoving)
+    public void SetOwnerValue(PlayerWeaponDto dto)
     {
         foreach (WeaponController controller in _weaponControllers)
         {
-            controller.SetOwnerMoving(isMoving);
+            controller.SetWeaponControllerValueFromPlayerInput(dto);
         }
     }
 
