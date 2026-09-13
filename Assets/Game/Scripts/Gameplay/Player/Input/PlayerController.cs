@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageReceiver
 {
     [Title("Movement Settings")]
     [SerializeField]
@@ -59,6 +59,11 @@ public class PlayerController : MonoBehaviour
         }
 
         _weaponControllerManager.SetOwnerValue(new PlayerWeaponDto(isMoving, _lastDirection));
+    }
+
+    public void TakeDamage(float damage)
+    {
+        Debug.Log($"Player take {damage} damage");
     }
 }
 

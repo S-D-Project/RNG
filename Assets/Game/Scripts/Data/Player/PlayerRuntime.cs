@@ -16,7 +16,9 @@ public class PlayerRuntime : MonoBehaviour
 
     public string Id { get; private set; }
     public float MaxHp { get; private set; }
+    public float Hp { get; private set; }
     public float MoveSpeed { get; private set; }
+    public float CollisionRadius { get; private set; }
     
     public int Level { get; private set; }
     public float Cooldown { get; private set; }
@@ -39,6 +41,7 @@ public class PlayerRuntime : MonoBehaviour
         _movementSystem.SetMoveSpeed(MoveSpeed);
 
         _isInitialized = true;
+        CollisionRadius = 1f;
     }
 
     public void AddWeapon(WeaponRuntime weapon)
@@ -54,5 +57,10 @@ public class PlayerRuntime : MonoBehaviour
     private void SetCooldown(float amount)
     {
         Cooldown = amount;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        Hp -= damage;
     }
 }

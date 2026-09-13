@@ -1,118 +1,194 @@
-﻿
-using System;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class StageInitializer : MonoBehaviour
 {
+
+    [Title("Stage")]
+    [SerializeField]
+    [Required]
+    private StageSequenceManager _stageSequenceManager;
+
+    [SerializeField]
+    [Required]
+    private WaveManager _waveManager;
+    
+    
     [Title("Spawner")]
     [SerializeField]
     [Required]
     private PlayerSpawner _playerSpawner;
+    [Required]
+    [SerializeField]
+    private EnemySpawner _enemySpawner;
     
-    [Title("AttackRuntimeManager")]
-    [SerializeField] 
-    [Required] 
-    private AttackRuntimeManager _attackRuntimeManager;
+    [Required]
+    [SerializeField]
+    private EnemyPool _enemyPool;
 
-    [Title("Player Prefab")]
+    [Title("Attack Runtime Manager")]
     [SerializeField]
     [Required]
-    [InfoBox("지금은 인스펙터 창에서 넣는데 나중에 캐릭터 선택 만들면 대체할 예정")]
+    private AttackRuntimeManager _attackRuntimeManager;
+
+
+
+
+    [Title("Test Settings")]
+    [SerializeField]
+    [Required]
+    [InfoBox("임시 설정. 추후 캐릭터 선택 UI로 대체")]
     private string _selectedCharacterId;
 
-    private Transform _playerTransform;
+    [SerializeField]
+    [Required]
+    private EnemyTestSpawner _testSpawner;
 
-    public EnemyTestSpawner TestSpawner;
+    public int SpawnCount = 5;
 
+    [SerializeField]
+    [Required]
+    [InfoBox("임시 설정")]
+    private string _testEnemyId;
+    
+    private PlayerRuntime _playerRuntime;
+    
     private void Start()
     {
         Initialize();
     }
 
-    /**
-     * TODO 지금은 인스펙터 창에서 캐릭터를 넣어두는데, 나중에 캐릭터 선택 상호작용과 연결 
-     */
+
     public void SetCharacter(string id)
     {
         _selectedCharacterId = id;
     }
 
+
     private void Initialize()
     {
         InitializeStage();
+
         InitializePlayer();
+
+        InitializeEnemy();
+
+        InitializeCombat();
+
         InitializeUI();
+
         InitializeSequence();
-        TestSettings();
-        
+
         StartGame();
     }
 
 
+
+
     private void InitializeStage()
     {
-        // TODO stage 초기화
-        
-        
+        // TODO
+        // StageData 로드
+        // Stage 환경 설정
+        // Stage Spawn 정보 준비
     }
+
 
     private void InitializePlayer()
     {
-        PlayerRuntime player = _playerSpawner.SpawnPlayer(Vector2.zero,_selectedCharacterId);
-        _playerTransform = player.transform;
-        // TODO 임시로 Weapon 추가. 나중에 분리해야 함.
-        WeaponData weaponData = GameDataStore.Instance.GetWeaponData("bullet");
-        WeaponRuntime weaponRuntime = new WeaponRuntime(weaponData);
-        player.AddWeapon(weaponRuntime);
+        _playerRuntime =
+            _playerSpawner.SpawnPlayer(
+                Vector2.zero,
+                _selectedCharacterId);
 
-        // WeaponData weaponData2 = GameDataStore.Instance.GetWeaponData("fire_ball");
-        // WeaponRuntime weaponRuntime2 = new WeaponRuntime(weaponData2);
-        // player.AddWeapon(weaponRuntime2);
-        //
-        // WeaponData weapondata3 = GameDataStore.Instance.GetWeaponData("plasma_bullet");
-        // WeaponRuntime weaponRuntime3 = new WeaponRuntime(weapondata3);
-        // player.AddWeapon(weaponRuntime3);
-        
-        // TODO 실제 무기 생성 
-        AddWeaponToPlayer(weaponData,weaponRuntime,player.gameObject);
-        // AddWeaponToPlayer(weaponData2,weaponRuntime2,player.gameObject);
-        // AddWeaponToPlayer(weapondata3,weaponRuntime3,player.gameObject);
-
+        InitializeTestWeapon();
     }
-    
-    
-    private void AddWeaponToPlayer(WeaponData weaponData,WeaponRuntime runtime ,GameObject player)
+
+
+    private void InitializeEnemy()
     {
-        GameObject weaponObjectPrefab = weaponData.WeaponObjectPrefab;
-        GameObject weapon = Instantiate(weaponObjectPrefab, player.transform);
-        WeaponController weaponController = weapon.GetComponent<WeaponController>();
-        weaponController.Initialize(runtime, _attackRuntimeManager);
-        PlayerWeaponControllerManager weaponControllerManager = player.GetComponent<PlayerWeaponControllerManager>();
-        weaponControllerManager.AddWeapon(runtime,weaponController);
+        EnemyManager.Instance.Initialize(
+            _playerRuntime,_enemyPool);
 
+        _enemySpawner.Initialize(_playerRuntime.transform,_enemyPool);
+
+
+        EnemyData enemyData = GameDataStore.Instance.GetEnemyData(_testEnemyId);
+        
+        // Test
+
+        StartCoroutine(_testSpawner.Spawn(_enemySpawner,enemyData,SpawnCount));
+        
     }
+
+
+    private void InitializeCombat()
+    {
+        _attackRuntimeManager.Initialize(
+            EnemyManager.Instance.SpatialQuery);
+    }
+
 
     private void InitializeUI()
     {
         // TODO UI 초기화
     }
-    
+
     private void InitializeSequence()
     {
-        EnemyManager.Instance.Initialize(_playerTransform);
-        _attackRuntimeManager.Initialize(EnemyManager.Instance.SpatialQuery);
+        _stageSequenceManager.Initialize(_enemyPool, _waveManager);
     }
-
 
     private void StartGame()
     {
-        // TODO Game시작 로직 
+        
+        // TODO 게임 시작
     }
 
-    private void TestSettings()
+
+    private void InitializeTestWeapon()
     {
-        StartCoroutine(TestSpawner.Initialize(_playerTransform));
-        
+        WeaponData weaponData =
+            GameDataStore.Instance.GetWeaponData(
+                "bullet");
+
+        WeaponRuntime weaponRuntime =
+            new WeaponRuntime(weaponData);
+
+        _playerRuntime.AddWeapon(
+            weaponRuntime);
+
+        AddWeaponToPlayer(
+            weaponData,
+            weaponRuntime,
+            _playerRuntime.gameObject);
+    }
+
+
+    private void AddWeaponToPlayer(
+        WeaponData weaponData,
+        WeaponRuntime runtime,
+        GameObject player)
+    {
+        GameObject weapon =
+            Instantiate(
+                weaponData.WeaponObjectPrefab,
+                player.transform);
+
+        WeaponController weaponController =
+            weapon.GetComponent<WeaponController>();
+
+        weaponController.Initialize(
+            runtime,
+            _attackRuntimeManager);
+
+        PlayerWeaponControllerManager
+            weaponControllerManager =
+                player.GetComponent<
+                    PlayerWeaponControllerManager>();
+
+        weaponControllerManager.AddWeapon(
+            runtime,
+            weaponController);
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7054717276320391283}
   - component: {fileID: 7966223910426594723}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: zombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,9 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87186515660646cc9939631555ebb259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRuntime
-  _enemyName: a
-  _hitRaiuds: 0.5
-  _moveSpeed: 3
+  _id: zombie
 --- !u!1 &6093694767497422083
 GameObject:
   m_ObjectHideFlags: 0
