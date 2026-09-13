@@ -60,30 +60,31 @@ public class EnemyPool : MonoBehaviour
         pool.Release(enemy);
     }
 
-    public IEnumerator Prewarm(EnemyData enemyData, int count, int createPerFream)
+    public IEnumerator Prewarm(EnemyData enemyData, int count, int createPerFream = 20)
     {
         ObjectPool<EnemyRuntime> pool = GetOrCreatePool(enemyData);
 
-        List<EnemyRuntime> enemies = new();
+        List<EnemyRuntime> prewarmList = new List<EnemyRuntime>(count);
+        
 
         int createdCount = 0;
 
         while (createdCount < count)
         {
-            int createCount = Mathf.Min(createPerFream, count - createdCount);
+            int frameCount = Mathf.Min(createPerFream, count - createdCount);
 
-            for (int i = 0; i < createCount; i++)
+            for (int i = 0; i < frameCount; i++)
             {
                 EnemyRuntime enemy = pool.Get();
                 
-                enemies.Add(enemy);
+                prewarmList.Add(enemy);
             }
 
-            createdCount += createCount;
+            createdCount += frameCount;
             yield return null;
         }
 
-        foreach (EnemyRuntime enemy in enemies)
+        foreach (EnemyRuntime enemy in prewarmList)
         {
             pool.Release(enemy);
         }

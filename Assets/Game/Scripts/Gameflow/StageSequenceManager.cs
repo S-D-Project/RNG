@@ -14,38 +14,37 @@ public class StageSequenceManager : MonoBehaviour
 
     public IEnumerator StartSequence()
     {
+        yield return PrepareStage();
 
-        yield return null;
+        yield return ReadyStage();
+
+        StartStage();
     }
+
 
     private IEnumerator PrepareStage()
     {
+        // TODO
+        // Wave Spawn Plan 생성
         // Enemy Pool Prewarm
 
         yield return null;
     }
 
-    private IEnumerator ReadySequence()
+
+    private IEnumerator ReadyStage()
     {
         // TODO
         // Ready UI
-        // 3 ,2 ,1 카운트다운 등
+        // Countdown
+
         yield return null;
     }
 
-    private IEnumerator PlayStage()
+
+    private void StartStage()
     {
         // TODO
-        // WaveManager.Start()
-        
-        yield return null;
-    }
-
-    private IEnumerator ClearSequence()
-    {
-        // TODO
-        // Stage Clear
-
-        yield return null;
+        // WaveManager 시작
     }
 }
