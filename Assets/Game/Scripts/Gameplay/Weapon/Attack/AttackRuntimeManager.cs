@@ -134,24 +134,11 @@ public class AttackRuntimeManager : MonoBehaviour
     private void UpdateCollision(AttackRuntime attack)
     {
         Vector2 attackPosition = attack.Transform.position;
-
-        float queryRadius = attack.HitRadius + EnemyManager.Instance.MaxHitRadius;
-
-        _enemySpatialQuery.Query(attackPosition, queryRadius, _collisionCandidates);
+        
+        _enemySpatialQuery.QueryOverlapCircle(attackPosition,attack.HitRadius,_collisionCandidates);
         
         foreach (EnemyRuntime enemy in _collisionCandidates)
         {
-            Vector2 enemyPosition = enemy.transform.position;
-
-            float collisionRadius = attack.HitRadius + enemy.HitRadius;
-
-            float sqrDistance = (enemyPosition - attackPosition).sqrMagnitude;
-
-            if (sqrDistance > collisionRadius * collisionRadius)
-            { 
-                continue;
-            }
-
             if (!attack.TryHit(enemy))
             {
                 continue;

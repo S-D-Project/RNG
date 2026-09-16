@@ -1089,6 +1089,7 @@ MonoBehaviour:
   _spreadSheetId: 1bwBrkjXtTnLAf131f9p6TrfsQ5rUeQWRFEiUsJsIuho
   _playerRegistry: {fileID: 11400000, guid: 98f45dbe04b39a840abda2ad763a2ed4, type: 2}
   _weaponRegistry: {fileID: 11400000, guid: 1052023a3cfdefb438ee78749f69e97e, type: 2}
+  _enemyRegistry: {fileID: 11400000, guid: 700c9cc64ec4cc949b18bd3541c8da08, type: 2}
 --- !u!114 &1044975241
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -24,7 +24,7 @@ MonoBehaviour:
   _firePattern:
     rid: 4889859285106819153
   _targeting:
-    rid: 4889859400814821455
+    rid: 4889859439023620175
   references:
     version: 2
     RefIds:
@@ -35,37 +35,33 @@ MonoBehaviour:
         _spawnPosition:
           rid: 4889859285106819170
         _movement:
-          rid: 4889859332956487761
+          rid: 4889859534511145044
         _hitPolicy:
           rid: 4889859355452112976
         _behaviours:
-        - rid: 4889859285106819156
+        - rid: 4889859534511145042
     - rid: 4889859285106819152
       type: {class: InstantFireModeResourceData, ns: , asm: Assembly-CSharp}
       data: 
     - rid: 4889859285106819153
       type: {class: FanFirePatternResourceData, ns: , asm: Assembly-CSharp}
       data:
-        AttackCount: 3
-        SpreadAngle: 30
-    - rid: 4889859285106819156
-      type: {class: DamageBehaviourResourceData, ns: , asm: Assembly-CSharp}
-      data: 
+        AttackCount: 36
+        SpreadAngle: 360
     - rid: 4889859285106819170
       type: {class: OwnerSpawnPositionResourceData, ns: , asm: Assembly-CSharp}
       data:
         Offset: {x: 0, y: 0}
-    - rid: 4889859332956487761
-      type: {class: HomingMovementResourceData, ns: , asm: Assembly-CSharp}
-      data:
-        TurnSpeed: 360
-        SearchInterval: 0.5
-        SearchRadius: 20
     - rid: 4889859355452112976
       type: {class: TimeIntervalHitPolicyResourceData, ns: , asm: Assembly-CSharp}
       data:
         HitInterval: 0.5
-    - rid: 4889859400814821455
-      type: {class: ForwardTargetingResourceData, ns: , asm: Assembly-CSharp}
-      data:
-        SearchAngle: 60
+    - rid: 4889859439023620175
+      type: {class: NearestTargetingResourceData, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4889859534511145042
+      type: {class: DamageBehaviourResourceData, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4889859534511145044
+      type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
+      data: 

@@ -26,6 +26,11 @@ public class GameDataLoader : MonoBehaviour
     [SerializeField] 
     [Required]
     private WeaponResourceRegistry _weaponRegistry;
+
+    [TitleGroup("Data Registry","Enemy Data")]
+    [SerializeField]
+    [Required]
+    private EnemyResourceRegistry _enemyRegistry;
     
 
     public void Initialize()
@@ -40,6 +45,7 @@ public class GameDataLoader : MonoBehaviour
             DataResponse response = await _dataSource.LoadAsync();
             ParsePlayerData(response.Content);
             ParseWeaponData(response.Content);
+            ParseEnemyData(response.Content);
             
         }
         catch (Exception e)
@@ -48,7 +54,6 @@ public class GameDataLoader : MonoBehaviour
             throw;
         }
     }
-
     private void ParsePlayerData(string json)
     {
         // SheetParser 
@@ -94,4 +99,28 @@ public class GameDataLoader : MonoBehaviour
 
         GameDataStore.Instance.SetWeaponData(weaponDataDic);
     }
+    
+    private void ParseEnemyData(string json)
+    {
+        List<EnemyDto> enemyDtos = SheetParser.Parse<EnemyDto>(json, "EnemyData");
+
+        if (_enemyRegistry == null)
+        {
+
+            Debug.LogError("EnemyRegistry를 DataLoader에 넣으세요.");
+        }
+
+        EnemyBuilder builder = new EnemyBuilder(_enemyRegistry);
+        List<EnemyData> enemyDataList = builder.Build(enemyDtos);
+
+        Dictionary<string, EnemyData> enemyDataDic = new Dictionary<string, EnemyData>();
+        
+        foreach(EnemyData enemyData in enemyDataList)
+        {
+            enemyDataDic.Add(enemyData.Id,enemyData);
+        }
+
+        GameDataStore.Instance.SetEnemyData(enemyDataDic);
+    }
+
 }

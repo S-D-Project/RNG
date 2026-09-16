@@ -104,6 +104,7 @@ public class EnemySpatialHash : IEnemySpatialQuery
         _enemyCells[enemy] = currentCellPositioin;
     }
 
+    // 타겟팅
     public void Query(Vector2 center, float radius, List<EnemyRuntime> results)
     {
         results.Clear();
@@ -129,6 +130,10 @@ public class EnemySpatialHash : IEnemySpatialQuery
 
                 foreach (EnemyRuntime enemy in cell)
                 {
+                    if (enemy.IsDead)
+                    {
+                        continue;
+                    }
                     Vector2 enemyPosition = enemy.transform.position;
 
                     float sqrDistance = (enemyPosition - center).sqrMagnitude;
@@ -144,6 +149,7 @@ public class EnemySpatialHash : IEnemySpatialQuery
         }
     }
 
+    // 충돌 검사용
     public void QueryOverlapCircle(
         Vector2 center,
         float radius,
@@ -182,6 +188,11 @@ public class EnemySpatialHash : IEnemySpatialQuery
 
                 foreach (EnemyRuntime enemy in cell)
                 {
+                    if (enemy.IsDead)
+                    {
+                        continue;
+                    }
+                    
                     Vector2 enemyPosition =
                         enemy.transform.position;
 
