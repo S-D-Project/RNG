@@ -41,7 +41,7 @@ public class PlayerRuntime : MonoBehaviour
         _movementSystem.SetMoveSpeed(MoveSpeed);
 
         _isInitialized = true;
-        CollisionRadius = 1f;
+        CollisionRadius = baseData.HitRadius;
     }
 
     public void AddWeapon(WeaponRuntime weapon)

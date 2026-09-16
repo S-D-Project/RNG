@@ -7,6 +7,7 @@ public class EnemyData
     public float MoveSpeed { get; }
     public float ContactDamage { get; }
     public float CollisionRadius { get; }
+    public EnemyGrade Grade { get; }
     
     public EnemyResource Resource { get; }
 
@@ -19,6 +20,7 @@ public class EnemyData
         MoveSpeed = dto.MoveSpeed;
         ContactDamage = dto.ContactDamage;
         CollisionRadius = dto.CollisionRadius;
+        Grade = dto.Grade;
         
         Resource = resource;
     }

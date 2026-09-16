@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using System;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
@@ -25,6 +26,9 @@ public class EnemyManager : Singleton<EnemyManager>
     private readonly List<EnemyRuntime> _enemyList = new();
 
 
+    public int ActiveEnemyCount => _enemyList.Count;
+    public event Action<EnemyRuntime> EnemyKilled;
+    
     public IEnemySpatialQuery SpatialQuery => _spatialHash;
 
 
@@ -168,6 +172,8 @@ public class EnemyManager : Singleton<EnemyManager>
         _spatialHash.UnRegister(enemy);
 
         _enemyList.RemoveAt(index);
+        
+        EnemyKilled?.Invoke(enemy);
 
         _enemyPool.Release(enemy);
     }

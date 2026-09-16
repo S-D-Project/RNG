@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class StageInitializer : MonoBehaviour
@@ -12,7 +13,11 @@ public class StageInitializer : MonoBehaviour
     [SerializeField]
     [Required]
     private WaveManager _waveManager;
-    
+
+    [SerializeField]
+    [Required]
+    private StageDefinition _stageDefinition;
+
     
     [Title("Spawner")]
     [SerializeField]
@@ -111,14 +116,8 @@ public class StageInitializer : MonoBehaviour
             _playerRuntime,_enemyPool);
 
         _enemySpawner.Initialize(_playerRuntime.transform,_enemyPool);
-
-
-        EnemyData enemyData = GameDataStore.Instance.GetEnemyData(_testEnemyId);
         
-        // Test
-
-        StartCoroutine(_testSpawner.Spawn(_enemySpawner,enemyData,SpawnCount));
-        
+        _waveManager.Initialize(EnemyManager.Instance,_enemySpawner);
     }
 
 
@@ -136,13 +135,14 @@ public class StageInitializer : MonoBehaviour
 
     private void InitializeSequence()
     {
-        _stageSequenceManager.Initialize(_enemyPool, _waveManager);
+        StageRuntime runtime = new StageRuntime(_stageDefinition);
+        _stageSequenceManager.Initialize(runtime,_enemyPool,_waveManager,EnemyManager.Instance);
+        
     }
 
     private void StartGame()
     {
-        
-        // TODO 게임 시작
+        StartCoroutine(_stageSequenceManager.StartSequence());
     }
 
 
