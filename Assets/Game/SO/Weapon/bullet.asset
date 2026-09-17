@@ -35,7 +35,7 @@ MonoBehaviour:
         _spawnPosition:
           rid: 4889859285106819170
         _movement:
-          rid: 4889859534511145044
+          rid: 4889859557879971923
         _hitPolicy:
           rid: 4889859355452112976
         _behaviours:
@@ -46,8 +46,8 @@ MonoBehaviour:
     - rid: 4889859285106819153
       type: {class: FanFirePatternResourceData, ns: , asm: Assembly-CSharp}
       data:
-        AttackCount: 36
-        SpreadAngle: 360
+        AttackCount: 4
+        SpreadAngle: 90
     - rid: 4889859285106819170
       type: {class: OwnerSpawnPositionResourceData, ns: , asm: Assembly-CSharp}
       data:
@@ -62,6 +62,9 @@ MonoBehaviour:
     - rid: 4889859534511145042
       type: {class: DamageBehaviourResourceData, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 4889859534511145044
-      type: {class: StraightMovementResourceData, ns: , asm: Assembly-CSharp}
-      data: 
+    - rid: 4889859557879971923
+      type: {class: HomingMovementResourceData, ns: , asm: Assembly-CSharp}
+      data:
+        TurnSpeed: 180
+        SearchInterval: 0.5
+        SearchRadius: 5

@@ -18,7 +18,7 @@ public class PlayerRuntime : MonoBehaviour
     public float MaxHp { get; private set; }
     public float Hp { get; private set; }
     public float MoveSpeed { get; private set; }
-    public float CollisionRadius { get; private set; }
+    public float HitRadius { get; private set; }
     
     public int Level { get; private set; }
     public float Cooldown { get; private set; }
@@ -36,12 +36,13 @@ public class PlayerRuntime : MonoBehaviour
         MaxHp = baseData.MaxHp;
         MoveSpeed = baseData.MoveSpeed;
         Level = 1;
+        HitRadius = baseData.HitRadius;
         
         _movementSystem = gameObject.GetComponent<MovementSystem>();
         _movementSystem.SetMoveSpeed(MoveSpeed);
 
         _isInitialized = true;
-        CollisionRadius = baseData.HitRadius;
+
     }
 
     public void AddWeapon(WeaponRuntime weapon)

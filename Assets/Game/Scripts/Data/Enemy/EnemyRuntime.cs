@@ -16,11 +16,10 @@ public class EnemyRuntime : MonoBehaviour
     public void Initialize(EnemyData data)
     {
         Data = data;
-        HitRadius = data.CollisionRadius;
         MoveSpeed = data.MoveSpeed;
         CurrentHp = data.MaxHp;
         ContactDamage = data.ContactDamage;
-
+        HitRadius =  data.HitRadius;
         IsDead = false;
     }
 

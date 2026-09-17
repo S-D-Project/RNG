@@ -15,8 +15,7 @@ public class WeaponData
 
     public float Speed { get; }
     public float SpeedPerLevel { get; }
-
-    public float HitRadius { get; }
+    
     public float Lifetime { get; }
     
     public float CastTime { get; }
@@ -31,6 +30,8 @@ public class WeaponData
     public FireModeResourceData FireMode { get; }
     public TargetingResourceData Targeting { get; }
     public AttackDefinitionData AttackDefinitionData { get; }
+    
+    public float HitRadius { get; private set; }
 
     public WeaponData(
         WeaponDto weaponDto,
@@ -49,8 +50,7 @@ public class WeaponData
 
         Speed = weaponDto.Speed;
         SpeedPerLevel = weaponDto.SpeedPerLevel;
-
-        HitRadius = weaponDto.HitRadius;
+        
         Lifetime = weaponDto.Lifetime;
         CastTime = weaponDto.CastTime;
 
@@ -63,5 +63,10 @@ public class WeaponData
         FirePattern = weaponResource.FirePattern;
         Targeting = weaponResource.Targeting;
         AttackDefinitionData = weaponResource.AttackDefinitionData;
+    }
+
+    public void SetRadius(float radius)
+    {
+        HitRadius = radius;
     }
 }

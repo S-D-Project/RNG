@@ -38,7 +38,7 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         _playerRuntime = playerRuntime;
         _playerTransform = playerRuntime.transform;
-        _playerCollisionRadius = playerRuntime.CollisionRadius;
+        _playerCollisionRadius = playerRuntime.HitRadius;
 
         _enemyPool = enemyPool;
 
