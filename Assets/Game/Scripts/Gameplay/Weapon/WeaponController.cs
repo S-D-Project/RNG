@@ -165,7 +165,7 @@ public class WeaponController : MonoBehaviour
             direction,
             _weaponRuntime.CurrentSpeed,
             _weaponRuntime.CurrentDamage,
-            _weaponRuntime.BaseData.HitRadius,
+            _weaponRuntime.HitRadius,
             _weaponRuntime.BaseData.Lifetime,
             attackMovement,
             hitPolicy,

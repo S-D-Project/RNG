@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour, IDamageReceiver
     {
         _moveDirection = _moveAction.action.ReadValue<Vector2>();
         _playerMovement.SetMoveDirection(_moveDirection);
-
+        _playerMovement.Move(Time.deltaTime);
         UpdateWeaponState();
     }
 

@@ -8,21 +8,25 @@ public class PlayerData
     public string Id { get; }
     public float MaxHp { get; }
     public float MoveSpeed { get; }
-
-    public float HitRadius { get; }
     
     public GameObject Prefab { get; }
     public Sprite Icon { get; }
+
+    public float HitRadius { get; private set; }
 
     public PlayerData(PlayerDto playerDto, PlayerResource playerResource)
     {
         Id = playerDto.Id;
         MaxHp = playerDto.MaxHp;
         MoveSpeed = playerDto.MoveSpeed;
-        HitRadius = playerDto.HitRadius;
         
         Prefab = playerResource.Prefab;
         Icon = playerResource.Icon;
         
+    }
+
+    public void SetRadius(float radius)
+    {
+        HitRadius = radius;
     }
 }

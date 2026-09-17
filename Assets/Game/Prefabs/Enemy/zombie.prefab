@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7054717276320391283}
   - component: {fileID: 7966223910426594723}
+  - component: {fileID: 5189146485744261784}
   m_Layer: 0
   m_Name: zombie
   m_TagString: Untagged
@@ -45,7 +46,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87186515660646cc9939631555ebb259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRuntime
-  _id: zombie
+--- !u!114 &5189146485744261784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2927186183712405674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99c6a8bb444d453b813c8c348a13486c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitArea
+  _spriteRenderer: {fileID: 4095008590750822841}
+  _hitRadius: 0.6
 --- !u!1 &6093694767497422083
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,8 +137,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1014638151
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}

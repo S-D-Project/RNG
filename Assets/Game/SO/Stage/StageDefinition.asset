@@ -22,6 +22,8 @@ MonoBehaviour:
       EnemyId: skeleton
       Grade: 0
       Count: 30
+      SpawnDuration: 3
+      SpawnTiming: 0
   - WaveNumber: 2
     MaxDuration: 10
     KillThreshold: 30
@@ -30,3 +32,5 @@ MonoBehaviour:
       EnemyId: 
       Grade: 0
       Count: 30
+      SpawnDuration: 6
+      SpawnTiming: 1

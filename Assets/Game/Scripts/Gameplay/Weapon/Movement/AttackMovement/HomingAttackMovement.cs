@@ -16,7 +16,7 @@ public class HomingAttackMovement : IAttackMovement
     {
         _turnSpeed = turnSpeed;
         _searchInterval = searchInterval;
-        _remainingSearchInterval = 0f;
+        _remainingSearchInterval = 3f;
         _searchRange = searchRange;
     }
     
@@ -34,7 +34,7 @@ public class HomingAttackMovement : IAttackMovement
 
     public void Initialize(AttackRuntime attack)
     {
-        
+        _remainingSearchInterval = 3f;
     }
 
     public void OnRelease(AttackRuntime attack)

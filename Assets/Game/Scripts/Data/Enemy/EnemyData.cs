@@ -6,10 +6,11 @@ public class EnemyData
     public float MaxHp { get; }
     public float MoveSpeed { get; }
     public float ContactDamage { get; }
-    public float CollisionRadius { get; }
     public EnemyGrade Grade { get; }
     
     public EnemyResource Resource { get; }
+    
+    public float HitRadius { get; private set; }
 
     public EnemyData(EnemyDto dto, EnemyResource resource)
     {
@@ -19,7 +20,6 @@ public class EnemyData
         MaxHp = dto.MaxHp;
         MoveSpeed = dto.MoveSpeed;
         ContactDamage = dto.ContactDamage;
-        CollisionRadius = dto.CollisionRadius;
         Grade = dto.Grade;
         
         Resource = resource;
@@ -41,5 +41,10 @@ public class EnemyData
         {
             throw new ArgumentException($"Enemy Id missmatch. Dto : {dto.Id}, Resource : {resource.Id}");
         }
+    }
+
+    public void SetRadius(float radius)
+    {
+        HitRadius = radius;
     }
 }

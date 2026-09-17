@@ -18,6 +18,14 @@ public class StageInitializer : MonoBehaviour
     [Required]
     private StageDefinition _stageDefinition;
 
+    [SerializeField]
+    [Required]
+    private PlayerCamera _playerCamera;
+    
+    [SerializeField]
+    [Required]
+    private InfiniteMapController _infiniteMapController;
+
     
     [Title("Spawner")]
     [SerializeField]
@@ -131,6 +139,8 @@ public class StageInitializer : MonoBehaviour
     private void InitializeUI()
     {
         // TODO UI 초기화
+        _playerCamera.Initialize(_playerRuntime.transform);
+        _infiniteMapController.Initialize(_playerRuntime.transform);
     }
 
     private void InitializeSequence()

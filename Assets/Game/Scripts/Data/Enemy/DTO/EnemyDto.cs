@@ -7,6 +7,5 @@ public class EnemyDto
     public float MaxHp;
     public float MoveSpeed;
     public float ContactDamage;
-    public float CollisionRadius;
     public EnemyGrade Grade;
 }

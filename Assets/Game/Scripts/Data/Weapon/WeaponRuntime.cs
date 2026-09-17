@@ -13,13 +13,15 @@
     public float Cooldown { get; private set; }
     
     public float CurrentCastTime { get; private set; }
+    
+    public float HitRadius { get; private set; }
 
     public WeaponRuntime(WeaponData baseData)
     {
         BaseData = baseData;
         Level = 1;
         ReCalculateStats();
-
+        HitRadius =  baseData.HitRadius;
         Cooldown = 0f;
     }
 

@@ -72,6 +72,8 @@ public class GameDataLoader : MonoBehaviour
 
         foreach (PlayerData playerData in playerDataList)
         {
+            HitArea hitArea =  playerData.Prefab.GetComponent<HitArea>();
+            playerData.SetRadius(hitArea.HitRadius);
             playerDataDic.Add(playerData.Id, playerData);
         }
         
@@ -94,6 +96,8 @@ public class GameDataLoader : MonoBehaviour
 
         foreach (WeaponData weaponData in weaponDataList)
         {
+            HitArea hitArea = weaponData.AttackDefinitionData.AttackPrefab.GetComponent<HitArea>();
+            weaponData.SetRadius(hitArea.HitRadius);
             weaponDataDic.Add(weaponData.Id,weaponData);
         }
 
@@ -117,10 +121,11 @@ public class GameDataLoader : MonoBehaviour
         
         foreach(EnemyData enemyData in enemyDataList)
         {
+            HitArea hitArea = enemyData.Resource.Prefab.GetComponent<HitArea>();
+            enemyData.SetRadius(hitArea.HitRadius);
             enemyDataDic.Add(enemyData.Id,enemyData);
         }
 
         GameDataStore.Instance.SetEnemyData(enemyDataDic);
     }
-
 }

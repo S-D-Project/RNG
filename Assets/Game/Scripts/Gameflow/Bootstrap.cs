@@ -10,8 +10,6 @@ public class Bootstrap : MonoBehaviour
     [Required]
     private GameDataLoader _gameDataLoader;
     
-
-    
     private async void Start()
     {
         InitializeSingleton();
