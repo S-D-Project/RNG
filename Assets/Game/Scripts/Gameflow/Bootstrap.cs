@@ -16,9 +16,7 @@ public class Bootstrap : MonoBehaviour
         
         await InitializeAsync();
         
-
-        // TODO 나중에 Game Start 버튼으로 기능 옮길 것. 일단 임시로 Game Start
-        await SceneFlowManager.Instance.EnterGame();
+        await SceneFlowManager.Instance.LoadSceneAsync(SceneNames.TitleScene);
     }
 
     private void InitializeSingleton()

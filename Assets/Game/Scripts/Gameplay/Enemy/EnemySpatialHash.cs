@@ -41,8 +41,6 @@ public class EnemySpatialHash : IEnemySpatialQuery
 
     public void UnRegister(EnemyRuntime enemy)
     {
-        // TODO 실제 Enemy 제거 시 연결 해야 됨. >> Enemy Death / Pooling 시스템 만들 때 연결
-        
         bool recalculateMaxRadius = enemy.HitRadius >= _maxHitRadius;
 
         Vector2Int cellPosition = _enemyCells[enemy];

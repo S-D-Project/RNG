@@ -1,22 +1,53 @@
-﻿using UnityEngine.SceneManagement;
+﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public static class SceneLoader
+[Serializable]
+public class SceneLoader
 {
-    public static void Load(string sceneName)
+    public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
-    
-    public static async Awaitable LoadAsync(string sceneName)
+
+    public async Awaitable<AsyncOperation> PrepareAsync(
+        string sceneName,
+        Action<float> onProgress = null)
     {
-        await SceneManager.LoadSceneAsync(sceneName);
+        AsyncOperation operation =
+            SceneManager.LoadSceneAsync(sceneName);
+
+        operation.allowSceneActivation = false;
+
+        while (operation.progress < 0.9f)
+        {
+            float progress =
+                Mathf.Clamp01(operation.progress / 0.9f);
+            
+            
+            onProgress?.Invoke(progress);
+
+            await Awaitable.NextFrameAsync();
+        }
+
+        onProgress?.Invoke(1f);
+
+        return operation;
     }
 
-    public static void Reload()
+    public async Awaitable ActivateAsync(AsyncOperation operation)
     {
-        var currentScene = SceneManager.GetActiveScene();
+        operation.allowSceneActivation = true;
+
+        while (!operation.isDone)
+        {
+            await Awaitable.NextFrameAsync();
+        }
+    }
+
+    public void Reload()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
     }
-    
 }
