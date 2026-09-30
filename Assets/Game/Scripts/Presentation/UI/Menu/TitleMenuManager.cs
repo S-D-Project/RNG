@@ -13,6 +13,9 @@ public class TitleMenuManager : MonoBehaviour
     [SerializeField]
     private UIButton _exitButton;
 
+    [SerializeField]
+    private ConfirmPopup _confirmPopup;
+
     private void OnEnable()
     {
         _startButton.Clicked += HandleStartClicked;
@@ -44,17 +47,25 @@ public class TitleMenuManager : MonoBehaviour
 
     private void StartGame()
     {
-        
+        ConfirmPopup popup =
+            PopupManager.Instance.Open(_confirmPopup);
+
+        popup.SetAsyncData(
+            title: "Start",
+            message: "게임을 시작하시겠습니까?",
+            okText: "확인",
+            cancelText: "취소",
+            onConfirm: () =>
+                SceneFlowManager.Instance.LoadSceneAsync(
+                    SceneNames.GameScene));
     }
 
     private void OpenSettings()
     {
-        
     }
 
     private void ExitGame()
     {
         Application.Quit();
     }
-    
 }
