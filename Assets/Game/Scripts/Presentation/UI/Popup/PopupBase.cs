@@ -19,7 +19,7 @@ public class PopupBase : MonoBehaviour
             return _canvasGroup;
         }
     }
-
+    
     public virtual void Open()
     {
         if (IsOpened)

@@ -48,7 +48,7 @@ public class TitleMenuManager : MonoBehaviour
     private void StartGame()
     {
         ConfirmPopup popup =
-            PopupManager.Instance.Open(_confirmPopup);
+            PopupManager.Instance.Open<ConfirmPopup>(PopupType.Confirm);
 
         popup.SetAsyncData(
             title: "Start",

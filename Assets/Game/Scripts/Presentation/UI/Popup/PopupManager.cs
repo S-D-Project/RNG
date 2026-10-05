@@ -1,8 +1,14 @@
 ﻿using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class PopupManager : Singleton<PopupManager>
 {
+    [Title("Popup Settings")]
+
+    [SerializeField]
+    private PopupRegistry _popupRegistry;
+
     [SerializeField]
     private RectTransform _popupRoot;
 
@@ -11,29 +17,92 @@ public class PopupManager : Singleton<PopupManager>
 
     private readonly Stack<PopupBase> _popupStack = new();
 
-    public T Open<T>(T prefab) where T : PopupBase
+    private Dictionary<PopupType, PopupBase> _popupPrefabs;
+
+    public override void OnInitialize()
+    {
+        _popupPrefabs = new Dictionary<PopupType, PopupBase>();
+
+        List<PopupResource> popupResources =
+            _popupRegistry.GetAllPopupResource();
+
+        foreach (PopupResource resource in popupResources)
+        {
+            if (resource == null || resource.PopupPrefab == null)
+            {
+                continue;
+            }
+
+            if (_popupPrefabs.ContainsKey(resource.Id))
+            {
+                Debug.LogError(
+                    $"Duplicate Popup Id: {resource.Id}");
+
+                continue;
+            }
+
+            _popupPrefabs.Add(
+                resource.Id,
+                resource.PopupPrefab);
+        }
+
+        UpdateDimmed();
+    }
+
+    public T Open<T>(PopupType popupId) where T : PopupBase
+    {
+        if (!_popupPrefabs.TryGetValue(
+                popupId,
+                out PopupBase prefab))
+        {
+            Debug.LogError(
+                $"Popup not found. Id: {popupId}");
+
+            return null;
+        }
+
+        if (prefab is not T typedPrefab)
+        {
+            Debug.LogError(
+                $"Popup type mismatch. " +
+                $"Id: {popupId}, " +
+                $"Expected: {typeof(T).Name}, " +
+                $"Actual: {prefab.GetType().Name}");
+
+            return null;
+        }
+
+        return Open(typedPrefab);
+    }
+
+    private T Open<T>(T prefab) where T : PopupBase
     {
         if (prefab == null)
         {
-            Debug.LogError("Popup open failed: Prefab is null.");
+            Debug.LogError(
+                "Popup open failed: Prefab is null.");
+
             return null;
         }
 
         if (_popupStack.Count > 0)
         {
-            _popupStack.Peek().SetInteractable(false);
+            _popupStack
+                .Peek()
+                .SetInteractable(false);
         }
 
-        T popup = Instantiate(prefab, _popupRoot);
+        T popup = Instantiate(
+            prefab,
+            _popupRoot);
 
-        // 새 Popup이 기존 Popup보다 항상 앞에 표시되도록 함
         popup.transform.SetAsLastSibling();
 
         _popupStack.Push(popup);
 
-        UpdateDimmed();
-
         popup.Open();
+
+        UpdateDimmed();
 
         return popup;
     }
@@ -42,24 +111,29 @@ public class PopupManager : Singleton<PopupManager>
     {
         if (popup == null)
         {
-            Debug.LogWarning("Popup close failed: Popup is null.");
+            Debug.LogWarning(
+                "Popup close failed: Popup is null.");
+
             return false;
         }
 
         if (_popupStack.Count == 0)
         {
             Debug.LogWarning(
-                $"Popup close failed: Popup stack is empty. Popup = {popup.name}");
+                $"Popup close failed: Stack is empty. " +
+                $"Popup = {popup.name}");
 
             return false;
         }
 
-        PopupBase topPopup = _popupStack.Peek();
+        PopupBase topPopup =
+            _popupStack.Peek();
 
         if (topPopup != popup)
         {
             Debug.LogWarning(
-                $"Popup close failed: {popup.name} is not the top popup. " +
+                $"Popup close failed: " +
+                $"{popup.name} is not Top. " +
                 $"Current Top = {topPopup.name}");
 
             return false;
@@ -84,7 +158,8 @@ public class PopupManager : Singleton<PopupManager>
     {
         while (_popupStack.Count > 0)
         {
-            PopupBase popup = _popupStack.Pop();
+            PopupBase popup =
+                _popupStack.Pop();
 
             if (popup == null)
             {
@@ -100,7 +175,8 @@ public class PopupManager : Singleton<PopupManager>
 
     private void CloseTopInternal()
     {
-        PopupBase popup = _popupStack.Pop();
+        PopupBase popup =
+            _popupStack.Pop();
 
         popup.SetInteractable(false);
         popup.Close();
@@ -109,7 +185,9 @@ public class PopupManager : Singleton<PopupManager>
 
         if (_popupStack.Count > 0)
         {
-            _popupStack.Peek().SetInteractable(true);
+            _popupStack
+                .Peek()
+                .SetInteractable(true);
         }
 
         UpdateDimmed();
@@ -117,6 +195,7 @@ public class PopupManager : Singleton<PopupManager>
 
     private void UpdateDimmed()
     {
-        _dimmed.SetActive(_popupStack.Count > 0);
+        _dimmed.SetActive(
+            _popupStack.Count > 0);
     }
 }

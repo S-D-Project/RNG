@@ -81,13 +81,13 @@ public class StageInitializer : MonoBehaviour
     private void Initialize()
     {
         InitializeStage();
+        
+        InitializeCombat();
 
         InitializePlayer();
 
         InitializeEnemy();
-
-        InitializeCombat();
-
+        
         InitializeUI();
 
         InitializeSequence();
@@ -114,7 +114,8 @@ public class StageInitializer : MonoBehaviour
                 Vector2.zero,
                 _selectedCharacterId);
 
-        InitializeTestWeapon();
+        PlayerManagerSingleton.Instance.Initialize(_playerRuntime,_attackRuntimeManager);
+       
     }
 
 

@@ -13,6 +13,14 @@ public class PlayerWeaponControllerManager : MonoBehaviour
         {
             return;
         }
+
+        if (_weaponControllers.Count > 3)
+        {
+
+            return;
+        }
+        Debug.Log($"무기 추가 : {runtime.BaseData.Id}");
+        Debug.Log($"현재 무기 수 : {WeaponControllers.Count}");
         
         _weaponControllers.Add(controller);
     }

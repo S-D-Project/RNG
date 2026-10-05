@@ -23,6 +23,7 @@ public class Bootstrap : MonoBehaviour
     {
         GameDataStore.Instance.OnInitialize();
         SceneFlowManager.Instance.OnInitialize();
+        PopupManager.Instance.OnInitialize();
     }
 
     private async Awaitable InitializeAsync()

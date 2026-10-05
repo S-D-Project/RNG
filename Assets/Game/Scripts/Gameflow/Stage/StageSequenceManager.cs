@@ -91,6 +91,9 @@ public class StageSequenceManager : MonoBehaviour
     private IEnumerator PlayStage()
     {
         Debug.Log("Play Stage");
+        
+        yield return new WaitForSeconds(2f);
+
         yield return _waveManager.PlayStage(
             _stageSpawnPlan);
 
