@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PopupRegistry
   _popupList:
   - {fileID: 11400000, guid: e0d8da64144f2644f8577d8a19040296, type: 2}
+  - {fileID: 11400000, guid: 58e0e17be7102ad47af777898231637f, type: 2}

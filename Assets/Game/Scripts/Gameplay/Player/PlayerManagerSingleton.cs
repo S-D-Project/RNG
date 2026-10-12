@@ -29,10 +29,4 @@ public class PlayerManagerSingleton : Singleton<PlayerManagerSingleton>
         _playerWeaponControllerManager.AddWeapon(weaponRuntime,weaponController);
 
     }
-
-    public void SelectLevelUpOption(int optionId)
-    {
-        
-    }
-    
 }
