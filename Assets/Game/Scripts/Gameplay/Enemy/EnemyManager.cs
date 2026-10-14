@@ -31,6 +31,7 @@ public class EnemyManager : Singleton<EnemyManager>
     
     public IEnemySpatialQuery SpatialQuery => _spatialHash;
 
+    private bool _isInitialized;
 
     public void Initialize(
         PlayerRuntime playerRuntime,
@@ -44,6 +45,8 @@ public class EnemyManager : Singleton<EnemyManager>
 
         _spatialHash =
             new EnemySpatialHash(_spatialCellSize);
+
+        _isInitialized = true;
     }
 
 
@@ -65,6 +68,11 @@ public class EnemyManager : Singleton<EnemyManager>
 
     private void Update()
     {
+        if (!_isInitialized)
+        {
+            return;
+        }
+        
         UpdateEnemies(Time.deltaTime);
 
         RemoveDeadEnemies();

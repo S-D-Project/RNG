@@ -1,15 +1,59 @@
-﻿using System;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 public sealed class SceneFlowManager : Singleton<SceneFlowManager>
 {
-    public async Awaitable EnterTile()
+    [SerializeField]
+    private LoadingScreen _loadingScreen;
+
+    [SerializeField]
+    [Required]
+    private SceneLoader _sceneLoader;
+
+    private bool _isLoading;
+    private float _completeDelay = 1f;
+
+    public async Awaitable LoadSceneAsync(string sceneName)
     {
-        await SceneLoader.LoadAsync(SceneNames.TitleScene);
-        
+        if (_isLoading)
+        {
+            return;
+        }
+
+        _isLoading = true;
+
+        try
+        {
+            _loadingScreen.Show();
+
+            await WaitRealTime(_completeDelay);
+            
+            AsyncOperation operation =
+                await _sceneLoader.PrepareAsync(
+                    sceneName,
+                    _loadingScreen.SetProgress);
+            
+            await WaitRealTime(_completeDelay);
+            
+            await _sceneLoader.ActivateAsync(operation);
+            
+            _loadingScreen.Hide();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
 
-    public async Awaitable EnterGame()
+    private async Awaitable WaitRealTime(float duration)
     {
-        await SceneLoader.LoadAsync(SceneNames.GameScene);
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            await Awaitable.NextFrameAsync();
+        }
     }
 }

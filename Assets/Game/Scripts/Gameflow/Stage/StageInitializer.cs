@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class StageInitializer : MonoBehaviour
 {
-
     [Title("Stage")]
     [SerializeField]
     [Required]
@@ -21,20 +20,21 @@ public class StageInitializer : MonoBehaviour
     [SerializeField]
     [Required]
     private PlayerCamera _playerCamera;
-    
+
     [SerializeField]
     [Required]
     private InfiniteMapController _infiniteMapController;
 
-    
+
     [Title("Spawner")]
     [SerializeField]
     [Required]
     private PlayerSpawner _playerSpawner;
+
     [Required]
     [SerializeField]
     private EnemySpawner _enemySpawner;
-    
+
     [Required]
     [SerializeField]
     private EnemyPool _enemyPool;
@@ -43,8 +43,6 @@ public class StageInitializer : MonoBehaviour
     [SerializeField]
     [Required]
     private AttackRuntimeManager _attackRuntimeManager;
-
-
 
 
     [Title("Test Settings")]
@@ -63,9 +61,9 @@ public class StageInitializer : MonoBehaviour
     [Required]
     [InfoBox("임시 설정")]
     private string _testEnemyId;
-    
+
     private PlayerRuntime _playerRuntime;
-    
+
     private void Start()
     {
         Initialize();
@@ -82,11 +80,13 @@ public class StageInitializer : MonoBehaviour
     {
         InitializeStage();
 
-        InitializePlayer();
+        SpawnPlayer();
 
         InitializeEnemy();
 
         InitializeCombat();
+
+        InitializePlayer();
 
         InitializeUI();
 
@@ -94,8 +94,6 @@ public class StageInitializer : MonoBehaviour
 
         StartGame();
     }
-
-
 
 
     private void InitializeStage()
@@ -106,26 +104,29 @@ public class StageInitializer : MonoBehaviour
         // Stage Spawn 정보 준비
     }
 
-
-    private void InitializePlayer()
+    private void SpawnPlayer()
     {
         _playerRuntime =
             _playerSpawner.SpawnPlayer(
                 Vector2.zero,
                 _selectedCharacterId);
+    }
 
-        InitializeTestWeapon();
+
+    private void InitializePlayer()
+    {
+        PlayerManagerSingleton.Instance.Initialize(_playerRuntime, _attackRuntimeManager);
     }
 
 
     private void InitializeEnemy()
     {
         EnemyManager.Instance.Initialize(
-            _playerRuntime,_enemyPool);
+            _playerRuntime, _enemyPool);
 
-        _enemySpawner.Initialize(_playerRuntime.transform,_enemyPool);
-        
-        _waveManager.Initialize(EnemyManager.Instance,_enemySpawner);
+        _enemySpawner.Initialize(_playerRuntime.transform, _enemyPool);
+
+        _waveManager.Initialize(EnemyManager.Instance, _enemySpawner);
     }
 
 
@@ -146,8 +147,7 @@ public class StageInitializer : MonoBehaviour
     private void InitializeSequence()
     {
         StageRuntime runtime = new StageRuntime(_stageDefinition);
-        _stageSequenceManager.Initialize(runtime,_enemyPool,_waveManager,EnemyManager.Instance);
-        
+        _stageSequenceManager.Initialize(runtime, _enemyPool, _waveManager, EnemyManager.Instance);
     }
 
     private void StartGame()
