@@ -18,15 +18,14 @@ public class GameDataStore : Singleton<GameDataStore>
     [ShowInInspector]
     [ReadOnly]
     private Dictionary<EnemyGrade, List<EnemyData>> _enemyGradeDataDic;
-    
-    public IReadOnlyDictionary<string, PlayerData> PlayerDataDic => _playerDataDic;
-    public IReadOnlyDictionary<string, WeaponData> WeaponDataDic => _weaponDataDic;
-    public IReadOnlyDictionary<string, EnemyData> EnemyDataDic => _enemyDataDic;
-    public IReadOnlyDictionary<EnemyGrade, List<EnemyData>> EnemyGradeDataDic => _enemyGradeDataDic;
+
+    [ShowInInspector]
+    [ReadOnly]
+    private Dictionary<string, ItemData> _itemDataDic;
     
     public override void OnInitialize()
     {
-        _playerDataDic = new Dictionary<string, PlayerData>();
+        //_playerDataDic = new Dictionary<string, PlayerData>();
         
     }
 
@@ -76,5 +75,19 @@ public class GameDataStore : Singleton<GameDataStore>
     {
         return _enemyGradeDataDic.TryGetValue(grade, out List<EnemyData> enemyList) ? enemyList : null;
     }
-    
+
+    public void SetItemData(Dictionary<string, ItemData> itemDataDic)
+    {
+        _itemDataDic = itemDataDic;
+    }
+
+    public ItemData GetItemData(string id)
+    {
+        return _itemDataDic.TryGetValue(id,out ItemData item) ?  item : null;
+    }
+
+    public IReadOnlyDictionary<string, ItemData> GetItemDataDic()
+    {
+        return _itemDataDic;
+    }
 }

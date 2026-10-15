@@ -20,9 +20,8 @@ public class PlayerWeaponControllerManager : MonoBehaviour
             return;
         }
         Debug.Log($"무기 추가 : {runtime.BaseData.Id}");
-        Debug.Log($"현재 무기 수 : {WeaponControllers.Count}");
-        
         _weaponControllers.Add(controller);
+        Debug.Log($"현재 무기 수 : {WeaponControllers.Count}");
     }
 
     public void SetOwnerValue(PlayerWeaponDto dto)

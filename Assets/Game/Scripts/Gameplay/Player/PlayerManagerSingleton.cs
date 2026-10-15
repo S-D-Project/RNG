@@ -13,7 +13,7 @@ public class PlayerManagerSingleton : Singleton<PlayerManagerSingleton>
         _attackRuntimeManager = attackRuntimeManager;
     }
 
-    public void AddWeapon(string weaponId)
+    public WeaponRuntime AddWeapon(string weaponId)
     {
         WeaponData weaponData = GameDataStore.Instance.GetWeaponData(weaponId);
 
@@ -28,5 +28,6 @@ public class PlayerManagerSingleton : Singleton<PlayerManagerSingleton>
         
         _playerWeaponControllerManager.AddWeapon(weaponRuntime,weaponController);
 
+        return weaponRuntime;
     }
 }

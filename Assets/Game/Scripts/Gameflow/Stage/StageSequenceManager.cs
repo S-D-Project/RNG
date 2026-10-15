@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class StageSequenceManager : MonoBehaviour
 {
+    //Test
+    private ItemRuntime _itemRuntime;
+    private WeaponRuntime _weaponRuntime;
  
     [SerializeField]
     private Sprite _icon1;
@@ -100,13 +103,23 @@ public class StageSequenceManager : MonoBehaviour
         
         yield return new WaitForSeconds(2f);
 
+        // Test Code
         LevelUpPopup popup = 
             PopupManager.Instance.Open<LevelUpPopup>(PopupType.LevelUp);
         
-        IReadOnlyList<LevelUpOption> option = TestCreateLevelUpOptions();
+        IReadOnlyList<LevelUpOption> option1 = TestCreateLevelUpOptions();
             
-        popup.SetData(3,option,TestOnLevelUpComplted);
+        popup.SetData(3,option1,TestOnLevelUpComplted);
+        //////////////////////////////////
 
+        yield return new WaitForSeconds(3f);
+        LevelUpPopup popup2 = 
+            PopupManager.Instance.Open<LevelUpPopup>(PopupType.LevelUp);
+        
+        IReadOnlyList<LevelUpOption> option2 = TestCreateLevelUpOptions();
+            
+        popup2.SetData(3,option2,TestOnLevelUpComplted);
+        
         
         yield return _waveManager.PlayStage(
             _stageSpawnPlan);
@@ -144,8 +157,13 @@ public class StageSequenceManager : MonoBehaviour
         LevelUpOption option1 = new LevelUpOption(
             _icon1, "Weapon", "Bullet", "스피드 +10%", "Lv.1", TestLevelUpOption1);
 
+        ItemData itemData = GameDataStore.Instance.GetItemData("potato");
+        _itemRuntime = new ItemRuntime();
+        _itemRuntime.Initialize(itemData);
+        
         LevelUpOption option2 = new LevelUpOption(
-            _icon2, "Item", "Appl2", "체력 +10%", "Lv.3", TestLevelUpOption2);
+            _itemRuntime.BaseData.Icon,"Item",_itemRuntime.BaseData.Name,
+            _itemRuntime.BaseData.Description,"Lv."+_itemRuntime.Level,TestLevelUpOption2);
         LevelUpOption option3 = new LevelUpOption(
             _icon3, "Item", "Apple3", "사거리 +5%", "Lv.5", TestLevelUpOption3);
         
@@ -163,11 +181,18 @@ public class StageSequenceManager : MonoBehaviour
 
     private void TestLevelUpOption1()
     {
-        PlayerManagerSingleton.Instance.AddWeapon("bullet");
+        _weaponRuntime = PlayerManagerSingleton.Instance.AddWeapon("bullet");
     }
     private void TestLevelUpOption2()
     {
-        Debug.Log("Hp Up");
+        Debug.Log($"Before: {_weaponRuntime.CurrentDamage}");
+        ItemEffectSystem effectSystem = new ItemEffectSystem();
+
+        bool success = effectSystem.TryApply(_itemRuntime, _weaponRuntime);
+        
+        Debug.Log($"Success: {success}");
+        Debug.Log($"After: {_weaponRuntime.CurrentDamage}");
+        Debug.Log($"Multiplier: {_weaponRuntime.DamageMultiplier}");
     }
     private void TestLevelUpOption3()
     {
