@@ -70,7 +70,7 @@ public class ItemEffectSystem
         switch (effect.EffectType)
         {
             case ItemEffectType.WeaponStat:
-                _weaponStatHandler.Apply(effect, weapon);
+                _weaponStatHandler.ApplyMultiplyDamage(effect, weapon);
                 break;
         }
     }

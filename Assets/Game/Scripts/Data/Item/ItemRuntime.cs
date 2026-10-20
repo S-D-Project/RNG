@@ -19,4 +19,10 @@
         Level = 1;
         _isInitialized = true;
     }
+
+    public int LevelUp()
+    {
+        Level++;
+        return Level;
+    }
 }

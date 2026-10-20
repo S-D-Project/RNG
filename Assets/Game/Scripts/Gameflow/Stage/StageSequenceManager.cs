@@ -8,20 +8,22 @@ public class StageSequenceManager : MonoBehaviour
     //Test
     private ItemRuntime _itemRuntime;
     private WeaponRuntime _weaponRuntime;
- 
+
     [SerializeField]
     private Sprite _icon1;
+
     [SerializeField]
     private Sprite _icon2;
+
     [SerializeField]
     private Sprite _icon3;
-    
+
     private StageRuntime _stageRuntime;
     private EnemyManager _enemyManager;
 
     private EnemyPool _enemyPool;
     private WaveManager _waveManager;
-    
+
     public int TotalKillCount => _stageRuntime.TotalKillCount;
 
     private IReadOnlyList<WaveData>
@@ -100,27 +102,27 @@ public class StageSequenceManager : MonoBehaviour
     private IEnumerator PlayStage()
     {
         Debug.Log("Play Stage");
-        
+
         yield return new WaitForSeconds(2f);
 
         // Test Code
-        LevelUpPopup popup = 
+        LevelUpPopup popup =
             PopupManager.Instance.Open<LevelUpPopup>(PopupType.LevelUp);
-        
+
         IReadOnlyList<LevelUpOption> option1 = TestCreateLevelUpOptions();
-            
-        popup.SetData(3,option1,TestOnLevelUpComplted);
+
+        popup.SetData(3, option1, TestOnLevelUpComplted);
         //////////////////////////////////
 
         yield return new WaitForSeconds(3f);
-        LevelUpPopup popup2 = 
+        LevelUpPopup popup2 =
             PopupManager.Instance.Open<LevelUpPopup>(PopupType.LevelUp);
-        
+
         IReadOnlyList<LevelUpOption> option2 = TestCreateLevelUpOptions();
-            
-        popup2.SetData(3,option2,TestOnLevelUpComplted);
-        
-        
+
+        popup2.SetData(3, option2, TestOnLevelUpComplted);
+
+
         yield return _waveManager.PlayStage(
             _stageSpawnPlan);
 
@@ -160,13 +162,14 @@ public class StageSequenceManager : MonoBehaviour
         ItemData itemData = GameDataStore.Instance.GetItemData("potato");
         _itemRuntime = new ItemRuntime();
         _itemRuntime.Initialize(itemData);
-        
+        Debug.Log($"RequiredWeaponTag : {itemData.RequiredWeaponTags}");
+
         LevelUpOption option2 = new LevelUpOption(
-            _itemRuntime.BaseData.Icon,"Item",_itemRuntime.BaseData.Name,
-            _itemRuntime.BaseData.Description,"Lv."+_itemRuntime.Level,TestLevelUpOption2);
+            _itemRuntime.BaseData.Icon, "Item", _itemRuntime.BaseData.Name,
+            _itemRuntime.BaseData.Description, "Lv." + _itemRuntime.Level, TestLevelUpOption2);
         LevelUpOption option3 = new LevelUpOption(
             _icon3, "Item", "Apple3", "사거리 +5%", "Lv.5", TestLevelUpOption3);
-        
+
         options.Add(option1);
         options.Add(option2);
         options.Add(option3);
@@ -183,17 +186,19 @@ public class StageSequenceManager : MonoBehaviour
     {
         _weaponRuntime = PlayerManagerSingleton.Instance.AddWeapon("bullet");
     }
+
     private void TestLevelUpOption2()
     {
         Debug.Log($"Before: {_weaponRuntime.CurrentDamage}");
         ItemEffectSystem effectSystem = new ItemEffectSystem();
 
         bool success = effectSystem.TryApply(_itemRuntime, _weaponRuntime);
-        
-        Debug.Log($"Success: {success}");
-        Debug.Log($"After: {_weaponRuntime.CurrentDamage}");
-        Debug.Log($"Multiplier: {_weaponRuntime.DamageMultiplier}");
+
+        bool isMatch = WeaponItemTagMatcher.Matches(_weaponRuntime.BaseData, _itemRuntime.BaseData);
+
+        Debug.Log($"isMatch: {isMatch}");
     }
+
     private void TestLevelUpOption3()
     {
         Debug.Log("Range Up");

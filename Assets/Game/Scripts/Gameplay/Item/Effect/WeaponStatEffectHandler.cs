@@ -18,7 +18,7 @@
                !float.IsInfinity(effect.Value);
     }
 
-    public void Apply(
+    public void ApplyMultiplyDamage(
         ItemEffectData effect,
         IWeaponStatEffectTarget weapon)
     {

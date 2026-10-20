@@ -10,6 +10,10 @@ public class ItemData
     public string Description { get; }
     
     public Sprite Icon { get; }
+    
+    public ItemSlotType SlotType { get; }
+    public ItemTargetMode TargetMode { get; }
+    public WeaponTag RequiredWeaponTags { get; }
 
     public IReadOnlyList<ItemEffectData> Effects { get; }
 
@@ -18,6 +22,10 @@ public class ItemData
         Id = dto.Id;
         Name = dto.Name;
         Icon = resource.Icon;
+        
+        SlotType = dto.SlotType;
+        TargetMode = dto.TargetMode;
+        RequiredWeaponTags = dto.RequiredWeaponTags;
 
         Effects = new List<ItemEffectData>(effectDatas).AsReadOnly();
 

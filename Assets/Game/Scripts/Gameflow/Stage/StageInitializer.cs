@@ -116,6 +116,7 @@ public class StageInitializer : MonoBehaviour
     private void InitializePlayer()
     {
         PlayerManagerSingleton.Instance.Initialize(_playerRuntime, _attackRuntimeManager);
+        
     }
 
 
