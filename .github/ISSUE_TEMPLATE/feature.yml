@@ -5,6 +5,22 @@ labels:
   - feature
 body:
   - type: textarea
+    id: plan_metadata
+    attributes:
+      label: PLAN metadata
+      description: |
+        기본값은 신규 작업의 실행 요청입니다. 기존 PLAN은 현재 메타데이터를 붙여 넣고 ID와 상태를 유지하세요.
+        완료 기록은 completed로 등록합니다. 실행 인계의 ready 전환은 원본 전환과 기존 담당자의 작업 정리 후 수행합니다.
+        새 ID와 원본 주소의 빈 값은 담당 에이전트가 인수 전에 확정합니다.
+      render: yaml
+      value: |
+        id: ""
+        status: ready
+        current_step: 배정 대기
+        source: ""
+    validations:
+      required: true
+  - type: textarea
     id: description
     attributes:
       label: 작업 내용
