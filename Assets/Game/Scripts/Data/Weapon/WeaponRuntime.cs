@@ -1,4 +1,6 @@
-﻿public class WeaponRuntime
+﻿using System;
+
+public class WeaponRuntime : IWeaponStatEffectTarget
 {
     public WeaponData BaseData { get; }
 
@@ -15,14 +17,28 @@
     public float CurrentCastTime { get; private set; }
     
     public float HitRadius { get; private set; }
+    
+    public float DamageMultiplier { get; private set; }
 
     public WeaponRuntime(WeaponData baseData)
     {
         BaseData = baseData;
         Level = 1;
+        DamageMultiplier = 1f;
         ReCalculateStats();
         HitRadius =  baseData.HitRadius;
         Cooldown = 0f;
+    }
+
+    public void MultiplyDamage(float multiplier)
+    {
+        if (multiplier <= 0f || float.IsNaN(multiplier) || float.IsInfinity(multiplier))
+        {
+            throw new ArgumentOutOfRangeException(nameof(multiplier));
+        }
+        
+        DamageMultiplier *= multiplier;
+        ReCalculateStats();
     }
 
     public int LevelUp()
@@ -49,7 +65,9 @@
 
     private void ReCalculateStats()
     {
-        CurrentDamage = BaseData.Damage + BaseData.DamagePerLevel * (Level - 1);
+        float baseDamage = BaseData.Damage + BaseData.DamagePerLevel * (Level - 1);
+
+        CurrentDamage = baseDamage * DamageMultiplier;
 
         CurrentFireInterval = BaseData.FireInterval + BaseData.FireIntervalPerLevel * (Level - 1);
         

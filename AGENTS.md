@@ -1,115 +1,23 @@
-﻿# RNG Diff
+# 지침 Map
 
-## Project Purpose
+모든 작업을 시작하기 전에 [workflow.md](Docs/agents/workflow.md)를 반드시 읽는다.
 
-RNG Diff is a short-session action roguelike built with Unity.
+작업의 목적과 변경 범위에 해당하는 지침을 아래에서 찾아 읽는다. 여러 영역에 걸친 작업은 해당하는 지침을 모두 읽는다.
 
-The core experience is to let players focus on movement and positioning while attacks are performed automatically, then build a unique weapon setup through limited random trait choices.
-
-Each run should provide a clear sense of rapid growth within roughly 5–10 minutes, with weapon behavior changing noticeably as the build develops.
-
-The project is intentionally scoped for two developers to complete and release on Steam within a limited development period.
-
----
-
-## Project Structure
-
-Primary project areas:
-
-```text
-Assets/Game/
-├─ AGENTS.md
-└─ Scripts/
-   ├─ AGENTS.md
-   ├─ Core/
-   ├─ Data/
-   ├─ Gameflow/
-   ├─ Gameplay/
-   └─ Presentation/
-
-Docs/
-├─ AGENTS.md
-├─ Architecture/
-├─ Conventions/
-├─ Plans/
-└─ Decisions/
-```
-
-Use the closest applicable `AGENTS.md` for detailed working rules.
-
----
-
-## AGENTS Resolution
-
-Before making changes:
-
-1. Read this root `AGENTS.md`.
-2. Read each applicable `AGENTS.md` on the path to the target.
-3. Follow the most specific applicable rule.
-4. Review referenced project documentation when required.
-
-Priority between `AGENTS.md` files:
-
-```text
-Closest AGENTS.md
-↓
-Parent AGENTS.md
-↓
-Root AGENTS.md
-```
-
-More specific rules override broader rules unless a broader rule explicitly prohibits the change.
-
-`AGENTS Resolution` applies only to conflicts between `AGENTS.md` files.
-
----
-
-## Global Working Principles
-
-* Make small and focused changes.
-* Avoid unrelated refactoring.
-* Preserve established architecture and conventions.
-* Do not invent requirements.
-* Do not expand the requested scope without explicit approval.
-* Keep changes aligned with the current project and release scope.
-
----
-
-## Documentation
-
-Project documentation is managed under `docs/`.
-
-Follow `docs/AGENTS.md` when creating, modifying, or using project documentation.
-
-Runtime code is primarily managed under `Assets/Game/Scripts/`.
-
-Follow `Assets/Game/AGENTS.md` and `Assets/Game/Scripts/AGENTS.md` when modifying game assets or runtime code.
-
----
-
-## Source of Truth
-
-When project information conflicts, use the following priority:
-
-1. Explicit user instructions
-2. Applicable `AGENTS.md`
-3. Approved Decisions
-4. Approved Plans
-5. Architecture and convention documents
-6. Existing implementation
-
-If a conflict materially affects the requested work and cannot be resolved from this order, ask for clarification before proceeding.
-
----
-
-## Navigation Rule
-
-When the correct location or responsibility owner is unclear:
-
-1. Inspect the existing project structure.
-2. Read the applicable `AGENTS.md` files.
-3. Review relevant architecture and convention documents.
-4. Search for similar existing implementations.
-5. Prefer the option most consistent with the established project structure.
-
-Do not introduce a new architectural responsibility solely because the correct ownership is initially unclear.
+| 적용 조건 | 읽을 지침 |
+|---|---|
+| PLAN 작성, 실행, 갱신, 재개와 이력 관리 | [plans.md](Docs/Plans/plans.md) |
+| 구현 위치, 책임, 의존성과 객체 수명 변경 | [architecture.md](Docs/agents/architecture.md) |
+| C# 코드 작성과 수정 | [conventions.md](Docs/agents/conventions.md) |
+| 씬, 프리팹, ScriptableObject, 임포트 설정과 에디터 도구 변경 | [unity-assets.md](Docs/agents/unity-assets.md) |
+| 데이터 정의, 로딩, 결합, 실행 상태와 데이터 계약 변경 | [data.md](Docs/agents/data.md) |
+| 게임 데이터 구조 변경과 결정 기록 작성, 갱신 | [decisions.md](Docs/Decisions/decisions.md) |
+| 플레이어, 적, 무기, 공격과 충돌 처리 변경 | [combat.md](Docs/agents/combat.md) |
+| 부팅, 씬 전환, 스테이지와 웨이브 진행 변경 | [gameflow.md](Docs/agents/gameflow.md) |
+| UI, 팝업, 로딩 화면과 카메라 변경 | [presentation.md](Docs/agents/presentation.md) |
+| 캐릭터, 적, 무기, 배경, 아이콘과 UI 이미지 등 아트 제작과 수정 | [art.md](Docs/agents/art.md) |
+| 변경 검증과 작업 완료 여부 판단 | [verification.md](Docs/agents/verification.md) |
+| GitHub 이슈, 워크트리, 브랜치와 PR 작업 | [github.md](Docs/agents/github.md) |
+| 오케스트레이터의 작업 수집, 분해, 배정과 진행 관리 | [orchestrator.md](Docs/agents/orchestrator.md) |
+| 워커의 구현, 검증, 코드리뷰, PR 작업과 독립 실행 | [worker.md](Docs/agents/worker.md) |
+| 지침 추가와 수정 필요성 판단, 변경 제안과 반영 | [guideline-maintenance.md](Docs/agents/guideline-maintenance.md) |

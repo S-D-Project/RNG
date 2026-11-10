@@ -3,6 +3,8 @@
 public class WeaponData
 {
     public string Id { get; }
+    
+    public WeaponTag WeaponTags { get; }
 
     public float Damage { get; }
     public float DamagePerLevel { get; }
@@ -63,6 +65,8 @@ public class WeaponData
         FirePattern = weaponResource.FirePattern;
         Targeting = weaponResource.Targeting;
         AttackDefinitionData = weaponResource.AttackDefinitionData;
+
+        WeaponTags = weaponDto.WeaponTags;
     }
 
     public void SetRadius(float radius)

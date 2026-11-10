@@ -178,4 +178,9 @@ public class WeaponController : MonoBehaviour
 
         return _targeting.FindTarget(position,_facingDirection, _weaponRuntime.CurrentRange, EnemyManager.Instance.SpatialQuery);
     }
+
+    public WeaponRuntime GetWeaponRuntime()
+    {
+        return _weaponRuntime;
+    }
 }
