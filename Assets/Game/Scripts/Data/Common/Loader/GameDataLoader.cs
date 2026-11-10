@@ -6,32 +6,37 @@ using UnityEngine;
 public class GameDataLoader : MonoBehaviour
 {
     private IDataSource _dataSource;
-    
-    [TitleGroup("Data Source","Google Sheet")]
+
+    [TitleGroup("Data Source", "Google Sheet")]
     [SerializeField]
     [Required]
     private string _apiKey;
-    
-    [TitleGroup("Data Source","Google Sheet")]
+
+    [TitleGroup("Data Source", "Google Sheet")]
     [SerializeField]
     [Required]
     private string _spreadSheetId;
 
-    [TitleGroup("Data Registry","Player Data")]
+    [TitleGroup("Data Registry", "Player Data")]
     [SerializeField]
     [Required]
     private PlayerResourceRegistry _playerRegistry;
 
-    [TitleGroup("Data Registry", "Weapon Data")] 
-    [SerializeField] 
+    [TitleGroup("Data Registry", "Weapon Data")]
+    [SerializeField]
     [Required]
     private WeaponResourceRegistry _weaponRegistry;
 
-    [TitleGroup("Data Registry","Enemy Data")]
+    [TitleGroup("Data Registry", "Enemy Data")]
     [SerializeField]
     [Required]
     private EnemyResourceRegistry _enemyRegistry;
-    
+
+    [TitleGroup("Data Registry","Item Data")]
+    [SerializeField]
+    [Required]
+    private ItemResourceRegistry _itemResourceRegistry;
+
 
     public void Initialize()
     {
@@ -46,7 +51,7 @@ public class GameDataLoader : MonoBehaviour
             ParsePlayerData(response.Content);
             ParseWeaponData(response.Content);
             ParseEnemyData(response.Content);
-            
+            ParseItemData(response.Content);
         }
         catch (Exception e)
         {
@@ -54,6 +59,7 @@ public class GameDataLoader : MonoBehaviour
             throw;
         }
     }
+
     private void ParsePlayerData(string json)
     {
         // SheetParser 
@@ -67,16 +73,16 @@ public class GameDataLoader : MonoBehaviour
         // dto + resource => PlayerData (Runtime 생성 전 원본 데이터)
         PlayerBuilder builder = new PlayerBuilder(_playerRegistry);
         List<PlayerData> playerDataList = builder.Build(playerDtos);
-        
+
         Dictionary<string, PlayerData> playerDataDic = new Dictionary<string, PlayerData>();
 
         foreach (PlayerData playerData in playerDataList)
         {
-            HitArea hitArea =  playerData.Prefab.GetComponent<HitArea>();
+            HitArea hitArea = playerData.Prefab.GetComponent<HitArea>();
             playerData.SetRadius(hitArea.HitRadius);
             playerDataDic.Add(playerData.Id, playerData);
         }
-        
+
         GameDataStore.Instance.SetPlayerData(playerDataDic);
     }
 
@@ -88,7 +94,7 @@ public class GameDataLoader : MonoBehaviour
         {
             Debug.LogError("WeaponRegistry를 DataLoader에 넣으세요.");
         }
-        
+
         WeaponBuilder builder = new WeaponBuilder(_weaponRegistry);
         List<WeaponData> weaponDataList = builder.Build(weaponDtos);
 
@@ -98,19 +104,18 @@ public class GameDataLoader : MonoBehaviour
         {
             HitArea hitArea = weaponData.AttackDefinitionData.AttackPrefab.GetComponent<HitArea>();
             weaponData.SetRadius(hitArea.HitRadius);
-            weaponDataDic.Add(weaponData.Id,weaponData);
+            weaponDataDic.Add(weaponData.Id, weaponData);
         }
 
         GameDataStore.Instance.SetWeaponData(weaponDataDic);
     }
-    
+
     private void ParseEnemyData(string json)
     {
         List<EnemyDto> enemyDtos = SheetParser.Parse<EnemyDto>(json, "EnemyData");
 
         if (_enemyRegistry == null)
         {
-
             Debug.LogError("EnemyRegistry를 DataLoader에 넣으세요.");
         }
 
@@ -118,14 +123,37 @@ public class GameDataLoader : MonoBehaviour
         List<EnemyData> enemyDataList = builder.Build(enemyDtos);
 
         Dictionary<string, EnemyData> enemyDataDic = new Dictionary<string, EnemyData>();
-        
-        foreach(EnemyData enemyData in enemyDataList)
+
+        foreach (EnemyData enemyData in enemyDataList)
         {
             HitArea hitArea = enemyData.Resource.Prefab.GetComponent<HitArea>();
             enemyData.SetRadius(hitArea.HitRadius);
-            enemyDataDic.Add(enemyData.Id,enemyData);
+            enemyDataDic.Add(enemyData.Id, enemyData);
         }
 
         GameDataStore.Instance.SetEnemyData(enemyDataDic);
+    }
+
+    private void ParseItemData(string json)
+    {
+        List<ItemDto> itemDtos = SheetParser.Parse<ItemDto>(json, "ItemData");
+        List<ItemEffectDto> effectDtos = SheetParser.Parse<ItemEffectDto>(json, "ItemEffectData");
+        
+        if(_itemResourceRegistry == null)
+        {
+            Debug.LogError("ItemRegistry를 DataLoader에 넣으세요.");
+        }
+
+        ItemBuilder builder = new ItemBuilder(_itemResourceRegistry);
+        List<ItemData> itemDataList = builder.Build(itemDtos, effectDtos);
+
+        Dictionary<string,ItemData> itemDataDic = new Dictionary<string, ItemData>();
+        
+        foreach (ItemData itemData in itemDataList)
+        {
+            itemDataDic.Add(itemData.Id, itemData);
+        }
+
+        GameDataStore.Instance.SetItemData(itemDataDic);
     }
 }

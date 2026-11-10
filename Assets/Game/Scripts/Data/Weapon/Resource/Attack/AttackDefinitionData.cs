@@ -86,12 +86,14 @@ public class AttackDefinitionData
             return false;
         }
 
+        // None값 따로 있음.
         if (targeting == null)
         {
             error = "Targeting is null.";
             return false;
         }
 
+        // None이면 false
         bool requiresTarget = targeting.RequiresTarget;
 
         if (!requiresTarget)

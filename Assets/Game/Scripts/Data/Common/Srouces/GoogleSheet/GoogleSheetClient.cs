@@ -25,7 +25,9 @@ public sealed class GoogleSheetClient : IDataSource
         {
             "PlayerData",
             "EnemyData",
-            "WeaponData"
+            "WeaponData",
+            "ItemData",
+            "ItemEffectData"
         };
     }
 
