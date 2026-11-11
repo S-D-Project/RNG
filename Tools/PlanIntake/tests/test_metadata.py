@@ -1,5 +1,8 @@
 from dataclasses import replace
+from pathlib import Path
 import unittest
+
+import yaml
 
 from support import FENCE, PLAN, REPO, body, issue, raw_issue
 from rng_intake.collector import evaluate
@@ -100,6 +103,36 @@ class MetadataTests(unittest.TestCase):
     def test_repeated_issue_in_pages_requires_rescan_not_partial_checkpoint(self):
         with self.assertRaisesRegex(Exception, "rescan"):
             evaluate([raw_issue(), raw_issue()], REPO)
+
+    def test_actual_refactor_template_accepts_filled_and_new_metadata(self):
+        path = Path(__file__).resolve().parents[3] / ".github/ISSUE_TEMPLATE/refactor.yml"
+        template = yaml.safe_load(path.read_text(encoding="utf-8"))
+        for filled in (False, True):
+            with self.subTest(filled=filled):
+                sections = []
+                for field in template["body"]:
+                    attributes = field["attributes"]
+                    content = attributes.get("value", "keep the existing public behavior")
+                    if field["id"] == "plan_metadata":
+                        if filled:
+                            content = content.replace('id: ""', f'id: "{PLAN}"')
+                            content = content.replace('source: ""', f'source: "{issue().url}"')
+                        content = FENCE + "yaml\n" + content.rstrip() + "\n" + FENCE
+                    sections.append("### " + attributes["label"] + "\n\n" + content)
+                current = replace(issue(), body="\n\n".join(sections) + "\n")
+                self.assertIn("### 리팩토링 내용", current.body)
+                self.assertEqual(parse(current).status, "ready")
+                observations = evaluate([dict(raw_issue(), body=current.body)], REPO)
+                expected = "ready_candidate" if filled else "new_evidence_required"
+                self.assertEqual(observations[0]["classification"], expected)
+
+    def test_required_completion_inside_managed_region_is_rejected(self):
+        for name in ("PLAN progress", "PLAN intake"):
+            with self.subTest(managed=name):
+                current = issue()
+                nested = current.body.replace("### 완료 조건", f"### {name}\n\n#### 완료 조건")
+                with self.assertRaisesRegex(InvalidPlan, "required.*managed"):
+                    parse(replace(current, body=nested))
 
 
 if __name__ == "__main__":

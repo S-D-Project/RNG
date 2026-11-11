@@ -2,7 +2,7 @@
 id: "plan-20261111-8d2dcd9d"
 title: "GitHub 이슈 폴링과 AO 작업 분배 자동화 세션 적용"
 status: active
-current_step: "검증 완료·draft PR 준비"
+current_step: "리뷰 보완 검증 완료·재검토 대기"
 source: "Docs/Plans/plan-20261111-8d2dcd9d-github-issue-polling-automation.md"
 ---
 
@@ -122,7 +122,7 @@ D4의 사용자 승인은 대상 PLAN·배정·조치 범위·승인 시점·근
 
 ## 검증 계획과 결과
 
-코드 검증 대상은 6a263d4a4d4400e29f9d0a3d14627b4d068dad34다. Windows Python 3.13.16에서 집중 시험 54개와 실제 저장소 읽기 전용 dry-run을 수행했다. 아래 계약 시험은 전송 대역을 사용했으며 실제 GitHub/AO 변경 성공을 뜻하지 않는다. 실제 외부 효과·안전한 시험 PLAN·상시 적용은 차단돼 있다. Unity 빌드 테스트는 수행하지 않는다.
+아래 초기 검증 표의 코드 대상은 6a263d4a4d4400e29f9d0a3d14627b4d068dad34다. Windows Python 3.13.16에서 집중 시험 54개와 실제 저장소 읽기 전용 dry-run을 수행했다. 아래 계약 시험은 전송 대역을 사용했으며 실제 GitHub/AO 변경 성공을 뜻하지 않는다. 실제 외부 효과·안전한 시험 PLAN·상시 적용은 차단돼 있다. Unity 빌드 테스트는 수행하지 않는다.
 
 | 확인 항목 | 검증 방법 | 대상 커밋 | 결과 | 미검증 범위와 이유 |
 |---|---|---|---|---|
@@ -148,8 +148,11 @@ D4의 사용자 승인은 대상 PLAN·배정·조치 범위·승인 시점·근
 | AO 전달·작업 환경 | 실제 기존 오케스트레이터 확인, 하위 배정별 세션·최신 develop SHA·독립 워크트리·feature 브랜치·PR base 확인 | 6a263d4a4d4400e29f9d0a3d14627b4d068dad34 | 실제 조회/게이트 계약 시험 통과 | 기존 오케스트레이터 조회·HEAD 불일치 차단 확인; 새 워크트리·실제 전달 미입증 |
 | 초기 운영·목록·완료 | dry-run 외부 효과 0회 → 안전한 시험 → 스케줄러 시작/중지/복구, README 단일 담당 PR 경로·사용자 머지 확인 | 6a263d4a4d4400e29f9d0a3d14627b4d068dad34 | dry-run 완료·운영 문서 작성 | 실제 상태 설치·안전한 시험 PLAN·예약 등록·상시 실행 미실행; D5 선택·사용자 merge 대기 |
 | 집중 테스트·CI·리뷰 | Windows Python 3.13.16 unittest 54개, Windows/Ubuntu CI 구성 | 6a263d4a4d4400e29f9d0a3d14627b4d068dad34 | 로컬 54개 통과; CI/리뷰는 PR 생성 후 확인 | CI 결과·AO native review·사용자 merge 대기 |
+| 1차 리뷰 보완 | 오류 필드가 있는 중복 ID·실제 Refactor 양식·중첩 완료 조건 변경의 회귀 4개 및 전체 집중 시험 | 27ba09af 기반 수정 작업트리; 새 SHA는 PR/AO 보고 | 로컬 회귀 4개·전체 58개 통과 | 새 HEAD CI·AO 재검토 대기; 실제 자동 인수/배정 비활성 유지 |
 
 ## 진행과 인수인계
+
+- 1차 리뷰 보완 — 2026-11-12T00:23:27+09:00 KST. AO native review 0829ac28-6fd6-4d6e-9f67-2439a0df0f7f(대상 27ba09afda3c53c5f33a1de133718c150e8a5b6a)의 세 지적을 재현했다. 오류 이슈의 유효 ID를 중복 색인에 보존하고 실제 Refactor 제목을 지원하며 관리 영역과 겹친 필수 승인 섹션을 거절했다. 새 회귀 4개와 전체 focused 58개가 통과했다. GitHub inline 게시 실패로 기존 thread는 없음을 확인했으며 재검토·새 HEAD CI는 결과 대기다. D4/D5 차단과 draft/active 유지.
 
 - 구현·검증 결과 — 2026-11-12T00:02:49+09:00 KST. Tools/PlanIntake와 focused CI 구성을 구현했고 코드 6a263d4a4d4400e29f9d0a3d14627b4d068dad34에서 54개 시험·실제 GitHub/AO 읽기 dry-run을 통과했다. 실제 이슈·세션 변경과 운영 설정은 수행하지 않았다. 상세 지원 범위·운영·D4/D5는 [도구 문서](../../Tools/PlanIntake/README.md)에 기록했다.
 
@@ -165,6 +168,7 @@ D4의 사용자 승인은 대상 PLAN·배정·조치 범위·승인 시점·근
 - 지침 보완 — 위 지침 영향 판단에 현재 규칙과의 일치·조건부 보완 대상을 기록했다. 공통 운영 규칙으로 채택할 문구·범위는 별도 승인 대상이며 이번에는 지침을 수정하지 않는다.
 
 ## 승인과 상태 기록
+
 | 시점 | 상태 | 승인 또는 변경 근거 |
 |---|---|---|
 | 2026-11-11 KST | proposed | PLAN 작성만 배정받아 지정 ID로 초안을 작성하고 README 순서 1에 등록. current_step은 사용자 검토 대기이며 구현·설정·외부 변경·PR은 승인·수행하지 않음. |
@@ -172,6 +176,8 @@ D4의 사용자 승인은 대상 PLAN·배정·조치 범위·승인 시점·근
 | 이번 D1~D5 정책 확정 요청 | proposed | 사용자가 D1~D5를 권장안으로 확정하고 D4 최종 복구 책임자를 본인으로 지정했다. 운영자는 조사·보류를 맡고 불명확한 재시도·DB 복원·잠금 회수는 사용자 승인 후 수행한다. 로컬 PLAN 반영만 승인됐으며 구현·활성화·외부 변경·push·PR 생성·merge는 수행하지 않음. |
 | 2026-11-11T23:22:09+09:00 KST | active | 사용자 ‘PLAN을 승인할게. 작업진행해줘’의 실행 승인을 rng-1이 인수·전달하고 rng-2에 구현 배정. current_step 선행 검증. 로컬 파일이 원본이며 구현·검증·필요 PR·검증된 제한 운영만 승인; 사용자 merge 및 D4 개별 승인·D5 차단 조건 유지. |
 | 2026-11-12T00:02:49+09:00 KST | active | 독립 구현·54개 집중 시험·실제 읽기 dry-run 완료. GitHub CAS 미지원·AO 실제 효과 계약 미입증으로 자동 인수/배정 차단을 유지하고 draft PR 준비. 실제 제한 운영·상시 실행 미수행, D5 선택 및 CI/리뷰 대기. |
+| 2026-11-12T00:23:27+09:00 KST | active | 1차 native review의 세 정확성 지적을 재현·수정하고 회귀 4개·집중 58개 통과. 새 HEAD push·CI·재검토 진행, D4/D5 및 draft 유지. |
+
 
 ## 관련 기록
 
@@ -181,4 +187,4 @@ D4의 사용자 승인은 대상 PLAN·배정·조치 범위·승인 시점·근
 - 브랜치·워크트리 — `feature/plan-20261111-8d2dcd9d-issue-intake-plan`, `C:\Users\nellu\.ao\data\worktrees\rng\rng-2`.
 - 대상 커밋 — 시작 develop은 e6171af5c0d12c63b9c23aa27b42abdcbe4e6bf3, 코드·집중 시험·실제 dry-run 대상은 6a263d4a4d4400e29f9d0a3d14627b4d068dad34다. 이후 문서 기록 커밋과 최종 PR HEAD는 별도로 기록한다.
 - AO — 작성 세션 [rng-2](ao://sessions/rng/rng-2), 조사 시 기존 오케스트레이터 [rng-1](ao://sessions/rng/rng-1). 운용 시 실제 대상은 다시 조회해 설정한다.
-- PR — 승인된 구현의 develop 대상 PR을 생성·갱신한다. 현재 미생성이며 차단이 남으면 draft로 제시한다. 최종 merge는 사용자가 수행한다.
+- PR — [draft PR #30](https://github.com/S-D-Project/RNG/pull/30), 대상 develop. 첫 리뷰 대상은 27ba09afda3c53c5f33a1de133718c150e8a5b6a이며 리뷰 보완 후 새 HEAD·검증 결과는 PR 본문과 AO 보고에 기록한다. 최종 merge는 사용자 담당이다.

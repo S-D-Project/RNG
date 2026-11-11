@@ -49,7 +49,8 @@ inspect는 DB·바인딩을 생성하거나 갱신하지 않는다. GitHub GET�
 ## 파싱·승인 내용·증거
 
 - PLAN metadata 제목 아래 단일 yaml 코드 블록에 id/status/current_step/source 네 문자열 필드가 모두 있어야 한다. 별칭·앵커·태그·중복 키·복수 블록·누락·다중 문서는 보완 대상이다. 본문은 UTF-8 64 KiB, 메타데이터는 8 KiB와 제한된 토큰 수를 상한으로 둔다.
-- 작업 내용·문제 내용·목표와 범위 중 하나와 완료 조건 영역이 각각 하나 있고 내용이 있어야 한다. 기존 저장소의 Feature/Bugfix/Refactor/Documents 양식에 맞춘다. source의 다른 원본은 자동 덮어쓰지 않는다.
+- 작업 내용·문제 내용·리팩토링 내용·목표와 범위 중 하나와 완료 조건 영역이 각각 하나 있고 내용이 있어야 한다. 기존 저장소의 Feature/Bugfix/Refactor/Documents 양식에 맞춘다. source의 다른 원본은 자동 덮어쓰지 않는다.
+- 다른 필드가 보완 대상이어도 일관되게 읽은 메타데이터의 유일한 유효 ID는 오류 관찰·중복 색인에 보존한다. 중복 ID 키처럼 식별이 모호한 경우는 ID를 임의 선택하지 않는다. 필수 작업·완료 조건 영역이 관리 영역과 겹치면 승인 내용이 해시에서 빠지지 않도록 거절한다.
 - 정확히 ready인 후보만 분류한다. 라벨·담당자·GitHub open/closed는 PLAN 상태를 대신하지 않는다. 기존 active·완료 기록·이관 전 로컬 source·ID 변경은 신규 인수하지 않는다.
 - 승인 해시는 제목과 메타데이터·명시적 PLAN progress/PLAN intake 관리 영역을 제외한 본문에서 만든다. 본문 끝의 구분용 줄바꿈만 정리하며 목표 텍스트 내부의 공백·문구 변경은 감지한다. 이 구분은 도구의 계약이며 공통 저장소 지침은 수정하지 않았다.
 - D1의 신규 증거는 사용자의 신규 선언과 전체 기록 대조를 참조하는 신뢰된 로컬 기록이다. 이슈 생성자 이름만으로 현재 본문의 작성자·승인자를 추정하지 않는다. inspect --evidence의 JSON 배열 필드는 issue_url, body_hash, submitted_by, confirmed_at(시간대 포함), reference, comparison_complete=true, new_submission=true다. 본문 버전이 다르거나 대조가 끝나지 않으면 초기화 후보로 분류하지 않는다.
@@ -101,7 +102,7 @@ Windows 작업 스케줄러를 사용할 경우 다음 조건으로 **관찰 전
 & $taskPython -B -m unittest discover -s Tools/PlanIntake/tests -v
 ~~~
 
-Windows Python 3.13.16에서 54개 시험을 통과했다. CI는 같은 집중 시험을 Windows·Ubuntu Python 3.13에서 수행하도록 구성했다. 로컬 결과를 다른 OS의 통과로 표현하지 않는다.
+초기 검증은 Windows Python 3.13.16에서 54개를 통과했고, 1차 리뷰의 오류 ID 보존·실제 Refactor 양식·관리 영역 중첩 회귀를 추가한 뒤 58개를 통과했다. CI는 같은 집중 시험을 Windows·Ubuntu Python 3.13에서 수행한다. 로컬 결과를 다른 OS의 통과로 표현하지 않는다.
 
 | 검증 층 | 수행 결과 |
 |---|---|

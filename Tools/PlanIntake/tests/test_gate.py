@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from support import FakeBackend, PLAN, REPO, SHA, StateCase, issue, raw_issue
 from rng_intake.collector import evaluate
-from rng_intake.errors import AlreadyRunning, RecoveryRequired, SafetyBlock
+from rng_intake.errors import AlreadyRunning, InvalidPlan, RecoveryRequired, SafetyBlock
 from rng_intake.gate import Capabilities, Gate
 from rng_intake.metadata import NewEvidence, ResumeEvidence, parse
 from rng_intake.store import Store
@@ -52,6 +52,46 @@ class GateTests(StateCase):
         with self.assertRaises(SafetyBlock):
             self.gate.accept(issue(), "owner")
         self.assertEqual(self.remote.claims, 0)
+
+    def test_invalid_duplicate_identity_is_indexed_and_blocks_acceptance(self):
+        completed = raw_issue(2, status="completed")
+        variants = {
+            "unmigrated_source": raw_issue(2, status="completed", source="Docs/Plans/original.md"),
+            "missing_task": dict(completed, body=completed["body"].replace("### 작업 내용", "### 설명")),
+            "missing_step": dict(completed, body=completed["body"].replace("current_step: assignment pending\n", "")),
+            "nonstring_source": dict(completed, body=completed["body"].replace(f'source: "{completed["html_url"]}"',
+                                                                                 "source: false")),
+        }
+        for name, duplicate in variants.items():
+            with self.subTest(invalid_field=name):
+                observations = self.scan([raw_issue(), duplicate])
+                self.assertEqual(observations[1]["classification"], "metadata_invalid")
+                self.assertEqual(observations[1].get("plan_id"), PLAN)
+                self.assertEqual(observations[0]["classification"], "duplicate_plan_id")
+                count = self.store.db.execute("SELECT count(*) FROM observations WHERE plan_id=?", (PLAN,)).fetchone()[0]
+                self.assertEqual(count, 2)
+                with self.assertRaises(SafetyBlock):
+                    self.gate.accept(issue(), "owner")
+                self.assertEqual(self.remote.claims, 0)
+
+    def test_nested_completion_edit_cannot_reach_dispatch(self):
+        current = issue()
+        current = replace(current, body=current.body.replace("### 완료 조건",
+                                                            "### PLAN progress\n\n#### 완료 조건"))
+        backend = None
+        with self.assertRaises((InvalidPlan, SafetyBlock)):
+            backend = FakeBackend(current, self.root / "worker")
+            gate = Gate(self.store, backend, "rng")
+            self.scan([dict(raw_issue(), body=current.body)])
+            gate.accept(current, "owner")
+            changed = replace(backend.controlled.issue,
+                              body=backend.controlled.issue.body.replace("focused tests pass",
+                                                                         "changed completion criteria"))
+            backend.controlled = replace(backend.controlled, issue=changed, plan=parse(changed))
+            gate.dispatch(PLAN, "parser")
+        self.assertEqual(self.store.db.execute("SELECT count(*) FROM attempts").fetchone()[0], 0)
+        if backend is not None:
+            self.assertEqual(backend.spawns, 0)
 
     def test_changed_source_between_scan_and_claim_preserves_user_edit(self):
         self.scan()

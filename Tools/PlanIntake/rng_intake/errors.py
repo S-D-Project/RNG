@@ -3,7 +3,9 @@ class IntakeError(Exception):
 
 
 class InvalidPlan(IntakeError):
-    pass
+    def __init__(self, message, *, plan_id=None):
+        super().__init__(message)
+        self.plan_id = plan_id
 
 
 class SafetyBlock(IntakeError):

@@ -133,33 +133,43 @@ def parse(issue: Issue) -> Plan:
         node = yaml.compose(content, Loader=yaml.SafeLoader)
         if not isinstance(node, MappingNode):
             raise InvalidPlan("metadata must be a mapping")
+        # Keep a unique, valid identity even if another field needs repair.
+        # Duplicate ID keys are ambiguous and must not choose an identity.
+        ids = [value for key, value in node.value
+               if isinstance(key, ScalarNode) and key.tag == "tag:yaml.org,2002:str" and key.value == "id"]
+        identified = (ids[0].value if len(ids) == 1 and isinstance(ids[0], ScalarNode)
+                      and ids[0].tag == "tag:yaml.org,2002:str" and valid_plan_id(ids[0].value) else None)
+
+        def invalid(message):
+            return InvalidPlan(message, plan_id=identified)
+
         values = {}
         for key, value in node.value:
             if not isinstance(key, ScalarNode) or key.tag != "tag:yaml.org,2002:str":
-                raise InvalidPlan("metadata keys must be strings")
+                raise invalid("metadata keys must be strings")
             if key.value in values:
-                raise InvalidPlan("duplicate YAML key")
+                raise invalid("duplicate YAML key")
             if not isinstance(value, ScalarNode) or value.tag != "tag:yaml.org,2002:str":
-                raise InvalidPlan("metadata values must be strings")
+                raise invalid("metadata values must be strings")
             values[key.value] = value.value
     except (yaml.YAMLError, RecursionError) as exc:
         raise InvalidPlan("invalid YAML") from exc
     if set(values) != FIELDS:
-        raise InvalidPlan("metadata fields must be id/status/current_step/source")
+        raise invalid("metadata fields must be id/status/current_step/source")
     if values["status"] not in STATUSES or not values["current_step"].strip():
-        raise InvalidPlan("invalid status or empty current_step")
+        raise invalid("invalid status or empty current_step")
     if values["id"] and not valid_plan_id(values["id"]):
-        raise InvalidPlan("invalid PLAN ID")
+        raise invalid("invalid PLAN ID")
     if values["source"] and values["source"] != issue.url:
-        raise InvalidPlan("source must equal this issue URL; migration needs repair")
-    goals = [h for h in headings if h[3] in ("작업 내용", "문제 내용", "목표와 범위")]
+        raise invalid("source must equal this issue URL; migration needs repair")
+    goals = [h for h in headings if h[3] in ("작업 내용", "문제 내용", "리팩토링 내용", "목표와 범위")]
     completions = [h for h in headings if h[3] == "완료 조건"]
     if len(goals) != 1 or len(completions) != 1:
-        raise InvalidPlan("one task/scope and one completion section required")
+        raise invalid("one task/scope and one completion section required")
     for section in goals + completions:
         content_text = body[section[1]:_region(headings, section, len(body))].strip()
         if not content_text or content_text == "_No response_":
-            raise InvalidPlan("empty task/scope or completion section")
+            raise invalid("empty task/scope or completion section")
 
     # Progress and intake receipts have explicit sections; all other text is
     # approved scope. Unknown sections are included, never silently ignored.
@@ -167,19 +177,23 @@ def parse(issue: Issue) -> Plan:
     for name in ("PLAN progress", "PLAN intake"):
         matches = [h for h in headings if h[3] == name]
         if len(matches) > 1:
-            raise InvalidPlan("duplicate managed section")
+            raise invalid("duplicate managed section")
         for h in matches:
             excluded.append((h[0], _region(headings, h, len(body))))
     for left, right in zip(sorted(excluded), sorted(excluded)[1:]):
         if left[1] > right[0]:
-            raise InvalidPlan("overlapping managed sections")
+            raise invalid("overlapping managed sections")
+    for section in goals + completions:
+        section_end = _region(headings, section, len(body))
+        if any(a < section_end and section[0] < b for a, b in excluded):
+            raise invalid("required task/completion section overlaps managed region")
     scope = body
     for a, b in sorted(excluded, reverse=True):
         scope = scope[:a] + scope[b:]
     # Appending a managed section adds a separator newline, not approved text.
     scope = scope.rstrip("\r\n") + "\n"
     if not scope.strip() or not issue.title.strip():
-        raise InvalidPlan("PLAN scope and issue title required")
+        raise invalid("PLAN scope and issue title required")
     return Plan(values["id"], values["status"], values["current_step"], values["source"],
                 digest(body), digest(issue.title + "\n" + scope))
 

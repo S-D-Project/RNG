@@ -51,8 +51,9 @@ def evaluate(raw_issues, repo, *, local=None, store=None, evidence=None):
             parsed.append((issue, plan))
         except InvalidPlan as exc:
             observations.append({"issue": issue.number, "source": issue.url, "body_hash": digest(issue.body),
-                                 "classification": "metadata_invalid", "detail": str(exc)})
+                                 "plan_id": exc.plan_id, "classification": "metadata_invalid", "detail": str(exc)})
     counts = Counter(p.plan_id for _, p in parsed if p.plan_id)
+    counts.update(o["plan_id"] for o in observations if o.get("plan_id"))
     for issue, plan in parsed:
         known = store.intake(plan.plan_id) if store and plan.plan_id else None
         category = classify(issue, plan, duplicate=bool(plan.plan_id and counts[plan.plan_id] > 1),
